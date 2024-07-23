@@ -1,0 +1,35 @@
+{
+  "name": "windymarketuser",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "export": "next export"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "@railway/cli": "^3.11.0",
+    "@react-oauth/google": "^0.12.1",
+    "@reduxjs/toolkit": "^2.2.5",
+    "axios": "^1.7.2",
+    "bootstrap": "^5.3.3",
+    "date-fns": "^3.6.0",
+    "jwt-decode": "^4.0.0",
+    "next": "13.5.6",
+    "react": "^18",
+    "react-bootstrap": "^2.10.3",
+    "react-dom": "^18",
+    "react-final-form": "^6.5.9",
+    "react-ga4": "^2.1.0",
+    "react-redux": "^9.1.2",
+    "sweetalert2": "^11.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8",
+    "eslint-config-next": "13.5.6",
+    "prettier": "^3.3.2"
+  }
+}
