@@ -178,8 +178,9 @@ const productsSlices = createSlice({
     });
     builder.addCase(obtenerProductos.rejected, (state, action) => {
       Swal.fire({
-        title: 'Servidor Caido 2', text: `Estamos Teniendo Problemas con el servidor, Esperamos se reestablezca la conexión
-      lo antes posible`, imageUrl: './LOGO_CIRCULAR_SIN_FONDO.png'
+        title: 'Servidor Caido 2',
+        text: `Estamos Teniendo Problemas con el servidor, Esperamos se reestablezca la conexión
+      lo antes posible`
       }).then(function () {
         window.location = '/';
       });
