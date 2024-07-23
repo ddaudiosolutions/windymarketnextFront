@@ -1,11 +1,9 @@
 'use client';
 import { Fragment, useEffect } from 'react';
-/* import { Link, useHistory } from "react-router-dom"; */
 import Image from 'next/image';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const VerProducto = ({ producto }) => {
-  console.log('producto', producto);
   const authorName = producto !== undefined ? producto.author.name : 'Anónimo';
   useEffect(() => {
     if (typeof window !== 'undefined') {

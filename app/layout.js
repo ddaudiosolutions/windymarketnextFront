@@ -2,6 +2,7 @@ import { Saira_Stencil_One, Saira } from 'next/font/google';
 import 'bootstrap/dist/css/bootstrap.css'
 import Navigation from '@/components/header/Navigation';
 import Providers from '@/reduxLib/provider';
+import Head from 'next/head';
 
 
 const sairaStencil = Saira_Stencil_One({
@@ -18,22 +19,31 @@ const sairaFont = Saira({
 
 export const metadata = {
   title: 'WindyMarket',
-  description: 'Compra venta de material de windsurf foil entre usuarios',
-}
+  description: 'Compra y vende tu material',
+  icons: {
+    icon: '/LOGO_CIRCULAR_FONDO_BLANCO.png', // ruta al favicon en la carpeta public
+  },
+  openGraph: {
+    images: [
+      {
+        url: '/LOGO_CIRCULAR_FONDO_BLANCO.png',
+        alt: 'WindyMarket Logo',
+      },
+    ],
+  },
+};
 
 export default function RootLayout({ children }) {
   return (
-    <html >
-      <head>
-      </head>
-      <Providers>
-        <body className={`${sairaStencil.className} ${sairaFont.className}`}>
+    <html lang="en">
+      <body className={`${sairaStencil.className} ${sairaFont.className}`}>
+        <Providers>
           <header>
             <Navigation />
           </header>
           {children}
-        </body>
-      </Providers>
+        </Providers>
+      </body>
     </html>
-  )
+  );
 }
