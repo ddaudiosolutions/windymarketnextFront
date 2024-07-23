@@ -34,7 +34,6 @@ const Navigation = () => {
     // retorna `undefined` por defecto, cumpliendo con las reglas de React.
   }, [userTokenCheck, date]); // Asegúrate de incluir todas las dependencias relevantes
 
-  console.log('userTokenCheck', userTokenCheck);
   return (
     <>
       <nav className='mt-2 bg-nav  d-flex align-items-end '>

@@ -13,7 +13,7 @@ import SearchByWords from '../busquedaPorTexto/SearchByWords';
 import NavbarCategories from '../categorias/NavbarCategories';
 /* import Navbar from "../Navbar"; */
 import HappyBanner from '../banners/HappyBanner';
-import { ProductoMasVistos } from '../googleAnalytics/ProductoMasVistos';
+/* import { ProductoMasVistos } from '../googleAnalytics/ProductoMasVistos'; */
 /* import { Helmet } from 'react-helmet'; */
 
 /* import WebCamsContainer from "../webCams/WebCamsContainer"; */
@@ -40,8 +40,7 @@ const MostrarProductos = () => {
   const [searchWords, setSearchWords] = useState([]);
 
   const dispatch = useDispatch();
-  const mostrarProductoMasVistos = busquedaquery === 'ultimos_productos';
-  console.log('productosMasVistos', mostrarProductoMasVistos);
+  /*  const mostrarProductoMasVistos = busquedaquery === 'ultimos_productos'; */
   /* const cargarBuscoPosts = () => dispatch(obtenerBuscoPosts()); */
   const userData = useSelector((state) => state.users.user);
 
@@ -122,14 +121,14 @@ const MostrarProductos = () => {
               })}
           </div>
 
-          {mostrarProductoMasVistos && productosMasVistos !== undefined ? (
+          {/*  {mostrarProductoMasVistos && productosMasVistos !== undefined ? (
             <div className='mt-3'>
               <h2 className='text-center'> Productos Más Vistos </h2>
               <div className='d-flex justify-content-center mt-4 '>
                 <ProductoMasVistos productosMasvistos={productosMasVistos} />
               </div>
             </div>
-          ) : null}
+          ) : null} */}
           <HappyBanner />
         </div>
       </div>

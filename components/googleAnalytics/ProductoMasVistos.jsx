@@ -4,7 +4,6 @@ import Producto from '../productos/Producto';
 import { obtenerProductoIdApi } from '../../reduxLib/slices/productSlices';
 
 export const ProductoMasVistos = ({ productosMasvistos }) => {
-  console.log('ProductoMasVistos', productosMasvistos);
   const dispatch = useDispatch();
   const [mostViewed, setMostViewed] = useState([]);
   // Convertir el array de ID's a string para usarlo como dependencia efectiva en useEffect
