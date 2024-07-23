@@ -1,7 +1,7 @@
 // app/productos/[id]/page.jsx
 import { fetchProductId } from '@/apiCalls/apiProducts';
 import VerProducto from '@/components/productos/VerProducto';
-import Head from 'next/head';
+/* import Head from 'next/head'; */
 
 export async function generateMetadata({ params }) {
   const productoId = await fetchProductId({ producto: params.id });
@@ -36,13 +36,13 @@ const ProductoIdPage = async ({ params }) => {
   console.log(productoId);
   return (
     <div className=''>
-      <Head>
+      {/*  <Head>
         <title>{productoId.title}</title>
         <meta name='description' content={productoId.description} />
         <meta property='og:title' content={productoId.title} />
         <meta property='og:description' content={productoId.description} />
         <meta property='og:image' content={productoId.images[0].url} />
-      </Head>
+      </Head> */}
       <VerProducto producto={productoId} />
     </div>
   );

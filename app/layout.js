@@ -20,9 +20,6 @@ const sairaFont = Saira({
 export const metadata = {
   title: 'WindyMarket',
   description: 'Compra y vende tu material',
-  icons: {
-    icon: '/LOGO_CIRCULAR_FONDO_BLANCO.png', // ruta al favicon en la carpeta public
-  },
   openGraph: {
     title: 'WindyMarket',
     images: [

@@ -13,7 +13,6 @@ export const fetchProducts = ({ busquedapage }) => {
 };
 
 export const fetchProductId = (id) => {
-  console.log('fetProductId', id)
   const idProducto = id.producto;
   return fetch(
     process.env.NEXT_BACKEND_URL + `productos/${idProducto}`, {
