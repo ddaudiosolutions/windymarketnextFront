@@ -24,6 +24,7 @@ export const metadata = {
     icon: '/LOGO_CIRCULAR_FONDO_BLANCO.png', // ruta al favicon en la carpeta public
   },
   openGraph: {
+    title: 'WindyMarket',
     images: [
       {
         url: '/LOGO_CIRCULAR_FONDO_BLANCO.png',

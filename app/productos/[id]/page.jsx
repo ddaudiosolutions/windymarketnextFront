@@ -14,14 +14,18 @@ export async function generateMetadata({ params }) {
   }
 
   const { title, description, images } = productoId;
-
   return {
     title: title,
     description: description,
     openGraph: {
       title: title,
       description: description,
-      images: images[0].url,
+      images: [
+        {
+          url: images[0].url,
+          alt: title,
+        },
+      ],
     },
   };
 }
