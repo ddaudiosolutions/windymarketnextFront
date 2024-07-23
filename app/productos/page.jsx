@@ -14,9 +14,9 @@ const ProductosPage = () => {
 
   // Wrap cargarProductos with useCallback
   const cargarProductos = useCallback(() => {
-    dispatch(obtenerProductos({ busquedaquery, pagequery })).then(() =>
+    dispatch(obtenerProductos({ busquedaquery, pagequery })); /* .then(() =>
       dispatch(obtenerProductosMasVistos()),
-    );
+    ); */
   }, [dispatch, busquedaquery, pagequery]); // Include all dependencies here
 
   useEffect(() => {
