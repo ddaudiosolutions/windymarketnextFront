@@ -1,0 +1,43 @@
+
+
+.container-fluid {
+  max-width: 1200px;
+}
+
+
+.price-hp1 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: rgb(5, 5, 5);
+}
+
+.text-container {
+/*   position: absolute; */
+  top: 0;
+  left: 0;  
+  width: 11rem;
+  height: 2rem;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(86, 86, 86);
+}
+
+.text-over-image {
+  color: #38D9DF;
+  font-size: 2rem;
+  font-weight: 200;
+}
+
+.image-avatar {
+  width: 4rem;
+  height: 4rem;
+}
+
+.cardImageProductId{
+  width:100%;
+  height: 650px;
+  object-fit: cover;
+  border-radius: 10px;
+}
