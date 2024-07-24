@@ -10,7 +10,7 @@ const GoogleAnalyticsApp = () => {
   const startDate = '2024-03-10';
   const endDate = '2024-03-18';
   const googleLogin = useGoogleLogin({
-    clientId: process.env.NEXT_APP_GOOGLE_CLIENT_ID,
+    clientId: process.env.NEXT_NEXT_PUBLIC_APP_GOOGLE_CLIENT_ID,
     responseType: 'token',
     onSuccess: async (tokenResponse) => {
       const accessToken = tokenResponse?.access_token;

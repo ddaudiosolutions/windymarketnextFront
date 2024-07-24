@@ -1,5 +1,5 @@
 console.log('Configuración de Next.js cargada');
-console.log('NEXT_BACKEND_URL:', process.env.NEXT_BACKEND_URL);
+console.log('NEXT_PUBLIC_BACKEND_URL:', process.env.NEXT_PUBLIC_BACKEND_URL);
 
 module.exports = {
 
@@ -8,7 +8,7 @@ module.exports = {
     domains: ['res.cloudinary.com'],
   },
   env: {
-    NEXT_BACKEND_URL: process.env.NEXT_BACKEND_URL,
+    NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
   },
   async redirects() {
     return [
