@@ -1,5 +1,5 @@
-//* AQUI ESTARÁ EL FORMULARIO PARA EL PRODUCTO
 'use client';
+//* AQUI ESTARÁ EL FORMULARIO PARA EL PRODUCTO
 /* import './NuevoProducto.module.css'; */
 import { useState } from 'react';
 import FormData from 'form-data';
@@ -78,7 +78,7 @@ const NuevoProducto = () => {
               title: '',
               price: '',
               description: '',
-              contacto: usuario.email,
+              contacto: usuario.email || '',
             }}
             render={({ handleSubmit, values, form }) => (
               <form onSubmit={handleSubmit}>
