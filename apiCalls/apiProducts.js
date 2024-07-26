@@ -1,7 +1,5 @@
 export const fetchProducts = ({ busquedapage }) => {
-  /*  console.log('busquedapage', busquedapage) */
   const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
-  console.log('Backend URL:', backendUrl);
   const { busquedaquery, pagequery } = busquedapage;
   return fetch(
     process.env.NEXT_PUBLIC_BACKEND_URL + `productos?busqueda=${busquedaquery}&page=${pagequery}`, {
