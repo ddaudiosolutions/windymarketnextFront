@@ -1,12 +1,13 @@
-import { obtenerProductosAuthor } from '../slices/productSlice';
-import { obtenerBuscoPostsUserAction } from '../slices/buscoPostSlice';
+import { obtenerProductosAuthor } from '../reduxLib/slices/productSlices';
+/* import { obtenerBuscoPostsUserAction } from '../reduxLib/slices/buscoPostSlice'; */
 import Swal from 'sweetalert2';
+import { jwtDecode } from 'jwt-decode';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 
-export const cargarProductosAuthor = (dispatch, history, post) => {
-  const idAuthor = post.author._id;
+export const cargarProductosAuthor = (dispatch, idAuthor) => {
+  console.log('idAuthor', idAuthor);
   dispatch(obtenerProductosAuthor(idAuthor));
-  dispatch(obtenerBuscoPostsUserAction(idAuthor));
-  history.push(`/productos/auth/${idAuthor}`);
 };
 
 export const extraerIdDeURL = (url) => {
@@ -26,7 +27,7 @@ export const verificarPesoImagenes = (images) => {
   return isPesado;
 };
 
-export const swalFirePesoImagenes =  (producto) => {
+export const swalFirePesoImagenes = (producto) => {
   return Swal.fire({
     icon: 'info',
     html: 'Peso mayor de 1Mb! Se reducirá el peso de la imagen, puede perder algo de calidad!!',
@@ -38,16 +39,16 @@ export const swalFirePesoImagenes =  (producto) => {
   });
 };
 
-export const swalFireFaltaTelefono = ( ) => {  
-   return Swal.fire({
-      icon: 'info',
-      html: 'No podrás recibir mensajes por Whatsapp <br> añade el telefono a tu perfil',
-      showCancelButton: true,
-      cancelButtonColor: '#d33',
-      confirmButtonColor: '#3085d6',
-      confirmButtonText: 'Guardar y Continuar',
-      reverseButtons: true,
-    });
+export const swalFireFaltaTelefono = () => {
+  return Swal.fire({
+    icon: 'info',
+    html: 'No podrás recibir mensajes por Whatsapp <br> añade el telefono a tu perfil',
+    showCancelButton: true,
+    cancelButtonColor: '#d33',
+    confirmButtonColor: '#3085d6',
+    confirmButtonText: 'Guardar y Continuar',
+    reverseButtons: true,
+  });
 };
 
 export const swalPesoKgsAlert = () => {
@@ -60,3 +61,32 @@ export const swalPesoKgsAlert = () => {
   });
 };
 
+
+
+export const setToken = (token) => {
+  const secure = process.env.NODE_ENV !== 'development';
+  const decodedToken = jwtDecode(token);
+  const { userName, userId } = decodedToken;
+
+  Cookies.set('userToken', token, { expires: 1, secure });
+  Cookies.set('userName', userName, { expires: 1, secure });
+  Cookies.set('userId', userId, { expires: 1, secure });
+};
+
+export const getToken = () => {
+  return Cookies.get('userToken');
+};
+
+export const getUserName = () => {
+  return Cookies.get('userName');
+};
+
+export const getUserId = () => {
+  return Cookies.get('userId');
+};
+
+export const removeToken = () => {
+  Cookies.remove('userToken');
+  Cookies.remove('userName');
+  Cookies.remove('userId');
+};

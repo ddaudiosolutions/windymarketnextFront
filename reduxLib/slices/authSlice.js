@@ -18,7 +18,7 @@ export const resetPassword = createAsyncThunk(
 
 export const changePasswordUser = createAsyncThunk('user/changePasswordUser', async (data) => {
   const res = await AuthServices.changePasswordUser(data);
-  return res;
+  return res.status;
 });
 
 const authSlice = createSlice({
@@ -51,7 +51,7 @@ const authSlice = createSlice({
       return action.payload;
     });
     builder.addCase(changePasswordUser.fulfilled, (state, action) => {
-      if (action.payload.status === 200) {
+      if (action.payload === 200) {
         Swal.fire(
           'Correcto',
           'La Contraseña se ha cambiado con éxito, ya puedes acceder a WindyMarket',

@@ -7,13 +7,14 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { obtenerProductosPorPalabras } from '../../reduxLib/slices/productSlices';
 /* import { obtenerBuscoPosts } from "../../slices/buscoPostSlice"; */
-/* import { obtenerDatosUsuario } from "../../slices/usersSlice"; */
-/* import { getFavoriteProducts } from "../../slices/favoriteProductsSlice"; */
+import { obtenerDatosUsuario } from '../../reduxLib/slices/usersSlice';
+import { getFavoriteProducts } from '../../reduxLib/slices/favoriteProductsSlice';
 import SearchByWords from '../busquedaPorTexto/SearchByWords';
 import NavbarCategories from '../categorias/NavbarCategories';
 /* import Navbar from "../Navbar"; */
 import HappyBanner from '../banners/HappyBanner';
-/* import { ProductoMasVistos } from '../googleAnalytics/ProductoMasVistos'; */
+import { ProductoMasVistos } from '../googleAnalytics/ProductoMasVistos';
+import { getToken, getUserId } from '../../helpers/utils';
 /* import { Helmet } from 'react-helmet'; */
 
 /* import WebCamsContainer from "../webCams/WebCamsContainer"; */
@@ -27,11 +28,10 @@ const MostrarProductos = () => {
   const productosMasVistos = useSelector(
     (state) => state.products.productosMasVistos.productosVistas,
   );
-  // TRAEMOS LAS SOLICITUDES DE BUSQUEDA
-  /* const buscoPosts = useSelector((state) => state.buscoPosts.obtenerBuscoPost); */
   const paginas = new Array(paginasTotales).fill(null).map((v, i) => i);
 
   // TRAEMOS LAS SOLICITUDES DE BUSQUEDA
+  /* const buscoPosts = useSelector((state) => state.buscoPosts.obtenerBuscoPost); */
 
   const params = useSearchParams();
   const busquedaquery = params.get('busqueda');
@@ -40,21 +40,20 @@ const MostrarProductos = () => {
   const [searchWords, setSearchWords] = useState([]);
 
   const dispatch = useDispatch();
-  /*  const mostrarProductoMasVistos = busquedaquery === 'ultimos_productos'; */
-  /* const cargarBuscoPosts = () => dispatch(obtenerBuscoPosts()); */
-  const userData = useSelector((state) => state.users.user);
+  const mostrarProductoMasVistos = busquedaquery === 'ultimos_productos';
 
-  /*  useEffect(() => {
-    if (sessionStorage.getItem("userId")) {
-      dispatch(obtenerDatosUsuario(sessionStorage.getItem("userId"))).then(
-        (res) => {
-          if (res.payload.status === 200) {
-            dispatch(getFavoriteProducts(res.payload.data.favoritos));
-          }
+  /* const cargarBuscoPosts = () => dispatch(obtenerBuscoPosts()); */
+
+  useEffect(() => {
+    const userId = getUserId(); // Obtener el token del usuario desde las cookies
+    if (userId) {
+      dispatch(obtenerDatosUsuario(userId)).then((res) => {
+        if (res.payload.status === 200) {
+          dispatch(getFavoriteProducts(res.payload.data.favoritos));
         }
-      );
+      });
     }
-  }, [sessionStorage.getItem("userId")]); */
+  }, []);
 
   useEffect(() => {
     dispatch(obtenerProductosPorPalabras(searchWords));
@@ -121,14 +120,14 @@ const MostrarProductos = () => {
               })}
           </div>
 
-          {/*  {mostrarProductoMasVistos && productosMasVistos !== undefined ? (
+          {mostrarProductoMasVistos && productosMasVistos !== undefined ? (
             <div className='mt-3'>
               <h2 className='text-center'> Productos Más Vistos </h2>
               <div className='d-flex justify-content-center mt-4 '>
                 <ProductoMasVistos productosMasvistos={productosMasVistos} />
               </div>
             </div>
-          ) : null} */}
+          ) : null}
           <HappyBanner />
         </div>
       </div>

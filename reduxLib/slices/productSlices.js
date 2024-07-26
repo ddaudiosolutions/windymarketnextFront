@@ -17,7 +17,7 @@ export const obtenerProductos = createAsyncThunk(
   async (pageAndData, { rejectedWithValue }) => {
     try {
       const products = await ProductService.obtenerCategoriaActions(pageAndData);
-      return products;
+      return products.data;
     } catch (error) {
       throw rejectedWithValue(error.message);
     }
@@ -27,14 +27,10 @@ export const obtenerProductos = createAsyncThunk(
 export const obtenerProductosMasVistos = createAsyncThunk(
   'getMostViewedProducts / GET',
   async (data, { rejectedWithValue }) => {
-    /* console.log('entrando en productos mas vistos', data); */
     try {
-      const mostviewedProductos = await ProductService.obtenerProductosMasVistos();/* 
-      console.log('mostviewedProductosMasVistos', mostviewedProductos); */
-      return mostviewedProductos;
+      const mostviewedProductos = await ProductService.obtenerProductosMasVistos();
+      return mostviewedProductos.data;
     } catch (error) {
-      /* console.log('entrando en productos mas vistos');
-      console.log('error mostviewedProductosMasVistos', error); */
       throw rejectedWithValue(error.message);
     }
   }
@@ -69,7 +65,7 @@ export const obtenerProductoIdApi = createAsyncThunk(
   async (productoid, { rejectedWithValue }) => {
     try {
       const producto = await ProductService.obtenerProductoIdApi(productoid);
-      return producto;
+      return producto.data;
     } catch (error) {
       throw rejectedWithValue(error.message);
     }
@@ -81,7 +77,7 @@ export const obtenerProductosAuthor = createAsyncThunk(
   async (authorId, { rejectedWithValue }) => {
     try {
       const producto = await ProductService.obtenerProductosAuthor(authorId);
-      return producto;
+      return producto.data;
     } catch (error) {
       throw rejectedWithValue(error.message);
     }
@@ -93,7 +89,7 @@ export const obtenerProductosPorPalabras = createAsyncThunk(
   async (words, { rejectedWithValue }) => {
     try {
       const productosByWords = await ProductService.obtenerProductosPorPalabras(words);
-      return productosByWords;
+      return productosByWords.data;
     } catch (error) {
       throw rejectedWithValue(error.message);
     }
@@ -173,8 +169,7 @@ const productsSlices = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(obtenerProductos.fulfilled, (state, action) => {
-      console.log(action.payload)
-      state.productos = action.payload.data;
+      state.productos = action.payload;
     });
     builder.addCase(obtenerProductos.rejected, (state, action) => {
       Swal.fire({
@@ -186,8 +181,8 @@ const productsSlices = createSlice({
       });
     });
     builder.addCase(obtenerProductosMasVistos.fulfilled, (state, action) => {
-      console.log(action.payload);
-      state.productosMasVistos = action.payload.data;
+      console.log('mas vistos', action.payload)
+      state.productosMasVistos = action.payload;
     });
     builder.addCase(obtenerProductosMasVistos.rejected, (state, action) => {
       console.log(action);
@@ -205,15 +200,15 @@ const productsSlices = createSlice({
       state.productosUser = action.payload.data.prodUser;
     });
     builder.addCase(obtenerProductosAuthor.fulfilled, (state, action) => {
-      state.productsAuth = action.payload.data.prodAuth;
+      state.productsAuth = action.payload.prodAuth;
     });
 
     builder.addCase(obtenerProductosPorPalabras.fulfilled, (state, action) => {
-      state.productsByWords = action.payload.data.prodByWords;
+      state.productsByWords = action.payload.prodByWords;
     });
 
     builder.addCase(obtenerProductoIdApi.fulfilled, (state, action) => {
-      state.productoId = action.payload.data;
+      state.productoId = action.payload;
     });
 
     builder.addCase(borrarProducto.fulfilled, (state, action) => {

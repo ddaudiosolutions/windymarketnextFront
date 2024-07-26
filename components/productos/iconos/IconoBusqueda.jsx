@@ -17,7 +17,7 @@ function IconoBusqueda({ typeProduct, handleIconClick }) {
       icono = '/iconosCategorias/Accesorios_Windsurf.png';
       break;
     case 'ultimos_productos':
-      icono = './iconosCategorias/windsurf_pack.jpg';
+      icono = '/iconosCategorias/windsurf_pack.jpg';
       break;
     default:
       icono = '/iconosCategorias/Avatar_Default.png';

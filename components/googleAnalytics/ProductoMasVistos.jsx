@@ -12,12 +12,11 @@ export const ProductoMasVistos = ({ productosMasvistos }) => {
     const fetchProductosMasVistos = async () => {
       if (productosMasvistos && productosMasvistos.length > 0) {
         const resultados = []; // Almacena los resultados de cada llamada
-
         for (const productoId of productosMasvistos) {
           try {
             // Llama a la acción de Redux para obtener la información del producto por su ID de manera secuencial.
             const resultado = await dispatch(obtenerProductoIdApi(productoId)).unwrap();
-            resultados.push(resultado.data);
+            resultados.push(resultado);
           } catch (error) {
             // Maneja cualquier error que pueda ocurrir durante la operación para un ID específico.
             console.error(`Error al obtener el producto ${productoId}:`, error);

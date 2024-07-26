@@ -1,19 +1,13 @@
-// app/productos/[id]/page.jsx
-import { fetchProductId } from '@/apiCalls/apiProducts';
 import VerProducto from '@/components/productos/VerProducto';
-/* import Head from 'next/head'; */
 
-export async function generateMetadata({ params }) {
-  const productoId = await fetchProductId({ producto: params.id });
-
-  if (!productoId) {
+export async function generateMetadata(producto) {
+  if (!producto) {
     return {
       title: 'Producto no encontrado',
       description: 'El producto no está disponible',
     };
   }
-
-  const { title, description, images } = productoId;
+  const { title, description, images } = producto.searchParams;
   return {
     title: title,
     description: description,
@@ -31,19 +25,10 @@ export async function generateMetadata({ params }) {
 }
 
 // Definir la página del producto
-const ProductoIdPage = async ({ params }) => {
-  const productoId = await fetchProductId({ producto: params.id });
-  console.log(productoId);
+const ProductoIdPage = () => {
   return (
-    <div className=''>
-      {/*  <Head>
-        <title>{productoId.title}</title>
-        <meta name='description' content={productoId.description} />
-        <meta property='og:title' content={productoId.title} />
-        <meta property='og:description' content={productoId.description} />
-        <meta property='og:image' content={productoId.images[0].url} />
-      </Head> */}
-      <VerProducto producto={productoId} />
+    <div>
+      <VerProducto />
     </div>
   );
 };
