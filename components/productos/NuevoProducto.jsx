@@ -78,7 +78,7 @@ const NuevoProducto = () => {
               title: '',
               price: '',
               description: '',
-              contacto: usuario.email || '',
+              contacto: usuario ? usuario.email : '',
             }}
             render={({ handleSubmit, values, form }) => (
               <form onSubmit={handleSubmit}>
