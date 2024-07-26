@@ -1,12 +1,5 @@
 import clienteAxios from '../../config/axios';
 
-/* const user = sessionStorage.getItem('userToken'); */
-let data = {
-  headers: {
-    'x-auth-token': 'user',
-  },
-  // body: {imagenData},
-};
 
 const registroUsuario = (newUserData) => {
   const { nombre, email, password } = newUserData;
@@ -18,31 +11,23 @@ const registroUsuario = (newUserData) => {
 } */
 
 const loginUsuarioActions = (userData) => {
-  return clienteAxios.post('auth', userData, data);
+  return clienteAxios.post('auth', userData);
 };
 
 // CARGAR DATOS DE USUARIO DESDE LA BB DE DATOS
 const obtenerDatosUsuario = (userId) => {
-  if (user !== null) {
-    data = {
-      headers: {
-        'x-auth-token': sessionStorage.getItem('userToken'),
-      },
-      // body: {imagenData},
-    };
-    return clienteAxios.get(`usuarios/${userId}`, data);
-  }
-  return clienteAxios.get(`usuarios/${userId}`, data);
+  console.log('userId', userId);
+  return clienteAxios.get(`usuarios/${userId}`);
 };
 
 // EDITAR USUARIO
 const editarUsuario = (userData) => {
-  return clienteAxios.put(`usuarios/editar/${userData.id}`, userData.formData, data);
+  return clienteAxios.put(`usuarios/editar/${userData.id}`, userData.formData);
 };
 
 // ELIMINAR USUARIO
 const eliminarUsuario = (id) => {
-  return clienteAxios.delete(`usuarios/${id}`, data);
+  return clienteAxios.delete(`usuarios/${id}`);
 };
 
 // LOG-OUT USUARIO
@@ -52,17 +37,17 @@ const logoutUsuario = (nombreUser) => {
 
 /// AÑADIR PRODUCTO A FAVORITOS
 const addFavoriteProduct = (productData) => {
-  return clienteAxios.post('favoriteProducts/addFavorite', productData, data);
+  return clienteAxios.post('favoriteProducts/addFavorite', productData);
 };
 
 /// BORRAR PRODUCTO DE FAVORITOS DE UN USUARIO
 const removeFavorite = (productId) => {
-  return clienteAxios.post('favoriteProducts/removeFavorite', productId, data);
+  return clienteAxios.post('favoriteProducts/removeFavorite', productId);
 };
 
 /// OBTENER LOS PRODUCTOS DE FAVORITOS DE UN USUARIO
 const getFavoriteProducts = (favoriteProductsId) => {
-  return clienteAxios.post('favoriteProducts/getFavorite', favoriteProductsId, data);
+  return clienteAxios.post('favoriteProducts/getFavorite', favoriteProductsId);
 };
 
 // Enviar email interes por producto entre users

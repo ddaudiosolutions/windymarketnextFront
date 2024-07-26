@@ -1,33 +1,27 @@
 import clienteAxios from '../../config/axios';
 
-/* const user = sessionStorage.getItem('userToken'); */
-const data = {
-  headers: {
-    'x-auth-token': 'papito',
-  },
-};
 
 /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CREAR NUEVOS PRODUCTOS
 const crearNuevoProductoAction = (producto, history) => {
-  return clienteAxios.post('productos/newproduct', producto, data);
+  return clienteAxios.post('productos/newproduct', producto);
 };
 
 // FUNCION QUE DESCARGA LOS PRODUCTOS DE LA BBDD
 const obtenerCategoriaActions = (pageAndData) => {
   const { busquedaquery, pagequery } = pageAndData;
-  return clienteAxios.get(`productos?busqueda=${busquedaquery}&page=${pagequery}`, data);
+  return clienteAxios.get(`productos?busqueda=${busquedaquery}&page=${pagequery}`);
 };
 
 // DESCARGAR PRODUCTOS USUARIO
 
 const obtenerProductosMasVistos = () => {
   /*  console.log('entrando en mostviewed FRONT'); */
-  return clienteAxios.get(`productos/mostviewedProducts`, data);
+  return clienteAxios.get(`productos/mostviewedProducts`);
 };
 
 const obtenerProductosUser = (pageNuser) => {
-  return clienteAxios.get(`productos/user?=${pageNuser}`, data);
+  return clienteAxios.get(`productos/user?=${pageNuser}`);
 };
 
 const obtenerProductoIdApi = (productoid) => {
@@ -35,19 +29,19 @@ const obtenerProductoIdApi = (productoid) => {
 };
 
 const obtenerProductosPorPalabras = (words) => {
-  return clienteAxios.post(`productos/searchByWords`, words, data);
+  return clienteAxios.post(`productos/searchByWords`, words);
 };
 
 // SELECCIONAR Y ELIMINAR PRODUCTO
 const borrarProducto = (id) => {
-  return clienteAxios.delete(`productos/user/${id}`, data);
+  return clienteAxios.delete(`productos/user/${id}`);
 };
 
 /// ///////////////////////////////////////////////
 // EDITAR EL PRODUCTO /////
 const editarProducto = (productData) => {
   const { formData, id } = productData;
-  return clienteAxios.put(`productos/user/editar/${id}`, formData, data);
+  return clienteAxios.put(`productos/user/editar/${id}`, formData);
 };
 
 /// ////////////////////

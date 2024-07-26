@@ -7,7 +7,6 @@ const NavbarCategories = ({ showNavbar }) => {
   const router = useRouter(); // Get the router object
 
   const handleIconClick = (typeProduct) => {
-    console.log(`handleIconClick', typeProduct: ${typeProduct}`);
     router.push(`/productos?busqueda=${typeProduct}&page=0`); // Navigate programmatically
     setShowMenu(false); // Ocultar el menú después de hacer clic en un ícono
   };

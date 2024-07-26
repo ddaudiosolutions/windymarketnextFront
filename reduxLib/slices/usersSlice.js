@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import UsersService from '../services/user.service';
 import Swal from 'sweetalert2';
+import Cookies from 'js-cookie';
 
 const initialState = {
   user: undefined,
@@ -22,6 +23,7 @@ export const nuevoUsuario = createAsyncThunk(
 export const loginUsuario = createAsyncThunk(
   'loginUser / post',
   async (userData, { rejectWithValue }) => {
+    console.log(userData)
     try {
       const user = await UsersService.loginUsuarioActions(userData);
       return user;
@@ -36,7 +38,7 @@ export const obtenerDatosUsuario = createAsyncThunk(
   async (userId, { rejectWithValue }) => {
     try {
       const user = await UsersService.obtenerDatosUsuario(userId);
-      return user;
+      return user.data;
     } catch (error) {
       throw rejectWithValue(error);
     }
@@ -84,7 +86,7 @@ export const addFavoriteProduct = createAsyncThunk(
   async (favoriteProductData, { rejectedWithValue }) => {
     try {
       const addFavoriteProduct = await UsersService.addFavoriteProduct(favoriteProductData);
-      return addFavoriteProduct;
+      return addFavoriteProduct.data;
     } catch (error) {
       throw rejectedWithValue(error.message);
     }
@@ -96,7 +98,7 @@ export const removeFavoriteProduct = createAsyncThunk(
   async (productId, { rejectedWithValue }) => {
     try {
       const removeFavoriteProduct = await UsersService.removeFavorite(productId);
-      return removeFavoriteProduct;
+      return removeFavoriteProduct.data;
     } catch (error) {
       throw rejectedWithValue(error.message);
     }
@@ -140,9 +142,10 @@ const usersSlices = createSlice({
     });
     builder.addCase(loginUsuario.fulfilled, (state, action) => {
       if (action.payload.status === 200) {
-        sessionStorage.setItem('userName', action.payload.data.nombre);
-        sessionStorage.setItem('userToken', action.payload.data.accessToken);
-        sessionStorage.setItem('userId', action.payload.data.id);
+        console.log('loginUsuario', action.payload)
+        Cookies.set('userName', action.payload.data.nombre, { expires: 1 });
+        Cookies.set('userToken', action.payload.data.accessToken, { expires: 1 });
+        Cookies.set('userId', action.payload.data.id, { expires: 1 });
       }
       return action.payload;
     });
@@ -156,7 +159,7 @@ const usersSlices = createSlice({
     });
     builder.addCase(obtenerDatosUsuario.fulfilled, (state, action) => {
       return {
-        user: action.payload.data,
+        user: action.payload,
       };
     });
     builder.addCase(obtenerDatosUsuario.rejected, (state, action) => {
@@ -170,7 +173,7 @@ const usersSlices = createSlice({
     });
     builder.addCase(editarDatosUsuario.fulfilled, (state, action) => {
       console.log(action.payload);
-      sessionStorage.setItem('userName', action.payload.data.user.nombre);
+      Cookies.set('userName', action.payload.data.user.nombre);
       if (action.payload.status === 200) {
         Swal.fire('Correcto', 'El Usuario se ha editado Correctamente', 'success').then(
           function () {
@@ -181,27 +184,27 @@ const usersSlices = createSlice({
       return action.payload.data;
     });
     builder.addCase(logOutUsuario.fulfilled, (state, action) => {
-      sessionStorage.removeItem('userName');
-      sessionStorage.removeItem('userId');
-      sessionStorage.removeItem('userToken');
+      Cookies.remove('userName');
+      Cookies.remove('userId');
+      Cookies.remove('userToken');
       window.location = '/productos?busqueda=ultimos_productos&page=0';
     });
     builder.addCase(eliminarUsuario.fulfilled, (state, action) => {
       console.log('eliminarUsuario', action.payload);
       Swal.fire('Correct', 'Usuario Eliminado Correctamente', 'success')
         .then(function () {
-          sessionStorage.removeItem('userName');
-          sessionStorage.removeItem('userId');
-          sessionStorage.removeItem('userToken');
+          Cookies.remove('userName');
+          Cookies.remove('userId');
+          Cookies.remove('userToken');
           window.location = '/productos?busqueda=ultimos_productos&page=0';
         }
         );
     });
     builder.addCase(addFavoriteProduct.fulfilled, (state, action) => {
-      state.user = action.payload.data.user;
+      state.user = action.payload.user;
     });
     builder.addCase(removeFavoriteProduct.fulfilled, (state, action) => {
-      state.user = action.payload.data.user;
+      state.user = action.payload.user;
     });
     builder.addCase(sendMailToUser.pending, (state, action) => {
       Swal.fire('Enviando Email....');

@@ -1,7 +1,5 @@
 import Producto from './Producto';
-/* import estilos from './listaProductos.module.css'; */
 const ListaProductosBusqueda = ({ productos }) => {
-  /* console.log("productosBusqueda", productos); */
   return (
     <div className='d-flex justify-content-center mt-4'>
       <div

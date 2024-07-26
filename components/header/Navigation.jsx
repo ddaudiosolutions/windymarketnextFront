@@ -2,9 +2,10 @@
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
-import { jwtDecode } from 'jwt-decode'; /* 
-import { cargarProductosAuthor } from "../helpers/utils"; */
+import { jwtDecode } from 'jwt-decode';
+import { cargarProductosAuthor } from '../../helpers/utils';
 import Image from 'next/image';
+import { getToken, removeToken, getUserId, getUserName } from '../../helpers/utils';
 
 const Navigation = () => {
   const router = useRouter();
@@ -13,27 +14,40 @@ const Navigation = () => {
   const [userId, setUserId] = useState('');
   const [userTokenCheck, setUserTokenCheck] = useState(null);
 
+  const logOut = (event) => {
+    /*  event.stopPropagation(); */ // Detener la propagación del evento
+    removeToken();
+    setNombreUsuario('');
+    setUserId('');
+    setUserTokenCheck(null);
+    router.push('/');
+  };
+
   useEffect(() => {
-    const nombreUser = sessionStorage.getItem('userName');
-    const userId = sessionStorage.getItem('userId');
-    const userTokenCheck = sessionStorage.getItem('userToken');
-    setNombreUsuario(nombreUser);
-    setUserId(userId);
+    const userTokenCheck = getToken();
     setUserTokenCheck(userTokenCheck);
-    // Solo proceder si userTokenCheck existe
+
     if (userTokenCheck) {
       const { exp } = jwtDecode(userTokenCheck);
       const expiredToken = exp * 1000 - 60000;
       if (expiredToken < date) {
         logOut();
       } else {
-        setNombreUsuario(nombreUser);
+        const getUserIdToken = getUserId();
+        const getUserNameToken = getUserName();
+        setNombreUsuario(getUserNameToken);
+        setUserId(getUserIdToken);
       }
     }
-    // Nota: No hay un `return` explícito aquí, lo que significa que este useEffect
-    // retorna `undefined` por defecto, cumpliendo con las reglas de React.
-  }, [userTokenCheck, date]); // Asegúrate de incluir todas las dependencias relevantes
+  }, [userTokenCheck, date]);
 
+  /*  useEffect(() => {
+    console.log('Current cookies after logout:', {
+      userToken: Cookies.get('userToken'),
+      userName: Cookies.get('userName'),
+      userId: Cookies.get('userId'),
+    });
+  }, [userTokenCheck]); */
   return (
     <>
       <nav className='mt-2 bg-nav  d-flex align-items-end '>
@@ -48,7 +62,7 @@ const Navigation = () => {
           />
         </div>
         <div className=' me-4 mb-3'>
-          {userTokenCheck === null ? (
+          {userTokenCheck === null || userTokenCheck === undefined ? (
             <Fragment>
               <div className='d-flex '>
                 <Link href={'/login'} className='nav-link typeHeader '>
@@ -72,7 +86,7 @@ const Navigation = () => {
                   <div className='d-flex justify-content-center'>
                     <button
                       type='button'
-                      className='btn btn-outline-primary ms-1'
+                      className='btn btn-outline-primary ms-1 dropdown-toggle'
                       data-bs-toggle='dropdown'
                       aria-expanded='false'
                     >
@@ -84,22 +98,13 @@ const Navigation = () => {
                           Subir Producto
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link href={'/buscoposts/nuevo'} className='nav-link typeHeader'>
                           Publicar Busqueda
                         </Link>
-                      </li>
+                      </li> */}
                       <li>
-                        <Link
-                          href={`/productos/auth/${userId}`}
-                          className='nav-link  typeHeader'
-                          onClick={() =>
-                            /* cargarProductosAuthor(dispatch, history, {
-                              author: { _id: userId },
-                            }) */
-                            alert('cargar productos author')
-                          }
-                        >
+                        <Link href={`/productos/auth/${userId}`} className='nav-link  typeHeader'>
                           Mis Productos
                         </Link>
                       </li>
@@ -116,9 +121,8 @@ const Navigation = () => {
                       <li
                         type='button'
                         className='nav-link typeHeader'
-                        onClick={() => {
-                          logOut({ nombreUser });
-                        }}
+                        onClick={logOut}
+                        style={{ cursor: 'pointer' }} // Asegurar que el cursor sea un puntero
                       >
                         LogOut
                       </li>
