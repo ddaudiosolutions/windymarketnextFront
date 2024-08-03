@@ -7,21 +7,18 @@ import { useCallback, useEffect } from 'react';
 import MostrarProductos from '../../components/productos/MostrarProductos';
 
 const ProductosPage = () => {
-  const dispatch = useDispatch();
+  /*   const dispatch = useDispatch();
   const params = useSearchParams();
   const busquedaquery = params.get('busqueda');
   const pagequery = params.get('page');
 
   // Wrap cargarProductos with useCallback
-  const cargarProductos = useCallback(() => {
-    dispatch(obtenerProductos({ busquedaquery, pagequery })).then(() =>
-      dispatch(obtenerProductosMasVistos()),
-    );
-  }, [dispatch, busquedaquery, pagequery]); // Include all dependencies here
+  const cargarProductos = () => dispatch(obtenerProductos({ busquedaquery, pagequery }));
 
   useEffect(() => {
-    cargarProductos(); // Now you can safely include cargarProductos in the dependency array
-  }, [cargarProductos]); // Include cargarProductos in the dependency array
+    console.log('cargarProductos');
+    cargarProductos(busquedaquery, pagequery);
+  }); */
 
   return <MostrarProductos />;
 };

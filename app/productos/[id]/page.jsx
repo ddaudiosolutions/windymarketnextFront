@@ -2,9 +2,7 @@ import { fetchProductId } from '@/apiCalls/apiProducts';
 import VerProducto from '@/components/productos/VerProducto';
 
 export async function generateMetadata({ params }) {
-  console.log('params generateMetadata', params);
   const productoId = await fetchProductId({ producto: params.id });
-  console.log('productoId generateMetadata', productoId);
   if (!productoId) {
     return {
       title: 'Producto no encontrado',

@@ -41,13 +41,6 @@ const Navigation = () => {
     }
   }, [userTokenCheck, date]);
 
-  /*  useEffect(() => {
-    console.log('Current cookies after logout:', {
-      userToken: Cookies.get('userToken'),
-      userName: Cookies.get('userName'),
-      userId: Cookies.get('userId'),
-    });
-  }, [userTokenCheck]); */
   return (
     <>
       <nav className='mt-2 bg-nav  d-flex align-items-end '>

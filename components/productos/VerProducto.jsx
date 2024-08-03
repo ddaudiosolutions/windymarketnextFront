@@ -2,13 +2,13 @@
 import { Fragment, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-/* import './VerProducto.css'; */
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import styles from './VerProducto.module.css';
 import { toDate, format } from 'date-fns';
 /* import { Helmet } from 'react-helmet'; */
 import { cargarProductosAuthor, extraerIdDeURL, getUserId } from '../../helpers/utils';
-/* import SendMessage from '../WhatsApp/SendMessage'; */
-/* import Footer from '../WhatsApp/layout/Footer'; */
+/* import SendMessage from '../WhatsApp/SendMessage';
+import Footer from '../WhatsApp/layout/Footer'; */
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import {
   addFavoriteProduct,
@@ -29,25 +29,24 @@ import GestionEnvioModal from '../modals/GestionEnvioModal';
 import BotonReservarProducto from './botonesProducto/BotonReservarProducto';
 import BotonVendidoProducto from './botonesProducto/BotonVendidoProducto';
 import BotonEditarProducto from './botonesProducto/BotonEditarProducto';
-/* import GoogleAds from '../adsense/GoogleAds'; */
-/* import ReactGA from 'react-ga4'; */
-
-/* import {  FacebookIcon, FacebookShareButton,  WhatsappShareButton  } from 'react-share'; */
+import { event } from '@/lib/gtag';
 import WhatsappIconShare from './iconos/WhatsappIconShare';
-/* import MetaTagsDinamicas from '../gestionOpenGraph/MetaTagsDinamicas'; */
+import { WhatsappShareButton } from 'react-share';
 
 const VerProducto = () => {
+  const pathname = usePathname();
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   const producto = useSelector((state) => state.products.productoId);
   let paginaActual = useSelector((state) => state.products.paginaActual);
 
   if (paginaActual === undefined) {
     paginaActual = 0;
   }
-
-  const productoId = producto._id;
-  const dispatch = useDispatch();
-  const router = useRouter();
-  /*  const history = useHistory(); */
+  // Obtener el id del producto desde la URL usando pathname
+  const id = pathname.split('/')[2]; // Obtener el id del producto desde la URL
+  const productoId = id || producto._id; // Usar el id de props o de la URL
 
   const fechaCreado = producto !== undefined ? producto.creado : null;
   const authorName = producto !== undefined ? producto.author.nombre : null;
@@ -94,6 +93,12 @@ const VerProducto = () => {
     }
   }, [producto]);
 
+  useEffect(() => {
+    if (productoId) {
+      dispatch(obtenerProductoIdApi(productoId));
+    }
+  }, [dispatch, productoId]);
+
   const handleVendido = () => {
     if (vendido) {
       dispatch(
@@ -119,10 +124,6 @@ const VerProducto = () => {
       });
     }
   };
-
-  useEffect(() => {
-    dispatch(obtenerProductoIdApi(productoId));
-  }, [dispatch]);
 
   const isLogged = getUserId();
 
@@ -167,16 +168,20 @@ const VerProducto = () => {
     }
   };
 
-  if (producto === null || producto === undefined) return null;
+  useEffect(() => {
+    // Verifica si gtag está definido
+    if (typeof window.gtag === 'function') {
+      event({
+        action: 'Ver_Producto_nextjs',
+        category: 'Producto',
+        label: 'Visita_Producto',
+      });
+    } else {
+      console.error('gtag is not loaded');
+    }
+  }, []);
 
-  /* useEffect(() => {
-    // Asegúrate de que ReactGA haya sido inicializado en alguna parte de tu aplicación
-    ReactGA.event({
-      category: 'Producto',
-      action: 'Ver_Producto',
-      label: 'Visita_Producto',
-    });
-  }, [producto]); */
+  if (producto === null || producto === undefined) return null;
 
   return (
     <Fragment>
@@ -200,13 +205,13 @@ const VerProducto = () => {
               {producto.author.imagesAvatar[0].url === undefined ? (
                 <img
                   src='/Avatar_Default2.png'
-                  className='card-img-topAvatar ms-4 mt-3'
+                  className={styles.cardimgtopAvatar}
                   alt='avatar for User windymarket windsurf segunda mano'
                 ></img>
               ) : (
                 <img
                   src={producto.author.imagesAvatar[0].url}
-                  className='card-img-topAvatar ms-4 mt-3'
+                  className={styles.cardimgtopAvatar}
                   alt='avatarUser windymarket windsurf segunda mano'
                 ></img>
               )}
@@ -240,7 +245,7 @@ const VerProducto = () => {
               <div className='carousel-inner'>
                 <div className='carousel-item active'>
                   <a
-                    className=' '
+                    className={styles.cardImgTop}
                     href={
                       producto.images && producto.images.length > 0 && producto.images[0].url
                         ? producto.images[0].url
@@ -250,27 +255,27 @@ const VerProducto = () => {
                     rel='noreferrer'
                   >
                     <img
+                      className={styles.cardImgTop}
                       src={
                         producto.images && producto.images.length > 0 && producto.images[0].url
                           ? producto.images[0].url
                           : 'https://res.cloudinary.com/dhe1gcno9/image/upload/v1707814598/ProductosMarketV2/WINDY_fakeImage_fbkd2s.jpg'
                       }
-                      style={{ height: '25rem' }}
+                      /*  style={{ height: '25rem' }} */
                       key={
                         producto.images && producto.images.length > 0 && producto.images[0]._id
                           ? producto.images[0]._id
                           : 'fakeImage'
                       }
-                      className='card-img-top mt-3'
                       alt='...'
                     ></img>
                     {reservado && (
-                      <div className='text-container mt-3'>
-                        <div className='text-over-image'>Reservado</div>
+                      <div className={styles.textcontainer}>
+                        <div className={styles.textoverimage}>Reservado</div>
                       </div>
                     )}
                     {vendido && (
-                      <div className='text-container mt-3'>
+                      <div className={styles.textcontainer}>
                         <div className='text-over-image'>Vendido</div>
                       </div>
                     )}
@@ -278,12 +283,11 @@ const VerProducto = () => {
                 </div>
                 {producto.images.slice(1).map((image) => (
                   <div className='carousel-item' key={image._id}>
-                    <a className=' ' href={image.url} target='_blank' rel='noreferrer'>
+                    <a href={image.url} target='_blank' rel='noreferrer'>
                       <img
+                        className={styles.cardImgTop}
                         src={image.url}
-                        style={{ height: '25rem' }}
                         key={image._id}
-                        className='card-img-top mt-3'
                         alt='... windymarket windsurf segunda mano'
                       ></img>
                     </a>
@@ -311,13 +315,9 @@ const VerProducto = () => {
             </div>
           </div>
           <div className='mt-3 me-2 d-flex justify-content-end'>
-            {/*  <WhatsappShareButton url={url}>
+            <WhatsappShareButton url={window.location.href}>
               <WhatsappIconShare size={25} />
-            </WhatsappShareButton> */}
-
-            {/* <FacebookShareButton url={url} className='ms-3'>
-              <FacebookIcon size={30} round={true} />
-            </FacebookShareButton> */}
+            </WhatsappShareButton>
           </div>
           <div className='card-body'>
             <h4 className=' price-hp1'>Precio: {producto.price} €</h4>

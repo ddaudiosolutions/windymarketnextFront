@@ -1,11 +1,15 @@
 'use client';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ListaProductos from './ListaProductos';
 /* import ListadoPosts from "./ListadoPosts"; */
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { obtenerProductosPorPalabras } from '../../reduxLib/slices/productSlices';
+import {
+  obtenerProductos,
+  obtenerProductosMasVistos,
+  obtenerProductosPorPalabras,
+} from '../../reduxLib/slices/productSlices';
 /* import { obtenerBuscoPosts } from "../../slices/buscoPostSlice"; */
 import { obtenerDatosUsuario } from '../../reduxLib/slices/usersSlice';
 import { getFavoriteProducts } from '../../reduxLib/slices/favoriteProductsSlice';
@@ -30,9 +34,6 @@ const MostrarProductos = () => {
   );
   const paginas = new Array(paginasTotales).fill(null).map((v, i) => i);
 
-  // TRAEMOS LAS SOLICITUDES DE BUSQUEDA
-  /* const buscoPosts = useSelector((state) => state.buscoPosts.obtenerBuscoPost); */
-
   const params = useSearchParams();
   const busquedaquery = params.get('busqueda');
   const pagequery = params.get('page');
@@ -43,21 +44,36 @@ const MostrarProductos = () => {
   const mostrarProductoMasVistos = busquedaquery === 'ultimos_productos';
 
   /* const cargarBuscoPosts = () => dispatch(obtenerBuscoPosts()); */
-
+  const cargarProductos = () =>
+    dispatch(obtenerProductos({ busquedaquery, pagequery })).then(() =>
+      dispatch(obtenerProductosMasVistos()),
+    );
   useEffect(() => {
-    const userId = getUserId(); // Obtener el token del usuario desde las cookies
+    cargarProductos(busquedaquery, pagequery);
+  }, [busquedaquery, pagequery]);
+  const cargarDatosUsuario = useCallback(async () => {
+    const userId = getUserId();
     if (userId) {
-      dispatch(obtenerDatosUsuario(userId)).then((res) => {
-        if (res.payload.status === 200) {
-          dispatch(getFavoriteProducts(res.payload.data.favoritos));
-        }
-      });
+      const res = await dispatch(obtenerDatosUsuario(userId));
+      if (res.payload.status === 200) {
+        dispatch(getFavoriteProducts(res.payload.data.favoritos));
+      }
     }
-  }, []);
+  }, [dispatch]);
+
+  const cargarProductosPorPalabras = useCallback(() => {
+    if (searchWords.length > 0) {
+      dispatch(obtenerProductosPorPalabras(searchWords));
+    }
+  }, [dispatch, searchWords]);
 
   useEffect(() => {
-    dispatch(obtenerProductosPorPalabras(searchWords));
-  }, [searchWords]);
+    cargarDatosUsuario();
+  }, [cargarDatosUsuario]);
+
+  useEffect(() => {
+    cargarProductosPorPalabras();
+  }, [cargarProductosPorPalabras]);
 
   return (
     <Fragment>

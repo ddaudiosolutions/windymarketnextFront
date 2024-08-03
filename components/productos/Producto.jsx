@@ -23,7 +23,6 @@ const Producto = ({ producto }) => {
   };
 
   const verProductoId = (producto) => {
-    console.log('verProductoId', producto);
     dispatch(setProductId(producto));
     router.push(`/productos/${producto._id}`);
   };

@@ -37,10 +37,8 @@ const ProductoUser = ({ producto }) => {
   };
 
   const verProductoId = (producto) => {
-    console.log('verProductoId', producto);
     dispatch(setProductId(producto));
-    const queryString = new URLSearchParams(producto).toString();
-    router.push(`/productos/${producto._id}?${queryString}`);
+    router.push(`/productos/${producto._id}`);
   };
 
   const sendtoEdicion = (producto) => {

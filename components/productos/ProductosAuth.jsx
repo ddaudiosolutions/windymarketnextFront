@@ -9,17 +9,13 @@ import { cargarProductosAuthor, getUserId } from '../../helpers/utils';
 const ProductosAuth = () => {
   const productos = useSelector((state) => state.products.productsAuth);
   const idAuthor = getUserId();
-  /* const buscoPostsUser = useSelector((state) => state.buscoPosts.postsUser) */
-  /* const location = useLocation();
-  const idAuthor = location.pathname.split('/')[3];
-  const history = useHistory(); */
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (!productos) {
       cargarProductosAuthor(dispatch, idAuthor);
     }
-  }, [dispatch, /*  history, */ idAuthor, productos]);
+  }, [dispatch, idAuthor, productos]);
 
   return (
     <Fragment>

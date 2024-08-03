@@ -61,4 +61,8 @@ const GoogleAnalyticsApp = () => {
   );
 };
 
-export default GoogleAnalyticsApp;
+const router = useRouter();
+
+return null;
+
+export default { GoogleAnalyticsApp };

@@ -63,6 +63,7 @@ export const obtenerProductosUser = createAsyncThunk(
 export const obtenerProductoIdApi = createAsyncThunk(
   'getProductsId / GET',
   async (productoid, { rejectedWithValue }) => {
+    console.log('entrando en getProductoId')
     try {
       const producto = await ProductService.obtenerProductoIdApi(productoid);
       return producto.data;
@@ -181,7 +182,6 @@ const productsSlices = createSlice({
       });
     });
     builder.addCase(obtenerProductosMasVistos.fulfilled, (state, action) => {
-      console.log('mas vistos', action.payload)
       state.productosMasVistos = action.payload;
     });
     builder.addCase(obtenerProductosMasVistos.rejected, (state, action) => {

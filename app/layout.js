@@ -6,7 +6,7 @@ import Navigation from '@/components/header/Navigation';
 import Providers from '@/reduxLib/provider';
 /* import Head from 'next/head'; */
 import BootstrapJs from '@/components/bootStrap/BootstrapJs';
-
+import GoogleAnalytics from './GoogleAnalytics';
 
 /* const sairaStencil = Saira_Stencil_One({
   weight: ['400'],
@@ -55,6 +55,7 @@ export default function RootLayout({ children }) {
           </header>
           {children}
           <BootstrapJs />
+          <GoogleAnalytics />
         </Providers>
       </body>
     </html>
