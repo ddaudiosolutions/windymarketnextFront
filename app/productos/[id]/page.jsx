@@ -2,6 +2,7 @@ import { fetchProductId } from '@/apiCalls/apiProducts';
 import VerProducto from '@/components/productos/VerProducto';
 
 export async function generateMetadata({ params }) {
+  const productUrl = `https://windymarketnextfront.vercel.app/productos/${params.id}`; // Cambia esto por la URL real de tu página
   const productoId = await fetchProductId({ producto: params.id });
   if (!productoId) {
     return {
@@ -9,7 +10,6 @@ export async function generateMetadata({ params }) {
       description: 'El producto no está disponible',
     };
   }
-
   const { title, description, images } = productoId;
   return {
     title: title,
@@ -17,12 +17,17 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: title,
       description: description,
+      url: productUrl,
       images: [
         {
           url: images[0].url,
           alt: title,
         },
       ],
+      logo: {
+        url: '/LOGO_CIRCULAR_FONDO_BLANCO.png', // Cambia esto por la URL real de tu logo
+        alt: 'Logo',
+      },
     },
   };
 }
