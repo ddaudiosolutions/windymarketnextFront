@@ -31,6 +31,7 @@ export const metadata = {
   description: 'Compra y vende tu material',
   openGraph: {
     title: 'WindyMarket',
+    description: 'Compra y vende tu material',
     images: [
       {
         url: '/LOGO_CIRCULAR_FONDO_BLANCO.png',
