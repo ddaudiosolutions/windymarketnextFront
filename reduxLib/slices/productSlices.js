@@ -66,6 +66,7 @@ export const obtenerProductoIdApi = createAsyncThunk(
     console.log('entrando en getProductoId')
     try {
       const producto = await ProductService.obtenerProductoIdApi(productoid);
+      console.log('productoId', producto.data)
       return producto.data;
     } catch (error) {
       throw rejectedWithValue(error.message);

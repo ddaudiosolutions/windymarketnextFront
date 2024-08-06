@@ -1,5 +1,6 @@
 import { fetchProductId } from '@/apiCalls/apiProducts';
 import VerProducto from '@/components/productos/VerProducto';
+import { getOptimizedImageUrl } from '@/helpers/utils';
 
 export async function generateMetadata({ params }) {
   const productoId = await fetchProductId({ producto: params.id });
@@ -11,6 +12,7 @@ export async function generateMetadata({ params }) {
   }
 
   const { title, description, images } = productoId;
+  const optimizedImageUrl = getOptimizedImageUrl(images[0].url);
   return {
     title: title,
     description: description,
@@ -19,7 +21,7 @@ export async function generateMetadata({ params }) {
       description: description,
       images: [
         {
-          url: images[0].url,
+          url: optimizedImageUrl,
           alt: images[0].filename,
         },
       ],

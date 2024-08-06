@@ -90,3 +90,9 @@ export const removeToken = () => {
   Cookies.remove('userName');
   Cookies.remove('userId');
 };
+
+
+// utils/cloudinary.js
+export const getOptimizedImageUrl = (url) => {
+  return `${url.replace('/upload/', '/upload/q_auto,f_auto,c_limit,w_800/')}`;
+};
