@@ -61,19 +61,13 @@ const MostrarProductos = () => {
     }
   }, [dispatch]);
 
-  const cargarProductosPorPalabras = useCallback(() => {
-    if (searchWords.length > 0) {
-      dispatch(obtenerProductosPorPalabras(searchWords));
-    }
-  }, [dispatch, searchWords]);
+  useEffect(() => {
+    dispatch(obtenerProductosPorPalabras(searchWords));
+  }, [searchWords]);
 
   useEffect(() => {
     cargarDatosUsuario();
   }, [cargarDatosUsuario]);
-
-  useEffect(() => {
-    cargarProductosPorPalabras();
-  }, [cargarProductosPorPalabras]);
 
   return (
     <Fragment>
