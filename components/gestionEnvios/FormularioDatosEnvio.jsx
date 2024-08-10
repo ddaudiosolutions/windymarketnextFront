@@ -218,7 +218,7 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
 
                 {/* Campo Precio (actualizado automáticamente) */}
                 <div>
-                  <label className='mb-2'>Precio Estimado en €</label>
+                  <label className='mb-2'>Precio Estimado en EUR</label>
                   <Field
                     className='form-control'
                     name='precioEstimado'

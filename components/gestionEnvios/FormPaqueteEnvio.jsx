@@ -13,13 +13,8 @@ const FormPaqueteEnvio = (props) => {
     const precioEstimado = calculoPrecioEnvio(
       form.getState().values.pesoVolumetrico,
       form.getState().values.balearicDelivery,
-      form.getState().values.pesoKgs
     );
     form.change('precioEstimado', parseFloat(precioEstimado.toFixed(2))); // Actualiza el valor de 'precioEstimado' en el formulario
-    form.change(
-      'pesoKgs',
-      form.getState().values.pesoVolumetrico >= 0 ? 0 : form.getState().values.pesoKgs
-    );
   }, [form]); // Dependiendo de cómo estés manejando `peso`, puede que necesites incluirlo en las dependencias
   const pesoVolumetrico = form.getState().values.pesoVolumetrico;
 
@@ -40,7 +35,6 @@ const FormPaqueteEnvio = (props) => {
               <div className='btn-primary form-check form-switch mt-1'>
                 <input
                   {...input}
-                  /* type='checkbox' */
                   className='form-check-input'
                   role='switch'
                   id={`${input.name}-switch`}
@@ -98,7 +92,7 @@ const FormPaqueteEnvio = (props) => {
           </div>
         )}
         {/* Campo Peso en Kgs si medidas no superan 120cm */}
-        {pesoVolumetrico <= -1 && (
+        {/* {pesoVolumetrico <= -1 && (
           <div>
             <label className='mb-2'>Peso en Kilos</label>
             <Field
@@ -109,11 +103,11 @@ const FormPaqueteEnvio = (props) => {
               placeholder='Peso Kgs'
             />
           </div>
-        )}
+        )} */}
 
         {/* Campo Precio (actualizado automáticamente) */}
         <div>
-          <label className='mb-2'>Precio Estimado en €</label>
+          <label className='mb-2'>Precio Estimado en EUR</label>
           <Field
             className='form-control'
             name='precioEstimado'

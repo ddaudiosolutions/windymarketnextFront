@@ -192,7 +192,7 @@ const VerProducto = () => {
       />
       <div>{/* <GoogleAds /> */}</div>
       <div className='container col-sm-9 col-md-9 col-lg-7 col-xl-7'>
-        <div className='cardVerProducto mt-3 '>
+        <div className='mt-3 '>
           <div className='d-flex justify-content-between'>
             <div
               className='d-flex justify-content-start  mt-3'
@@ -215,7 +215,7 @@ const VerProducto = () => {
                   alt='avatarUser windymarket windsurf segunda mano'
                 ></img>
               )}
-              <h5 className='h2Author ms-2 mt-4'>{authorName}</h5>
+              <h5 className='ms-2 mt-4'>{authorName}</h5>
             </div>
             <div>
               {getUserId() === producto.author._id && (
@@ -235,17 +235,16 @@ const VerProducto = () => {
               )}
             </div>
           </div>
-          <div>
+          <div className='mt-4'>
             <div
               id='carouselExampleControlsNoTouching'
-              className='carousel carousel-dark slide'
+              className='carousel carousel-light slide'
               data-bs-touch='false'
               data-bs-interval='false'
             >
               <div className='carousel-inner'>
                 <div className='carousel-item active'>
                   <a
-                    className={styles.cardImgTop}
                     href={
                       producto.images && producto.images.length > 0 && producto.images[0].url
                         ? producto.images[0].url
@@ -269,11 +268,7 @@ const VerProducto = () => {
                       }
                       alt='...'
                     ></img>
-                    {reservado && (
-                      <div className={styles.textcontainer}>
-                        <div className={styles.textoverimage}>Reservado</div>
-                      </div>
-                    )}
+                    {reservado && <div className={styles.textoverimage}>Reservado</div>}
                     {vendido && (
                       <div className={styles.textcontainer}>
                         <div className='text-over-image'>Vendido</div>
@@ -314,45 +309,46 @@ const VerProducto = () => {
               </button>
             </div>
           </div>
-          <div className='mt-3 me-2 d-flex justify-content-end'>
-            <WhatsappShareButton url={window.location.href}>
-              <WhatsappIconShare size={25} />
-            </WhatsappShareButton>
-          </div>
           <div className='card-body'>
-            <h4 className=' price-hp1'>Precio: {producto.price} €</h4>
-            <h5 className='card-title titleH5VerProducto rounded mt-1'>{producto.title}</h5>
-            <div className='container'>
-              <div className='row align-items-end mb-3 mt-4'>
-                {(getUserId() !== null || getUserId !== undefined) && producto.delivery && (
-                  <div className='col-auto ' style={{ paddingLeft: 0 }}>
-                    <BotonGestionEnvio setShowForm={setShowForm} />
-                  </div>
-                )}
-
-                <div className='col d-flex justify-content-end'>
-                  <div className='col-3 pproductoTitleFecha '>{clonedDateFormat}</div>
-                  {getUserId() &&
-                    (favorite ? (
-                      <BsHeartFill
-                        className='col-1  mb-1 rounded'
-                        style={{ color: 'red' }}
+            <div className='mt-3 me-2 d-flex justify-content-end'>
+              <div className='col d-flex justify-content-end'>
+                <div className='me-3 '>{clonedDateFormat}</div>
+                <WhatsappShareButton url={window.location.href}>
+                  <WhatsappIconShare size={25} />
+                </WhatsappShareButton>
+                {getUserId() &&
+                  (favorite ? (
+                    <BsHeartFill
+                      className='col-1 mt-1 rounded'
+                      style={{ color: 'red' }}
+                      onClick={() => {
+                        handleFavorite();
+                      }}
+                    />
+                  ) : (
+                    <>
+                      <BsHeart
+                        className='col-1 mt-1 rounded'
+                        style={{ color: 'black' }}
                         onClick={() => {
                           handleFavorite();
                         }}
                       />
-                    ) : (
-                      <>
-                        <BsHeart
-                          className='col-1   mb-1 rounded'
-                          style={{ color: 'black' }}
-                          onClick={() => {
-                            handleFavorite();
-                          }}
-                        />
-                      </>
-                    ))}
-                </div>
+                    </>
+                  ))}
+              </div>
+            </div>
+            <h5 className={`${styles.pricehp1}`}> {producto.price} €</h5>
+            <h5 className={`${styles.titleH5VerProducto} card-title  rounded mt-1`}>
+              {producto.title}
+            </h5>
+            <div className='container'>
+              <div className='row align-items-end mb-3 mt-4'>
+                {getUserId() && producto.delivery && (
+                  <div className='col-auto ' style={{ paddingLeft: 0 }}>
+                    <BotonGestionEnvio setShowForm={setShowForm} />
+                  </div>
+                )}
               </div>
             </div>
             <div className='card-header mb-2'>
@@ -360,7 +356,7 @@ const VerProducto = () => {
             </div>
             <div className='card-header'>
               <div className='card-title pproductoTitle'>
-                {(getUserId() !== null || getUserId !== undefined) && (
+                {getUserId() && (
                   <>
                     {!producto.author.showPhone && (
                       <div>

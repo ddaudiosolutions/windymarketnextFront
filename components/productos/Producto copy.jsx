@@ -25,7 +25,7 @@ const Producto = ({ producto }) => {
           </div>
         </Link>
         <div className='mt-2'>
-          <h5 className='col product-price '>{price}€</h5>
+          <h5 className='col product-price '>{price}EUR</h5>
           <h5>{title}</h5>
         </div>
       </div>

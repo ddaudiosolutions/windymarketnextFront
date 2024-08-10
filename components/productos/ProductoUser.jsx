@@ -47,9 +47,9 @@ const ProductoUser = ({ producto }) => {
   };
   return (
     <Fragment>
-      <div className='col'>
+      <div className='card border-light ' style={{ width: '200px', height: '300px' }}>
         <div
-          className='card shadow-sm me-1 ms-1 '
+          className='card me-1 ms-1 border-light'
           type='button'
           onClick={() => verProductoId(producto)}
         >
@@ -63,10 +63,12 @@ const ProductoUser = ({ producto }) => {
             <img src={images[0].url} className='card-img-top ' alt={images[0].filename}></img>
           )}
           <div className='card-body '>
-            <h5 className='titleH5-product  card-title'>{title}</h5>
-            <h5 className='product-price m-1 mb-1'>{price}€</h5>
-            <div className='prodPreDescription m-1 mb-1' rows='2'>
-              {description}
+            <div className='container'>
+              <h5 className='titleH5-product  card-title'>{title}</h5>
+              <h5 className='product-price m-1 mb-1'>{price}EUR</h5>
+              <div className='prodPreDescription m-1 mb-1' rows='1'>
+                {description}
+              </div>
             </div>
           </div>
         </div>

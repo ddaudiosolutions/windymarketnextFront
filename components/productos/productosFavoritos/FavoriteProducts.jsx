@@ -1,8 +1,8 @@
 'use client';
 import { useDispatch, useSelector } from 'react-redux';
-import ListaProductosBusqueda from '../ListaProductos';
 import { useEffect } from 'react';
 import { getFavoriteProducts } from '../../../reduxLib/slices/favoriteProductsSlice';
+import ListaProductos from '../ListaProductos';
 
 function FavoriteProducts() {
   const favoriteProductsId = useSelector((state) => state.users.user?.favoritos);
@@ -19,9 +19,7 @@ function FavoriteProducts() {
 
   return (
     <>
-      <h5 className='mt-5'>Tus Favoritos</h5>
-      {/* <h8>Los productos de WindyMarket que más te gustan</h8> */}
-      <div className='mt-5'>{<ListaProductosBusqueda productos={favoriteProductsData} />}</div>
+      <div className='mt-5'>{<ListaProductos productos={favoriteProductsData} />}</div>
     </>
   );
 }

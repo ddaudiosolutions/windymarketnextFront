@@ -1,14 +1,16 @@
-
+.titleH5VerProducto{
+  font-size: 1.2rem;
+  font-weight: 700;
+}
 
 .container-fluid {
   max-width: 1200px;
 }
 
 
-.price-hp1 {
+.pricehp1 {
   font-size: 1.6rem;
-  font-weight: 600;
-  color: rgb(5, 5, 5);
+  font-weight: 700;
 }
 
 .textcontainer {
@@ -26,9 +28,17 @@
 }
 
 .textoverimage {
-  color: #38D9DF;
-  font-size: 2rem;
-  font-weight: 400;
+  position: absolute; /* Posiciona el texto sobre la imagen */
+  top: 10%; /* Centra verticalmente */
+  left: 30%; /* Centra horizontalmente */
+  transform: translate(-50%, -50%); /* Ajusta la posición para centrar */
+  background-color: rgb(146, 144, 144); /* Fondo semitransparente para el texto */
+  color: #38D9DF; /* Color del texto */
+  padding: 5px 90px; /* Añade algo de espacio alrededor del texto */
+  border-radius: 5px; /* Bordes redondeados */
+  font-size: 1.5rem;
+  font-weight: 600; /* Tamaño del texto */
+  text-align: center; /* Centra el texto */
 }
 
 .image-avatar {
@@ -37,11 +47,11 @@
 }
 
 .cardImgTop{
-  border-radius: 10px;
-  object-fit: cover;
   width: 100%;
-  border-radius: 20px;
-  margin-top: 5px;
+  height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  image-orientation: portrait;
 }
 
 

@@ -1,5 +1,5 @@
 import Producto from './Producto';
-const ListaProductosBusqueda = ({ productos }) => {
+const ListaProductos = ({ productos }) => {
   return (
     <div className='d-flex justify-content-center mt-4'>
       <div
@@ -16,4 +16,4 @@ const ListaProductosBusqueda = ({ productos }) => {
   );
 };
 
-export default ListaProductosBusqueda;
+export default ListaProductos;

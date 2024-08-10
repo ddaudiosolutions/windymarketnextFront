@@ -118,7 +118,7 @@ const VerProducto = ({ producto }) => {
           </div>
           <div className='d-flex justify-content-center mt-4'></div>
           <div className='card-body'>
-            <h4 className=' price-hp1'>Precio: {producto.price} €</h4>
+            <h4 className=' price-hp1'>Precio: {producto.price} EUR</h4>
             <h5 className='card-title titleH5VerProducto rounded mt-1'>{producto.title}</h5>
 
             <div className='card-header mb-2'>

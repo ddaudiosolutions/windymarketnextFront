@@ -4,7 +4,6 @@ import './globals.css';
 
 import Navigation from '@/components/header/Navigation';
 import Providers from '@/reduxLib/provider';
-/* import Head from 'next/head'; */
 import BootstrapJs from '@/components/bootStrap/BootstrapJs';
 import GoogleAnalytics from './GoogleAnalytics';
 
@@ -19,12 +18,6 @@ const sairaFont = Saira({
   styles: ['normal', 'bold', 'light'],
   subsets: ['latin']
 })
-
-/* const sairaFont = Courier_Prime({
-  weight: ['400'],
-  styles: ['normal', 'bold', 'light'],
-  subsets: ['latin']
-}) */
 
 export const metadata = {
   title: 'WindyMarket',
@@ -44,11 +37,6 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      {/* <Head>
-        <meta name="description" content="Compra y vende tu material" />
-        <meta property="og:title" content="WindyMarket" />
-        <meta property="og:image" content="/LOGO_CIRCULAR_FONDO_BLANCO.png" />
-      </Head> */}
       <body className={`${sairaFont.className}`}>
         <Providers>
           <header>

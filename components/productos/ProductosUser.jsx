@@ -20,16 +20,16 @@ const ProductosUser = () => {
   }, [pageNuser]);
 
   return (
-    <Fragment>
+    <div className='d-flex justify-content-center mt-4'>
       <div
-        className='row row-cols-2 row-cols-xs-2 
-        row-cols-sm-2 row-cols-lg-4 g-3 justify-content-center '
+        className='row row-cols-2 row-cols-xs-4 row-cols-sm-3 row-cols-md-3 
+    row-cols-lg-4 row-cols-xl-4 row-cols-xxl-4 g-2 justify-content-center mx-4'
       >
         {productos === undefined
           ? null
           : productos.map((producto) => <ProductoUser key={producto._id} producto={producto} />)}
       </div>
-    </Fragment>
+    </div>
   );
 };
 
