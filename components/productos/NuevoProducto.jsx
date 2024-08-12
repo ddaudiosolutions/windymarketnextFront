@@ -1,6 +1,5 @@
 'use client';
 //* AQUI ESTARÁ EL FORMULARIO PARA EL PRODUCTO
-/* import './NuevoProducto.module.css'; */
 import { useState } from 'react';
 import FormData from 'form-data';
 import { useDispatch, useSelector } from 'react-redux';

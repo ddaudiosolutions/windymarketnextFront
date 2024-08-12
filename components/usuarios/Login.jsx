@@ -21,7 +21,7 @@ const Login = () => {
   };
 
   return (
-    <div className=''>
+    <div>
       <div className=' row justify-content-center' style={{ marginTop: '50px' }}>
         <div className='col col-lg-4 col-xl-4 '>
           <img

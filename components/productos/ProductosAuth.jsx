@@ -20,7 +20,6 @@ const ProductosAuth = () => {
 
   return (
     <Fragment>
-      {/*    <div className='d-flex justify-content-center mt-4'> */}
       <div className='container'>
         <div className='d-flex justify-content-center mt-4'>
           <div

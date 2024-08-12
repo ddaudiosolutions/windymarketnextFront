@@ -310,7 +310,7 @@ const VerProducto = () => {
             </div>
           </div>
           <div className='card-body'>
-            <div className='mt-3 me-2 d-flex justify-content-end'>
+            <div className='mt-3  d-flex justify-content-end'>
               <div className='col d-flex justify-content-end'>
                 <div className='me-3 '>{clonedDateFormat}</div>
                 <WhatsappShareButton url={window.location.href}>
@@ -339,11 +339,9 @@ const VerProducto = () => {
               </div>
             </div>
             <h5 className={`${styles.pricehp1}`}> {producto.price} €</h5>
-            <h5 className={`${styles.titleH5VerProducto} card-title  rounded mt-1`}>
-              {producto.title}
-            </h5>
+            <h5 className={`${styles.titleH5VerProducto}  rounded `}>{producto.title}</h5>
             <div className='container'>
-              <div className='row align-items-end mb-3 mt-4'>
+              <div className='row align-items-end mb-4 mt-3'>
                 {getUserId() && producto.delivery && (
                   <div className='col-auto ' style={{ paddingLeft: 0 }}>
                     <BotonGestionEnvio setShowForm={setShowForm} />
@@ -351,11 +349,11 @@ const VerProducto = () => {
                 )}
               </div>
             </div>
-            <div className='card-header mb-2'>
-              <p className='card-title pproductoTitle'>{producto.description}</p>
+            <div className='card-header mb-5'>
+              <p>{producto.description}</p>
             </div>
             <div className='card-header'>
-              <div className='card-title pproductoTitle'>
+              <div>
                 {getUserId() && (
                   <>
                     {!producto.author.showPhone && (
@@ -370,8 +368,6 @@ const VerProducto = () => {
                     />
                   </>
                 )}
-                {/* <SendMessage phoneNumber={producto.author.telefono} /> */}
-                {/* <Footer /> */}
               </div>
             </div>
 

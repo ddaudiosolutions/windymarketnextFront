@@ -43,7 +43,7 @@ const CrearUsuario = () => {
           ></img>
         </div>
         <div className='col col-lg-4 col-xl-4 ms-2'>
-          <div className='ounded  p-3 bg-transparent'>
+          <div className='rounded  p-3 bg-transparent'>
             <div className='text-center'>
               <h3 className='loginH3'>Registrarse</h3>
             </div>

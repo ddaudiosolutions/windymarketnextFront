@@ -2,7 +2,6 @@
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ListaProductos from './ListaProductos';
-/* import ListadoPosts from "./ListadoPosts"; */
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import {
@@ -10,7 +9,6 @@ import {
   obtenerProductosMasVistos,
   obtenerProductosPorPalabras,
 } from '../../reduxLib/slices/productSlices';
-/* import { obtenerBuscoPosts } from "../../slices/buscoPostSlice"; */
 import { obtenerDatosUsuario } from '../../reduxLib/slices/usersSlice';
 import { getFavoriteProducts } from '../../reduxLib/slices/favoriteProductsSlice';
 import SearchByWords from '../busquedaPorTexto/SearchByWords';
@@ -43,7 +41,6 @@ const MostrarProductos = () => {
   const dispatch = useDispatch();
   const mostrarProductoMasVistos = busquedaquery === 'ultimos_productos';
 
-  /* const cargarBuscoPosts = () => dispatch(obtenerBuscoPosts()); */
   const cargarProductos = () =>
     dispatch(obtenerProductos({ busquedaquery, pagequery })).then(() =>
       dispatch(obtenerProductosMasVistos()),
@@ -90,7 +87,7 @@ const MostrarProductos = () => {
               </div>
             </div>
           </div>
-          <div className='mt-2 container'>
+          <div className='mt-2'>
             {productosPorPalabras !== undefined && productosPorPalabras.length === 0 ? (
               <>
                 <h2 className='text-center'>
@@ -99,10 +96,14 @@ const MostrarProductos = () => {
                     ? busquedaquery.toUpperCase()
                     : 'Últimas novedades'}
                 </h2>
-                <ListaProductos productos={productos} />
+                <div className='d-flex justify-content-center mt-4 '>
+                  <ListaProductos productos={productos} />
+                </div>
               </>
             ) : (
-              <ListaProductos productos={productosPorPalabras} />
+              <div className='d-flex justify-content-center mt-4 '>
+                <ListaProductos productos={productosPorPalabras} />
+              </div>
             )}
           </div>
 

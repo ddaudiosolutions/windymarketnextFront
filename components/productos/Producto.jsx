@@ -1,23 +1,31 @@
 'use client';
 import { Fragment, useState } from 'react';
+import Swal from 'sweetalert2';
 import Imagen from '@/app/componentes/Imagen';
 import { useDispatch, useSelector } from 'react-redux';
-import { setProductId } from '../../reduxLib/slices/productSlices';
+import {
+  setProductId,
+  setProductToEdit,
+  borrarProducto,
+  obtenerProductosAuthor,
+} from '../../reduxLib/slices/productSlices';
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { addFavoriteProduct, removeFavoriteProduct } from '../../reduxLib/slices/usersSlice';
 import _ from 'lodash';
 import { getFavoriteProducts } from '../../reduxLib/slices/favoriteProductsSlice';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { getUserId } from '@/helpers/utils';
 import styles from './Producto.module.css';
-/* import './Producto.css'; */
 
 const Producto = ({ producto }) => {
-  const { title, price, images, /* description, */ delivery } = producto;
+  const { title, price, images, _id, /* description, */ delivery } = producto;
   const favoritos = useSelector((state) => state.users.user?.favoritos || []);
   const productoFavoritos = getUserId() && favoritos !== undefined ? favoritos : null;
   const dispatch = useDispatch();
   const router = useRouter();
+  const pathname = usePathname();
+
+  console.log('pathname', pathname);
   const existe = (productoFavoritos, producto) => {
     return _.includes(productoFavoritos, producto);
   };
@@ -51,6 +59,31 @@ const Producto = ({ producto }) => {
     }
   };
 
+  const sendtoEdicion = (producto) => {
+    dispatch(setProductToEdit(producto));
+    router.push(`/productos/user/editar/${producto._id}`);
+  };
+
+  // Confirmar si desea Eliminar el Producto
+  const confirmarBorrarProducto = (_id) => {
+    Swal.fire({
+      title: 'Seguro quieres eliminar ?',
+      text: 'Esta acción no se puede revertir!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Borrar Producto!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(borrarProducto(_id)).then((res) => {
+          dispatch(obtenerProductosAuthor(producto.author._id));
+          router.push(`/productos/auth/${producto.author._id}`);
+        });
+      }
+    });
+  };
+
   const firstImage =
     images.length > 0 && images[0].url
       ? images[0].url
@@ -72,7 +105,7 @@ const Producto = ({ producto }) => {
             {getUserId() &&
               (favorite ? (
                 <BsHeartFill
-                  className='col-2 mt-1'
+                  className='col-2 '
                   style={{ color: 'red', paddingRight: '5px' }}
                   onClick={() => {
                     handleFavorite();
@@ -80,7 +113,7 @@ const Producto = ({ producto }) => {
                 />
               ) : (
                 <BsHeart
-                  className='col-2 mt-1'
+                  className='col-2 '
                   style={{ color: 'black', paddingRight: '5px' }}
                   onClick={() => {
                     handleFavorite();
@@ -102,6 +135,22 @@ const Producto = ({ producto }) => {
             )}
           </div>
         </div>
+        {producto.author._id === getUserId() && pathname.includes('/productos/auth') && (
+          <div className='row mt-3'>
+            <button
+              className='col-md me-2 btn btn-outline-success '
+              onClick={() => sendtoEdicion(producto)}
+            >
+              Editar
+            </button>
+            <button
+              className='col-md btn btn-outline-warning'
+              onClick={() => confirmarBorrarProducto(_id)}
+            >
+              Eliminar
+            </button>
+          </div>
+        )}
       </div>
     </Fragment>
   );

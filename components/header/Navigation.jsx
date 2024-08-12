@@ -91,11 +91,6 @@ const Navigation = () => {
                           Subir Producto
                         </Link>
                       </li>
-                      {/* <li>
-                        <Link href={'/buscoposts/nuevo'} className='nav-link typeHeader'>
-                          Publicar Busqueda
-                        </Link>
-                      </li> */}
                       <li>
                         <Link href={`/productos/auth/${userId}`} className='nav-link  typeHeader'>
                           Mis Productos

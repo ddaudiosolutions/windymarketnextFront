@@ -4,7 +4,6 @@ import { useState, useEffect, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FormData from 'form-data';
 import { editarProducto } from '../../reduxLib/slices/productSlices';
-/* import './EditarProducto.css'; */
 import VerImagesEdit from './VerImagesEdit';
 import Swal from 'sweetalert2';
 import {

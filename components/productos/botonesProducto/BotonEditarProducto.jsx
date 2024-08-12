@@ -14,7 +14,7 @@ const BotonEditarProducto = ({ producto }) => {
   return (
     <BsJournal
       className='ms-3'
-      style={{ /* color: 'red', */ fontSize: '2.5rem' }}
+      style={{ fontSize: '2.5rem' }}
       onClick={() => {
         sendtoEdicion(producto);
       }}

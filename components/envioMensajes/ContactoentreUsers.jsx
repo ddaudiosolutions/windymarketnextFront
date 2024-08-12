@@ -1,7 +1,6 @@
 import { Form, Field } from 'react-final-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendMailToUser } from '../../reduxLib/slices/usersSlice';
-/* import '../Productos/Producto.css'; */
 import { trackSendMail } from '../../helpers/analyticsCalls';
 
 const ContactoentreUsers = ({ productId, sellerEmail, sellerName }) => {
@@ -41,11 +40,11 @@ const ContactoentreUsers = ({ productId, sellerEmail, sellerName }) => {
       validate={validate}
       render={({ handleSubmit }) => (
         <form onSubmit={handleSubmit}>
-          <div>
+          <div className='mt-1'>
             <label>Manda un e-mail pidiendo más información:</label>
             <Field className='form-control' name='message' component='textarea' maxLength={100} />
           </div>
-          <div>
+          <div className='mt-2'>
             <label>Tu correo electrónico:</label>
             <Field
               className='form-control'
@@ -55,7 +54,7 @@ const ContactoentreUsers = ({ productId, sellerEmail, sellerName }) => {
               placeholder='Correo electrónico'
             />
           </div>
-          <button className='btn btn-outline-success mt-2' type='submit' onClick={trackSendMail}>
+          <button className='btn btn-outline-success mt-3' type='submit' onClick={trackSendMail}>
             Enviar mensaje
           </button>
         </form>
