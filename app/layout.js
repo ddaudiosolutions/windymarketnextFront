@@ -6,6 +6,7 @@ import Navigation from '@/components/header/Navigation';
 import Providers from '@/reduxLib/provider';
 import BootstrapJs from '@/components/bootStrap/BootstrapJs';
 import GoogleAnalytics from './GoogleAnalytics';
+import { Analytics } from "@vercel/analytics/react"
 
 /* const sairaStencil = Saira_Stencil_One({
   weight: ['400'],
@@ -43,6 +44,7 @@ export default function RootLayout({ children }) {
             <Navigation />
           </header>
           {children}
+          <Analytics />
           <BootstrapJs />
           <GoogleAnalytics />
         </Providers>
