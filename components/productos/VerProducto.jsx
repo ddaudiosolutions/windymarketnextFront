@@ -20,6 +20,7 @@ import { getFavoriteProducts } from '../../reduxLib/slices/favoriteProductsSlice
 import {
   changeReservedProductState,
   changeVendidoProductState,
+  obtenerNumeroVistasProducto,
   obtenerProductoIdApi,
 } from '../../reduxLib/slices/productSlices';
 import ContactoentreUsers from '../envioMensajes/ContactoentreUsers';
@@ -32,6 +33,7 @@ import BotonEditarProducto from './botonesProducto/BotonEditarProducto';
 import { event } from '@/lib/gtag';
 import WhatsappIconShare from './iconos/WhatsappIconShare';
 import { WhatsappShareButton } from 'react-share';
+import VistasProducto from './VistasProducto';
 
 const VerProducto = () => {
   const pathname = usePathname();
@@ -98,6 +100,18 @@ const VerProducto = () => {
       dispatch(obtenerProductoIdApi(productoId));
     }
   }, [dispatch, productoId]);
+
+  useEffect(() => {
+    const fetchViewCount = async () => {
+      try {
+        dispatch(obtenerNumeroVistasProducto(productoId));
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchViewCount();
+  }, [productoId]); // Ejecuta la llamada cuando `productoId` esté disponible
 
   const handleVendido = () => {
     if (vendido) {
@@ -316,6 +330,7 @@ const VerProducto = () => {
                 <WhatsappShareButton url={window.location.href}>
                   <WhatsappIconShare size={25} />
                 </WhatsappShareButton>
+                <VistasProducto />
                 {getUserId() &&
                   (favorite ? (
                     <BsHeartFill

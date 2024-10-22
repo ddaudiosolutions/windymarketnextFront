@@ -10,6 +10,7 @@ const initialState = {
   productosUser: undefined,
   productToEdit: undefined,
   productsByWords: [],
+  productViews: 0
 };
 
 export const obtenerProductos = createAsyncThunk(
@@ -18,6 +19,19 @@ export const obtenerProductos = createAsyncThunk(
     try {
       const products = await ProductService.obtenerCategoriaActions(pageAndData);
       return products.data;
+    } catch (error) {
+      throw rejectedWithValue(error.message);
+    }
+  }
+);
+
+export const obtenerNumeroVistasProducto = createAsyncThunk(
+  'getViewsProduct / GET',
+  async (data, { rejectedWithValue }) => {
+    try {
+      const productViews = await ProductService.obtenerNumeroVistasProducto(data);
+      /*  console.log('getViewsProduct', productViews) */
+      return productViews.data;
     } catch (error) {
       throw rejectedWithValue(error.message);
     }
@@ -249,6 +263,9 @@ const productsSlices = createSlice({
     });
     builder.addCase(changeVendidoProductState.fulfilled, (state, action) => {
       state.changeVendidoProductState = action.payload.status;
+    });
+    builder.addCase(obtenerNumeroVistasProducto.fulfilled, (state, action) => {
+      state.productViews = action.payload.eventos
     });
   },
 });

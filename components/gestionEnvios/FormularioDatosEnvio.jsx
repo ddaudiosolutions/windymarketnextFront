@@ -7,6 +7,13 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
   const datosDestinatario = useSelector((state) => state.users.user);
   const dispatch = useDispatch();
   const onSubmit = async (values) => {
+    if (values.codigoPostalDesti === '00000' || values.dniDesti === '00000000z') {
+      Swal.fire({
+        title: 'Por favor, rellena todos los campos correctamente.',
+        icon: 'error',
+      });
+      return;
+    }
     Swal.fire({
       title: 'Quieres que empecemos la gestión de tu Envio?',
       icon: 'info',
@@ -22,17 +29,23 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
         onSubmit={onSubmit}
         initialValues={{
           nombreRemi: datosRemitente.author.nombre,
+          apellidosRemi: datosRemitente.author.apellidos,
           telefonoRemi: datosRemitente.author.telefono,
           emailRemi: datosRemitente.author.email,
           direccionRemi:
             datosRemitente.author.direccion === 'undefined' ? '' : datosRemitente.author.direccion,
-          poblacion_CPRemi: datosRemitente.author.poblacion_CP,
+          poblacionRemi: datosRemitente.author.poblacion_CP,
+          codigoPostalRemi: datosRemitente.author.codigoPostal,
+          dniRemi: datosRemitente.author.dni,
           nombreDesti: datosDestinatario.nombre,
+          apellidosDesti: datosDestinatario.apellidos,
           telefonoDesti: datosDestinatario.telefono,
           emailDesti: datosDestinatario.email,
           direccionDesti:
             datosDestinatario.direccion === 'undefined' ? '' : datosDestinatario.direccion,
-          poblacion_CPDesti: datosDestinatario.poblacion_CP,
+          poblacionDesti: datosDestinatario.poblacion_CP,
+          codigoPostalDesti: datosDestinatario.codigoPostal,
+          dniDesti: datosDestinatario.dni,
           alto: datosRemitente.alto,
           ancho: datosRemitente.ancho,
           largo: datosRemitente.largo,
@@ -45,14 +58,34 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
             <div className='d-flex justify-content-between'>
               <div className='me-4'>
                 <div className='mb-3'>
-                  <h5 className='form-label'>Remitente</h5>
+                  <h5 className='form-label'>Datos del Vendedor</h5>
                 </div>
                 <div className='mb-3'>
-                  <label className='form-label'>Nombre y Apellidos:</label>
+                  <label className='form-label'>Nombre:</label>
                   <Field
                     name='nombreRemi'
                     component='input'
                     placeholder='Nombre'
+                    className='form-control'
+                    required
+                  />
+                </div>
+                <div className='mb-3'>
+                  <label className='form-label'>Apellidos:</label>
+                  <Field
+                    name='apellidosRemi'
+                    component='input'
+                    placeholder='Apellidos'
+                    className='form-control'
+                    required
+                  />
+                </div>
+                <div className='mb-3'>
+                  <label className='form-label'>DNI:</label>
+                  <Field
+                    name='dniRemi'
+                    component='input'
+                    placeholder='dni'
                     className='form-control'
                     required
                   />
@@ -68,11 +101,21 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
                   />
                 </div>
                 <div className='mb-3'>
-                  <label className='form-label'>Poblacion y CP:</label>
+                  <label className='form-label'>Poblacion:</label>
                   <Field
-                    name='poblacion_CPRemi'
+                    name='poblacionRemi'
                     component='input'
-                    placeholder='Poblacion y CP'
+                    placeholder='Poblacion'
+                    className='form-control'
+                    required
+                  />
+                </div>
+                <div className='mb-3'>
+                  <label className='form-label'>CP:</label>
+                  <Field
+                    name='codigoPostalRemi'
+                    component='input'
+                    placeholder='CP'
                     className='form-control'
                     required
                   />
@@ -100,14 +143,34 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
               </div>
               <div>
                 <div className='mb-3'>
-                  <h5 className='form-label'>Destinatario</h5>
+                  <h5 className='form-label'>Datos del Comprador</h5>
                 </div>
                 <div className='mb-3'>
-                  <label className='form-label'>Nombre y Apellidos:</label>
+                  <label className='form-label'>Nombre:</label>
                   <Field
                     name='nombreDesti'
                     component='input'
                     placeholder='Nombre'
+                    className='form-control'
+                    required
+                  />
+                </div>
+                <div className='mb-3'>
+                  <label className='form-label'>Apellidos:</label>
+                  <Field
+                    name='apellidosDesti'
+                    component='input'
+                    placeholder='Apellidos'
+                    className='form-control'
+                    required
+                  />
+                </div>
+                <div className='mb-3'>
+                  <label className='form-label'>DNI:</label>
+                  <Field
+                    name='dniDesti'
+                    component='input'
+                    placeholder='dni'
                     className='form-control'
                     required
                   />
@@ -123,11 +186,21 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
                   />
                 </div>
                 <div className='mb-3'>
-                  <label className='form-label'>Poblacion y CP:</label>
+                  <label className='form-label'>Poblacion:</label>
                   <Field
-                    name='poblacion_CPDesti'
+                    name='poblacionDesti'
                     component='input'
                     placeholder='Poblacion y CP'
+                    className='form-control'
+                    required
+                  />
+                </div>
+                <div className='mb-3'>
+                  <label className='form-label'>CP:</label>
+                  <Field
+                    name='codigoPostalDesti'
+                    component='input'
+                    placeholder='CP'
                     className='form-control'
                     required
                   />
@@ -165,6 +238,7 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
                     component='input'
                     type='number'
                     placeholder='Alto'
+                    disabled={true}
                   />
                 </div>
                 <div className='mb-3'>
@@ -175,6 +249,7 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
                     component='input'
                     type='number'
                     placeholder='Ancho'
+                    disabled={true}
                   />
                 </div>
                 <div className='mb-3'>
@@ -185,6 +260,7 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
                     component='input'
                     type='number'
                     placeholder='Largo'
+                    disabled={true}
                   />
                 </div>
 
@@ -198,6 +274,7 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
                       component='input'
                       type='number'
                       placeholder='pesoVolumetrico'
+                      disabled={true}
                       // No es necesario establecer el valor aquí; se gestiona a través de form.change
                     />
                   </div>
@@ -225,6 +302,7 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
                     component='input'
                     type='number'
                     placeholder='precioEstimado'
+                    disabled={true}
                     // No es necesario establecer el valor aquí; se gestiona a través de form.change
                   />
                 </div>

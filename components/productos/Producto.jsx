@@ -25,7 +25,6 @@ const Producto = ({ producto }) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  console.log('pathname', pathname);
   const existe = (productoFavoritos, producto) => {
     return _.includes(productoFavoritos, producto);
   };

@@ -24,9 +24,13 @@ const FormPaqueteEnvio = (props) => {
         IMPORTANTE!! No olvides rellenar todos los datos de envio en tu perfil
       </h6>
       <h6 className='mt-1' style={{ color: 'red' }}>
+        IMPORTANTE!! RECUERDA QUE LAS MEDIDAS DEBEN SER LAS DEL PRODUCTO EMPAQUETADO PARA TENER UN
+        PRECIO LO MÁS REAL POSIBLE
+      </h6>
+      {/* <h6 className='mt-1' style={{ color: 'red' }}>
         IMPORTANTE!! Si tu paquete tiene una medida máxima en uno de sus lados de 120cm NO OLVIDES
         AÑADIR EL PESO EN KGS
-      </h6>
+      </h6> */}
       <Field name='balearicDelivery' type='checkbox'>
         {({ input, meta }) => (
           <div className='mb-4 mt-4'>
@@ -78,32 +82,18 @@ const FormPaqueteEnvio = (props) => {
         </div>
 
         {/* Campo Peso (actualizado automáticamente) */}
-        {pesoVolumetrico >= 0 && (
-          <div>
-            <label className='mb-2'>Peso Volumétrico</label>
-            <Field
-              className='form-control'
-              name='pesoVolumetrico'
-              component='input'
-              type='number'
-              placeholder='pesoVolumetrico'
-              // No es necesario establecer el valor aquí; se gestiona a través de form.change
-            />
-          </div>
-        )}
-        {/* Campo Peso en Kgs si medidas no superan 120cm */}
-        {/* {pesoVolumetrico <= -1 && (
-          <div>
-            <label className='mb-2'>Peso en Kilos</label>
-            <Field
-              className='form-control'
-              name='pesoKgs'
-              component='input'
-              type='number'
-              placeholder='Peso Kgs'
-            />
-          </div>
-        )} */}
+
+        <div>
+          <label className='mb-2'>Peso Volumétrico</label>
+          <Field
+            className='form-control'
+            name='pesoVolumetrico'
+            component='input'
+            type='number'
+            placeholder='pesoVolumetrico'
+            // No es necesario establecer el valor aquí; se gestiona a través de form.change
+          />
+        </div>
 
         {/* Campo Precio (actualizado automáticamente) */}
         <div>

@@ -44,9 +44,15 @@ const Usuario = () => {
           <div className='col col-lg-4 col-xl-4 ms-2'>
             <div className='rounded m-3 bg-transparent'>
               <div className='row form-group mb-2'>
-                <label className='loginLabel'>Nombre</label>
+                <label className='loginLabel'>Nombre y Apellidos</label>
                 <div data-cy='nombre' type='text' className='form-control'>
-                  {datosUsuario.nombre}
+                  {datosUsuario.nombre} {datosUsuario.apellidos}
+                </div>
+              </div>
+              <div className='row form-group mb-2'>
+                <label className='loginLabel'>DNI</label>
+                <div data-cy='nombre' type='text' className='form-control'>
+                  {datosUsuario.dni}
                 </div>
               </div>
               <div className='row  form-group mb-2'>
@@ -82,7 +88,7 @@ const Usuario = () => {
               <div className='row form-group mb-2'>
                 <label className='loginLabel'>Poblacion y CP</label>
                 <div data-cy='direccion' type='text' className='form-control'>
-                  {datosUsuario.poblacion_CP}
+                  {datosUsuario.poblacion_CP} {datosUsuario.codigoPostal}{' '}
                 </div>
               </div>
               <div className='text-center'>

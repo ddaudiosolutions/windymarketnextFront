@@ -17,11 +17,14 @@ const EditarUser = () => {
     if (validateTelefono(values.telefono)) {
       const formData = new FormData();
       formData.set('nombre', values.nombre);
+      formData.set('apellidos', values.apellidos);
+      formData.set('dni', values.dni);
       formData.set('email', values.email);
       formData.set('telefono', values.telefono);
       formData.set('showPhone', values.showPhone || false);
       formData.set('direccion', values.direccion || '');
       formData.set('poblacion_CP', values.poblacion_CP || '');
+      formData.set('codigoPostal', values.codigoPostal || '');
       formData.set('imagesAvatar', values.imagesAvatar);
       dispatch(editarDatosUsuario({ formData, id: datosUsuarioEditar._id }));
     } else {
@@ -51,11 +54,14 @@ const EditarUser = () => {
                 onSubmit={submitEditarUsuario}
                 initialValues={{
                   nombre: datosUsuarioEditar.nombre,
+                  apellidos: datosUsuarioEditar.apellidos,
+                  dni: datosUsuarioEditar.dni,
                   email: datosUsuarioEditar.email,
                   telefono: datosUsuarioEditar.telefono,
                   showPhone: datosUsuarioEditar.showPhone,
                   direccion: datosUsuarioEditar.direccion,
                   poblacion_CP: datosUsuarioEditar.poblacion_CP,
+                  codigoPostal: datosUsuarioEditar.codigoPostal,
                   imagesAvatar: datosUsuarioEditar.imagesAvatar[0].url,
                 }}
                 render={({ handleSubmit, values }) => (
@@ -66,6 +72,18 @@ const EditarUser = () => {
                           Nombre
                         </label>
                         <Field className='form-control mb-2' name='nombre' component='input' />
+                      </div>
+                      <div>
+                        <label htmlFor='apellidos' className='loginLabel'>
+                          Apellidos
+                        </label>
+                        <Field className='form-control mb-2' name='apellidos' component='input' />
+                      </div>
+                      <div>
+                        <label htmlFor='dni' className='loginLabel'>
+                          DNI
+                        </label>
+                        <Field className='form-control mb-2' name='dni' component='input' />
                       </div>
                       <div>
                         <label htmlFor='email' className='loginLabel'>
@@ -104,11 +122,21 @@ const EditarUser = () => {
                       </div>
                       <div>
                         <label htmlFor='poblacion_CP' className='loginLabel'>
-                          Población y Código Postal
+                          Población
                         </label>
                         <Field
                           className='form-control mb-2'
                           name='poblacion_CP'
+                          component='input'
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor='codigoPostal' className='loginLabel'>
+                          Código Postal
+                        </label>
+                        <Field
+                          className='form-control mb-3'
+                          name='codigoPostal'
                           component='input'
                         />
                       </div>

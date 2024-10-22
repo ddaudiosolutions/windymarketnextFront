@@ -15,6 +15,11 @@ const obtenerCategoriaActions = (pageAndData) => {
 
 // DESCARGAR PRODUCTOS USUARIO
 
+const obtenerNumeroVistasProducto = (productoId) => {
+  console.log('obtenerNumeroVistasProducto', productoId)
+  return clienteAxios.post(`productos/getViewsProduct`, { productoId })
+}
+
 const obtenerProductosMasVistos = () => {
   /*  console.log('entrando en mostviewed FRONT'); */
   return clienteAxios.get(`productos/mostviewedProducts`);
@@ -74,7 +79,8 @@ const ProducServices = {
   obtenerProductosPorPalabras,
   sendMailPegatinas,
   editReservedState,
-  editVendidoState
+  editVendidoState,
+  obtenerNumeroVistasProducto
 };
 
 export default ProducServices;
