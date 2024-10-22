@@ -54,8 +54,8 @@ export const swalFireFaltaTelefono = () => {
 export const swalPesoKgsAlert = () => {
   return Swal.fire({
     icon: 'info',
-    html: `Recuerda que los valores tienen que estar en metros para dar un precio estimado real. Si los valores son correctos, 
-    ponte en contacto con nostoros, pues tu paquete es muy grande y lo gestionaremos personalmente`,
+    html: `Recuerda que los valores tienen que estar en metros para dar un precio estimado real. 
+    Si los valores son correctos, ponte en contacto con nosotros, pues tu paquete es muy grande y lo gestionaremos personalmente`,
     confirmButtonColor: '#3085d6',
     confirmButtonText: 'Cerrar',
     reverseButtons: true,
