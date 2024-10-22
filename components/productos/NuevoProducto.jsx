@@ -22,7 +22,7 @@ const NuevoProducto = () => {
   const agregarProducto = (producto) => dispatch(crearNuevoProducto(producto));
 
   const verificarPesoVolumetricoYEnviar = (values) => {
-    if (values.delivery && values.pesoVolumetrico <= -1 && values.pesoKgs <= 0) {
+    if (values.delivery && values.pesoVolumetrico >= 1) {
       swalPesoKgsAlert();
     } else {
       mostrarAlertaYEnviarDatos(agregarProducto, images, values);

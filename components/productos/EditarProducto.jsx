@@ -77,7 +77,7 @@ const EditarProducto = () => {
   };
 
   const verificarPesoVolumetricoYEnviar = (values) => {
-    if (values.delivery && values.pesoVolumetrico <= -1 && values.pesoKgs <= 0) {
+    if (values.delivery && values.pesoVolumetrico >= 1) {
       swalPesoKgsAlert();
     } else {
       mostrarAlertaYEnviarDatos(sendDataEditProduct, imagesT, imageSel, id, values);
