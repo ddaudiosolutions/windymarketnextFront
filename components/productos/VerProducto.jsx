@@ -35,7 +35,8 @@ import WhatsappIconShare from './iconos/WhatsappIconShare';
 import { WhatsappShareButton } from 'react-share';
 import VistasProducto from './VistasProducto';
 
-const VerProducto = () => {
+const VerProducto = ({ productoIdParams }) => {
+  console.log('verPorductoId', productoIdParams);
   const pathname = usePathname();
   const dispatch = useDispatch();
   const router = useRouter();
@@ -47,8 +48,8 @@ const VerProducto = () => {
     paginaActual = 0;
   }
   // Obtener el id del producto desde la URL usando pathname
-  const id = pathname.split('/')[2]; // Obtener el id del producto desde la URL
-  const productoId = id || producto._id; // Usar el id de props o de la URL
+  /* const id = pathname.split('/')[2]; */ // Obtener el id del producto desde la URL
+  const productoId = productoIdParams || producto._id; // Usar el id de props o de la URL
 
   const fechaCreado = producto !== undefined ? producto.creado : null;
   const authorName = producto !== undefined ? producto.author.nombre : null;

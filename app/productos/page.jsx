@@ -7,19 +7,6 @@ import { useCallback, useEffect } from 'react';
 import MostrarProductos from '../../components/productos/MostrarProductos';
 
 const ProductosPage = () => {
-  /*   const dispatch = useDispatch();
-  const params = useSearchParams();
-  const busquedaquery = params.get('busqueda');
-  const pagequery = params.get('page');
-
-  // Wrap cargarProductos with useCallback
-  const cargarProductos = () => dispatch(obtenerProductos({ busquedaquery, pagequery }));
-
-  useEffect(() => {
-    console.log('cargarProductos');
-    cargarProductos(busquedaquery, pagequery);
-  }); */
-
   return <MostrarProductos />;
 };
 

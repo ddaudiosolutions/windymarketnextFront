@@ -9,8 +9,8 @@ export const fetchProducts = ({ busquedapage }) => {
   ).then((res) => res.json());
 };
 
-export const fetchProductId = (id) => {
-  const idProducto = id.producto;
+export const fetchProductId = (productId) => {
+  const idProducto = productId.producto;
   return fetch(
     process.env.NEXT_PUBLIC_BACKEND_URL + `productos/${idProducto}`, {
     next: {

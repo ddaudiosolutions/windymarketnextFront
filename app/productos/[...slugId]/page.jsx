@@ -3,7 +3,11 @@ import VerProducto from '@/components/productos/VerProducto';
 import { getOptimizedImageUrl } from '@/helpers/utils';
 
 export async function generateMetadata({ params }) {
-  const productoId = await fetchProductId({ producto: params.id });
+  console.log('generated metadata', params);
+  const slugId = params.slugId[0];
+  const parts = slugId.split('-');
+  const productIdParams = parts[parts.length - 1];
+  const productoId = await fetchProductId({ producto: productIdParams });
   if (!productoId) {
     return {
       title: 'Producto no encontrado',
@@ -30,10 +34,13 @@ export async function generateMetadata({ params }) {
 }
 
 // Definir la página del producto
-const ProductoIdPage = () => {
+const ProductoIdPage = ({ params }) => {
+  const slugId = params.slugId[0];
+  const parts = slugId.split('-');
+  const productIdParams = parts[parts.length - 1];
   return (
     <div>
-      <VerProducto />
+      <VerProducto productoIdParams={productIdParams} />
     </div>
   );
 };
