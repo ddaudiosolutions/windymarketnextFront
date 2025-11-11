@@ -1,0 +1,15 @@
+.loginH3Us {
+  font-family: Saira;
+  color: rgb(124, 124, 124);
+  background-color: rgb(80, 247, 247);
+  border: 1px solid;
+  border-radius: 3px;
+}
+
+.error {
+  display: flex;
+  font-weight: bold;
+  color: rgb(223, 10, 10);
+  flex-flow: row nowrap;
+  justify-content: center;
+}
