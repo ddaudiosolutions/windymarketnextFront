@@ -1,18 +1,19 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Fragment, useEffect, useState } from 'react';
-import { jwtDecode } from 'jwt-decode'; /* 
+import { Fragment, useEffect, useState, useCallback } from 'react';
+import { jwtDecode } from 'jwt-decode'; /*
 import { cargarProductosAuthor } from "../helpers/utils"; */
 import Image from 'next/image';
 
 const Navigation = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const [nombreUsuario, setNombreUsuario] = useState('');
   const [userId, setUserId] = useState('');
   const [userTokenCheck, setUserTokenCheck] = useState(null);
 
-  const logOut = () => {
+  const logOut = useCallback(() => {
     // Limpiar sessionStorage
     sessionStorage.removeItem('userName');
     sessionStorage.removeItem('userId');
@@ -23,10 +24,10 @@ const Navigation = () => {
     setUserTokenCheck(null);
     // Redirigir a home
     router.push('/');
-  };
+  }, [router]);
 
   useEffect(() => {
-    // Cargar datos del sessionStorage solo al montar el componente
+    // Cargar datos del sessionStorage cada vez que cambia la ruta
     const nombreUser = sessionStorage.getItem('userName');
     const userIdStorage = sessionStorage.getItem('userId');
     const userToken = sessionStorage.getItem('userToken');
@@ -51,7 +52,7 @@ const Navigation = () => {
         logOut();
       }
     }
-  }, []); // Solo ejecutar al montar el componente
+  }, [pathname, logOut]); // Ejecutar cada vez que cambia la ruta
 
   console.log('userTokenCheck', userTokenCheck);
   return (
