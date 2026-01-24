@@ -8,31 +8,50 @@ import Image from 'next/image';
 
 const Navigation = () => {
   const router = useRouter();
-  const date = Date.now();
   const [nombreUsuario, setNombreUsuario] = useState('');
   const [userId, setUserId] = useState('');
   const [userTokenCheck, setUserTokenCheck] = useState(null);
 
+  const logOut = () => {
+    // Limpiar sessionStorage
+    sessionStorage.removeItem('userName');
+    sessionStorage.removeItem('userId');
+    sessionStorage.removeItem('userToken');
+    // Resetear estados
+    setNombreUsuario('');
+    setUserId('');
+    setUserTokenCheck(null);
+    // Redirigir a home
+    router.push('/');
+  };
+
   useEffect(() => {
+    // Cargar datos del sessionStorage solo al montar el componente
     const nombreUser = sessionStorage.getItem('userName');
-    const userId = sessionStorage.getItem('userId');
-    const userTokenCheck = sessionStorage.getItem('userToken');
+    const userIdStorage = sessionStorage.getItem('userId');
+    const userToken = sessionStorage.getItem('userToken');
+
     setNombreUsuario(nombreUser);
-    setUserId(userId);
-    setUserTokenCheck(userTokenCheck);
-    // Solo proceder si userTokenCheck existe
-    if (userTokenCheck) {
-      const { exp } = jwtDecode(userTokenCheck);
-      const expiredToken = exp * 1000 - 60000;
-      if (expiredToken < date) {
+    setUserId(userIdStorage);
+    setUserTokenCheck(userToken);
+
+    // Validar expiración del token
+    if (userToken) {
+      try {
+        const { exp } = jwtDecode(userToken);
+        const expiredToken = exp * 1000 - 60000; // 1 minuto de margen
+        const currentTime = Date.now();
+
+        if (expiredToken < currentTime) {
+          // Token expirado, cerrar sesión
+          logOut();
+        }
+      } catch (error) {
+        console.error('Error al decodificar token:', error);
         logOut();
-      } else {
-        setNombreUsuario(nombreUser);
       }
     }
-    // Nota: No hay un `return` explícito aquí, lo que significa que este useEffect
-    // retorna `undefined` por defecto, cumpliendo con las reglas de React.
-  }, [userTokenCheck, date]); // Asegúrate de incluir todas las dependencias relevantes
+  }, []); // Solo ejecutar al montar el componente
 
   console.log('userTokenCheck', userTokenCheck);
   return (
@@ -117,9 +136,7 @@ const Navigation = () => {
                       <li
                         type='button'
                         className='nav-link typeHeader'
-                        onClick={() => {
-                          logOut({ nombreUser });
-                        }}
+                        onClick={logOut}
                       >
                         LogOut
                       </li>
