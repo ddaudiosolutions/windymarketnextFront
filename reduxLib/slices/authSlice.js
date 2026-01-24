@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import AuthServices from '../services/auth.service';
 import Swal from 'sweetalert2';
+import { navigateTo } from '@/helpers/navigation';
 
 const initialState = [];
 
@@ -33,7 +34,7 @@ const authSlice = createSlice({
       if (action.payload.status === 200) {
         Swal.fire('Correcto', 'Hemos enviado un email con las instrucciones', 'success').then(
           function () {
-            window.location = '/login';
+            navigateTo = '/login';
           }
         );
       }
@@ -45,7 +46,7 @@ const authSlice = createSlice({
         'El correo no es correcto o no está registrado en WindyMarket. ',
         'error'
       ).then(function () {
-        window.location = '/forgotpassword';
+        navigateTo = '/forgotpassword';
       });
 
       return action.payload;
@@ -57,7 +58,7 @@ const authSlice = createSlice({
           'La Contraseña se ha cambiado con éxito, ya puedes acceder a WindyMarket',
           'success'
         ).then(function () {
-          window.location = '/login';
+          navigateTo = '/login';
         });
       }
       return action.payload;
