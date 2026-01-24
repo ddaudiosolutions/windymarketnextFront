@@ -1,6 +1,0 @@
-.productos {
-  display: grid;
-  grid-template-rows: 270px 270px;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
- 
-}
