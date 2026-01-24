@@ -182,7 +182,7 @@ const productsSlices = createSlice({
         title: 'Servidor Caido 2', text: `Estamos Teniendo Problemas con el servidor, Esperamos se reestablezca la conexión
       lo antes posible`, imageUrl: './WINDMARKET_LOGO_CIRCULO_uadyzn.png'
       }).then(function () {
-        navigateTo = '/';
+        navigateTo('/');
       });
     });
     builder.addCase(obtenerProductosMasVistos.fulfilled, (state, action) => {
@@ -198,7 +198,7 @@ const productsSlices = createSlice({
     });
     builder.addCase(crearNuevoProducto.fulfilled, (state, action) => {
       Swal.fire('Correcto', 'PRODUCTO CREADO CON EXITO', 'success').then(function () {
-        navigateTo = '/';
+        navigateTo('/');
       });
     });
     builder.addCase(obtenerProductosUser.fulfilled, (state, action) => {
@@ -226,7 +226,7 @@ const productsSlices = createSlice({
     builder.addCase(editarProducto.fulfilled, (state, action) => {
       if (action.payload.status === 200) {
         Swal.fire('Correcto', 'Producto Editado con Exito', 'success').then(function () {
-          navigateTo = `/`;
+          navigateTo(`/`);
         });
       }
     });
@@ -244,7 +244,7 @@ const productsSlices = createSlice({
             Gracias por confiar tu envio a WindyMarket`,
           icon: 'success'
         }).then(function () {
-          navigateTo = '/';
+          navigateTo('/');
         });
       }
     });

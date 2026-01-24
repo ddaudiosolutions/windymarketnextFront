@@ -34,7 +34,7 @@ const authSlice = createSlice({
       if (action.payload.status === 200) {
         Swal.fire('Correcto', 'Hemos enviado un email con las instrucciones', 'success').then(
           function () {
-            navigateTo = '/login';
+            navigateTo('/login');
           }
         );
       }
@@ -46,7 +46,7 @@ const authSlice = createSlice({
         'El correo no es correcto o no está registrado en WindyMarket. ',
         'error'
       ).then(function () {
-        navigateTo = '/forgotpassword';
+        navigateTo('/forgotpassword');
       });
 
       return action.payload;
@@ -58,7 +58,7 @@ const authSlice = createSlice({
           'La Contraseña se ha cambiado con éxito, ya puedes acceder a WindyMarket',
           'success'
         ).then(function () {
-          navigateTo = '/login';
+          navigateTo('/login');
         });
       }
       return action.payload;
