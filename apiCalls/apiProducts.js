@@ -12,9 +12,9 @@ export const fetchProducts = ({ busquedapage }) => {
   ).then((res) => res.json());
 };
 
-export const fetchProductId = (id) => {
-  /*   console.log('fetProductId', id.producto.params.id) */
-  const idProducto = id.producto.params.id;
+export const fetchProductId = (productId) => {
+  // Aceptar directamente el ID del producto
+  const idProducto = typeof productId === 'string' ? productId : productId.producto;
   return fetch(
     process.env.NEXT_BACKEND_URL + `productos/${idProducto}`, {
     next: {
