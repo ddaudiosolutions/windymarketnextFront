@@ -125,7 +125,7 @@ const usersSlices = createSlice({
       console.log(action.payload);
       if (action.payload.status === 200) {
         Swal.fire('Correcto', 'El Usuario se ha creado Correctamente', 'success').then(function () {
-          navigateTo = '/login';
+          navigateTo('/login');
         });
       }
       return action.payload;
@@ -134,7 +134,7 @@ const usersSlices = createSlice({
       console.log(action.payload);
       if (action.payload.response.status === 403) {
         Swal.fire('Error', 'El Usuario ya existe', 'error').then(function () {
-          navigateTo = '/login';
+          navigateTo('/login');
         });
       }
       return action.payload;
@@ -150,7 +150,7 @@ const usersSlices = createSlice({
     builder.addCase(loginUsuario.rejected, (state, action) => {
       if (action.payload.status !== 200) {
         Swal.fire('Error', 'Usuario o Contraseña Incorrectos', 'error').then(function () {
-          navigateTo = '/login';
+          navigateTo('/login');
         });
       }
       return action.payload;
@@ -175,7 +175,7 @@ const usersSlices = createSlice({
       if (action.payload.status === 200) {
         Swal.fire('Correcto', 'El Usuario se ha editado Correctamente', 'success').then(
           function () {
-            navigateTo = '/';
+            navigateTo('/');
           }
         );
       }
@@ -185,7 +185,7 @@ const usersSlices = createSlice({
       sessionStorage.removeItem('userName');
       sessionStorage.removeItem('userId');
       sessionStorage.removeItem('userToken');
-      navigateTo = '/productos?busqueda=ultimos_productos&page=0';
+      navigateTo('/productos?busqueda=ultimos_productos&page=0');
     });
     builder.addCase(eliminarUsuario.fulfilled, (state, action) => {
       console.log('eliminarUsuario', action.payload);
@@ -194,7 +194,7 @@ const usersSlices = createSlice({
           sessionStorage.removeItem('userName');
           sessionStorage.removeItem('userId');
           sessionStorage.removeItem('userToken');
-          navigateTo = '/productos?busqueda=ultimos_productos&page=0';
+          navigateTo('/productos?busqueda=ultimos_productos&page=0');
         }
         );
     });
@@ -212,7 +212,7 @@ const usersSlices = createSlice({
       state.statusSendEmail = action.payload.status;
       if (action.payload.status === 200) {
         Swal.fire('Correcto', 'El email se ha enviado Correctamente', 'success').then(function () {
-          navigateTo = '/';
+          navigateTo('/');
         });
       }
     });
