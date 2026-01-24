@@ -21,7 +21,10 @@ const VerProducto = ({ producto }) => {
             <div
               className='d-flex justify-content-start  mt-3'
               type='button'
-              onClick={() => cargarProductosAuthor(dispatch, history, producto)}
+              onClick={() => {
+                // TODO: Implementar navegación a productos del autor
+                console.log('Ver productos del autor:', producto.author);
+              }}
             >
               {producto.author.imagesAvatar[0].url === undefined ? (
                 <Image
