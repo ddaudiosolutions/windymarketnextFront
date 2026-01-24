@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Field, Form } from 'react-final-form';
 import './Usuarios.nodemodule.css';
@@ -11,12 +12,15 @@ import { trackLoginButton } from '../../helpers/analyticsCalls';
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const router = useRouter();
+
   const submitLogin = (values) => {
     setLoading(true);
     dispatch(loginUsuario({ email: values.email, password: values.password })).then((res) => {
       if (res.payload.status === 200) {
-        window.location = '/';
+        router.push('/');
       }
+      setLoading(false);
     });
   };
 
