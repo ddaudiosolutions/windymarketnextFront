@@ -110,7 +110,7 @@ const Producto = ({ producto }) => {
           {delivery && (
             <div className='d-flex'>
               <img
-                src='./images/windyMarket_delivery Icon.jpg'
+                src='/images/wm_delivery.jpg'
                 alt='DeliveryWindymarket_icon'
                 style={{ width: '1.2rem', height: '1.5rem' }}
               ></img>
