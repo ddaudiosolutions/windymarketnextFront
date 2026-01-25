@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Producto from '../productos/Producto';
-import { obtenerProductoIdApi } from '../../reduxLib/slices/productSlices';
+import { cargarProductoIdApi } from '@/helpers/utils';
 
 export const ProductoMasVistos = ({ productosMasvistos }) => {
-  console.log('ProductoMasVistos', productosMasvistos);
   const dispatch = useDispatch();
   const [mostViewed, setMostViewed] = useState([]);
   // Convertir el array de ID's a string para usarlo como dependencia efectiva en useEffect
@@ -17,7 +16,7 @@ export const ProductoMasVistos = ({ productosMasvistos }) => {
         for (const productoId of productosMasvistos) {
           try {
             // Llama a la acción de Redux para obtener la información del producto por su ID de manera secuencial.
-            const resultado = await dispatch(obtenerProductoIdApi(productoId)).unwrap();
+            const resultado = await cargarProductoIdApi(dispatch, productoId).unwrap();
             resultados.push(resultado.data);
           } catch (error) {
             // Maneja cualquier error que pueda ocurrir durante la operación para un ID específico.

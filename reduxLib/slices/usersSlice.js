@@ -36,6 +36,7 @@ export const obtenerDatosUsuario = createAsyncThunk(
   'getUserData / get',
   async (userId, { rejectWithValue }) => {
     try {
+      
       const user = await UsersService.obtenerDatosUsuario(userId);
       return user;
     } catch (error) {
@@ -122,7 +123,6 @@ const usersSlices = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(nuevoUsuario.fulfilled, (state, action) => {
-      console.log(action.payload);
       if (action.payload.status === 200) {
         Swal.fire('Correcto', 'El Usuario se ha creado Correctamente', 'success').then(function () {
           navigateTo('/login');
@@ -131,7 +131,6 @@ const usersSlices = createSlice({
       return action.payload;
     });
     builder.addCase(nuevoUsuario.rejected, (state, action) => {
-      console.log(action.payload);
       if (action.payload.response.status === 403) {
         Swal.fire('Error', 'El Usuario ya existe', 'error').then(function () {
           navigateTo('/login');
@@ -144,8 +143,8 @@ const usersSlices = createSlice({
         sessionStorage.setItem('userName', action.payload.data.nombre);
         sessionStorage.setItem('userToken', action.payload.data.accessToken);
         sessionStorage.setItem('userId', action.payload.data.id);
+        state.user = { ...action.payload.data, _id: action.payload.data.id };
       }
-      return action.payload;
     });
     builder.addCase(loginUsuario.rejected, (state, action) => {
       if (action.payload.status !== 200) {
@@ -161,16 +160,13 @@ const usersSlices = createSlice({
       };
     });
     builder.addCase(obtenerDatosUsuario.rejected, (state, action) => {
-      console.log('obtenerDatosUsuarioError', action.payload);
       if (action.payload.response.status === 401) {
-
         return {
           user: null,
         };
       }
     });
     builder.addCase(editarDatosUsuario.fulfilled, (state, action) => {
-      console.log(action.payload);
       sessionStorage.setItem('userName', action.payload.data.user.nombre);
       if (action.payload.status === 200) {
         Swal.fire('Correcto', 'El Usuario se ha editado Correctamente', 'success').then(
@@ -188,7 +184,6 @@ const usersSlices = createSlice({
       navigateTo('/productos?busqueda=ultimos_productos&page=0');
     });
     builder.addCase(eliminarUsuario.fulfilled, (state, action) => {
-      console.log('eliminarUsuario', action.payload);
       Swal.fire('Correct', 'Usuario Eliminado Correctamente', 'success')
         .then(function () {
           sessionStorage.removeItem('userName');

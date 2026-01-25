@@ -2,7 +2,7 @@
 
 import { Form, Field } from 'react-final-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { sendMailPegatinas } from '@/reduxLib/slices/productSlice';
+import { sendMailPegatinas } from '@/reduxLib/slices/productSlices';
 import Swal from 'sweetalert2';
 
 function FormularioDatosEnvio({ handleClose, datosRemitente }) {

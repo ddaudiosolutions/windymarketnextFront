@@ -1,22 +1,15 @@
 import clienteAxios from '../../config/axios';
-
-/* const user = sessionStorage.getItem('userToken'); */
-const data = {
-  headers: {
-    'x-auth-token': 'papito',
-  },
-};
-
+import { getAuthHeaders } from '@/helpers/utils';
 /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CREAR NUEVOS PRODUCTOS
 const crearNuevoProductoAction = (producto, history) => {
-  return clienteAxios.post('productos/newproduct', producto, data);
+  return clienteAxios.post('productos/newproduct', producto, getAuthHeaders());
 };
 
 // FUNCION QUE DESCARGA LOS PRODUCTOS DE LA BBDD
 const obtenerCategoriaActions = (pageAndData) => {
   const { busquedaquery, pagequery } = pageAndData;
-  return clienteAxios.get(`productos?busqueda=${busquedaquery}&page=${pagequery}`, data);
+  return clienteAxios.get(`productos?busqueda=${busquedaquery}&page=${pagequery}`, getAuthHeaders());
 };
 
 // DESCARGAR PRODUCTOS USUARIO
@@ -27,7 +20,7 @@ const obtenerProductosMasVistos = () => {
 };
 
 const obtenerProductosUser = (pageNuser) => {
-  return clienteAxios.get(`productos/user?=${pageNuser}`, data);
+  return clienteAxios.get(`productos/user?=${pageNuser}`,  getAuthHeaders());
 };
 
 const obtenerProductoIdApi = (productoid) => {
@@ -40,14 +33,14 @@ const obtenerProductosPorPalabras = (words) => {
 
 // SELECCIONAR Y ELIMINAR PRODUCTO
 const borrarProducto = (id) => {
-  return clienteAxios.delete(`productos/user/${id}`, data);
+  return clienteAxios.delete(`productos/user/${id}`,  getAuthHeaders());
 };
 
 /// ///////////////////////////////////////////////
 // EDITAR EL PRODUCTO /////
 const editarProducto = (productData) => {
   const { formData, id } = productData;
-  return clienteAxios.put(`productos/user/editar/${id}`, formData, data);
+  return clienteAxios.put(`productos/user/editar/${id}`, formData,  getAuthHeaders());
 };
 
 /// ////////////////////

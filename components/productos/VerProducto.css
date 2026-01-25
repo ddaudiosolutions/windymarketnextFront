@@ -1,0 +1,110 @@
+.pproductoTitle {
+  font-family: Saira;
+  font-weight: 200;
+  font-size: 1.1rem;
+}
+
+.pproductoTitleFecha {
+  font-family: Saira;
+  font-weight: 400;
+  font-size: 1rem;
+  color: rgb(158, 157, 157);
+  text-align: right;
+}
+.pproducto {
+  font-family: Saira;
+  font-weight: 300;
+}
+.container-fluid {
+  max-width: 1200px;
+}
+
+.h5Avatar {
+  font-family: Saira;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.card1 {
+  background: rgb(255, 255, 255);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.08), 0 0 6px rgba(0, 0, 0, 0.05);
+  /* transition: .3s transform cubic-bezier(.155, 1.105, .295, 1.12), .3s box-shadow, .3s -webkit-transform cubic-bezier(.155, 1.105, .295, 1.12); */
+  border: 0;
+  border-radius: 1rem;
+}
+
+.card-header {
+  background-color: rgb(252, 252, 252);
+  border-radius: 5px;
+}
+.titleH5VerProducto {
+  overflow: hidden;
+/*   font-weight: 400; */
+  font-size: 1.7rem;
+  font-weight: 600;
+  /* font-size: 0.5vw; */
+  /* text-transform: uppercase; */
+  font-family: Saira;
+}
+
+.card-img-top1 {
+  width: 50em;
+  height: 30rem;
+  /* padding: 15px; */
+  object-fit: cover;
+  border-radius: 2rem;
+  display: block;
+  /* objectFit: 'cover' ; */
+  /* margin-left: 40px; */
+  /* objectFit: 'cover' */
+  /* padding: 1px */
+}
+.container-detail {
+  width: 681px;
+}
+.card-img-topAvatar {
+  width: 3rem;
+  /* height: 20rem; */
+  /* padding: 15px; */
+  object-fit: contain;
+  /* border-radius: 2rem; */
+  /* objectFit: 'cover' ; */
+
+  /* objectFit: 'cover' */
+  /* padding: 1px */
+}
+
+.cardVerProducto {
+  border-radius: 15px;
+  /* max-height: 300px; */
+  background-color: rgb(255, 255, 255);
+}
+
+.price-hp1 {
+  font-family: Saira;
+  /* text-align: center; */
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: rgb(5, 5, 5);
+}
+
+.text-container {
+  position: absolute;
+  top: 0;
+  left: 0;  
+  width: 11rem;
+  height: 2rem;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(86, 86, 86);
+}
+
+.text-over-image {
+  color: #38D9DF;
+  font-size: 2rem;
+  font-weight: 200;
+  font-family: Saira stencil one;
+ /*  text-shadow: 2px 2px 4px rgba(145, 145, 145, 0.5); */
+}
