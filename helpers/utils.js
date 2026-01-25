@@ -1,13 +1,17 @@
-import { obtenerProductosAuthor } from '../slices/productSlice';
-import { obtenerBuscoPostsUserAction } from '../slices/buscoPostSlice';
+import { obtenerProductosAuthor, obtenerProductoIdApi } from '../reduxLib/slices/productSlices';
 import Swal from 'sweetalert2';
 
-export const cargarProductosAuthor = (dispatch, history, post) => {
+export const cargarProductosAuthor = (dispatch, router, post) => {
   const idAuthor = post.author._id;
   dispatch(obtenerProductosAuthor(idAuthor));
-  dispatch(obtenerBuscoPostsUserAction(idAuthor));
-  history.push(`/productos/auth/${idAuthor}`);
+  router.push(`/productos/auth/${idAuthor}`);
 };
+
+export const cargarProductoIdApi = (dispatch, productId) => {
+  if(productId) {
+    dispatch(obtenerProductoIdApi(productId))
+  }
+}
 
 export const extraerIdDeURL = (url) => {
   const ultimaBarraIndex = url.lastIndexOf('/');
@@ -58,5 +62,19 @@ export const swalPesoKgsAlert = () => {
     confirmButtonText: 'Cerrar',
     reverseButtons: true,
   });
+};
+
+export const getAuthHeaders = () => {
+  // Verificar que estamos en el cliente (no en servidor)
+  if (typeof window === 'undefined') {
+    return {};
+  }
+  
+  const token = sessionStorage.getItem('userToken');
+  return {
+    headers: {
+      'x-auth-token': token || '',
+    },
+  };
 };
 

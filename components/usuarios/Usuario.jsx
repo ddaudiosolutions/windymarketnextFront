@@ -1,22 +1,36 @@
 'use client';
 
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
-import { eliminarUsuario /* , logOutUsuario */ } from '@/reduxLib/slices/usersSlice';
+import { eliminarUsuario, obtenerDatosUsuario} from '@/reduxLib/slices/usersSlice';
 import './Usuario.css';
 import Swal from 'sweetalert2';
 
 const Usuario = () => {
   const dispatch = useDispatch();
-  const userId = sessionStorage.getItem('userId');
   const datosUsuario = useSelector((state) => state.users.user);
-  if (!datosUsuario) return null;
+  /* if (!datosUsuario) return null; */
+  // ✅ Cargar datos del usuario al montar el componente
+  // ✅ useEffect ANTES del return
+  useEffect(() => {
+    // Obtener userId solo en el cliente para el dispatch
+    const userId = typeof window !== 'undefined' ? sessionStorage.getItem('userId') : null;
+    
+    if (!datosUsuario && userId) {
+      dispatch(obtenerDatosUsuario(userId));
+    }
+  }, [dispatch, datosUsuario]);
+  console.log('datosUsuario', datosUsuario)
 
-  /* const logOut = () => {
-    dispatch(logOutUsuario());
-  }; */
-
+  // ✅ Ahora el return con loading
+  if (!datosUsuario) {
+    return (
+      <div className='container text-center mt-5'>
+        <p>Cargando datos del usuario...</p>
+      </div>
+    );
+  }
   const confirmarBorrarUsuario = (_id) => {
     Swal.fire({
       title: 'Seguro quieres eliminar ?',
@@ -101,7 +115,7 @@ const Usuario = () => {
                 )}
               </div>
               <div className='row text-center'>
-                <Link href={`/usuarios/editar/${userId}`} className='nav-link typeHeader'>
+                <Link href={`/usuarios/editar/${datosUsuario._id}`} className='nav-link typeHeader'>
                   Editar
                 </Link>
               </div>

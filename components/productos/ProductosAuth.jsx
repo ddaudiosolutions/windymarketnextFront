@@ -4,24 +4,21 @@ import { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './Producto.css';
 import ProductoUser from './ProductoUser';
-import BuscoPostUser from './BuscoPostUser';
 import { cargarProductosAuthor } from '@/helpers/utils';
-import { useHistory, useLocation } from 'react-router';
+import { useRouter, usePathname } from 'next/navigation'; 
 
 const ProductosAuth = () => {
   const productos = useSelector((state) => state.products.productsAuth);
-  const buscoPostsUser = useSelector((state) => state.buscoPosts.postsUser);
-
-  const location = useLocation();
-  const idAuthor = location.pathname.split('/')[3];
   const dispatch = useDispatch();
-  const history = useHistory();
+  const router = useRouter();
+  const pathname = usePathname();
+  const idAuthor = pathname.split('/')[3];
 
   useEffect(() => {
     if (!productos) {
-      cargarProductosAuthor(dispatch, history, { author: { _id: idAuthor } });
+      cargarProductosAuthor(dispatch, router, { author: { _id: idAuthor } });
     }
-  }, [dispatch, history, idAuthor, productos]);
+  }, [dispatch, router, idAuthor, productos]);
 
   return (
     <Fragment>
@@ -35,16 +32,6 @@ const ProductosAuth = () => {
         {!productos
           ? null
           : productos.map((producto) => <ProductoUser key={producto._id} producto={producto} />)}
-      </div>
-      <div
-        className='row row-cols-2 row-cols-xs-2 
-      row-cols-sm-2 row-cols-lg-4 g-3 justify-content-center '
-      >
-        {buscoPostsUser === undefined
-          ? null
-          : buscoPostsUser.map((postUser) => (
-              <BuscoPostUser key={postUser._id} postUser={postUser} />
-            ))}
       </div>
     </Fragment>
   );

@@ -2,14 +2,18 @@
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Fragment, useEffect, useState, useCallback } from 'react';
-import { jwtDecode } from 'jwt-decode'; /*
-import { cargarProductosAuthor } from "../helpers/utils"; */
+import { useDispatch, useSelector } from 'react-redux';
+import { obtenerDatosUsuario } from '../../reduxLib/slices/usersSlice';
+import { jwtDecode } from 'jwt-decode'; 
+import { cargarProductosAuthor } from "../../helpers/utils"; 
 import Image from 'next/image';
 
 const Navigation = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [nombreUsuario, setNombreUsuario] = useState('');
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.users.user);
   const [userId, setUserId] = useState('');
   const [userTokenCheck, setUserTokenCheck] = useState(null);
 
@@ -31,6 +35,11 @@ const Navigation = () => {
     const nombreUser = sessionStorage.getItem('userName');
     const userIdStorage = sessionStorage.getItem('userId');
     const userToken = sessionStorage.getItem('userToken');
+
+    // Cargar user en Redux si hay sesión pero no está en Redux
+  if (userIdStorage && !user) {
+    dispatch(obtenerDatosUsuario(userIdStorage));
+  }
 
     setNombreUsuario(nombreUser);
     setUserId(userIdStorage);
@@ -115,10 +124,9 @@ const Navigation = () => {
                           href={`/productos/auth/${userId}`}
                           className='nav-link  typeHeader'
                           onClick={() =>
-                            /* cargarProductosAuthor(dispatch, history, {
+                            cargarProductosAuthor(dispatch, router, {
                               author: { _id: userId },
-                            }) */
-                            alert('cargar productos author')
+                            })                            
                           }
                         >
                           Mis Productos

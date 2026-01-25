@@ -1,9 +1,9 @@
 'use client';
 
 import { useDispatch, useSelector } from 'react-redux';
-import ListaProductosBusqueda from '@/components/ListaProductos';
+import ListaProductosBusqueda from './ListaProductos';
 import { useEffect } from 'react';
-import { getFavoriteProducts } from '@/components/../../slices/favoriteProductsSlice';
+import { getFavoriteProducts } from '../../reduxLib/slices/favoriteProductsSlice';
 
 function FavoriteProducts() {
   const favoriteProductsId = useSelector((state) => state.users.user?.favoritos);

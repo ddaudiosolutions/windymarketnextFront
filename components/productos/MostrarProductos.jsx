@@ -6,19 +6,10 @@ import ListaProductos from './ListaProductos';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { obtenerProductosPorPalabras } from '../../reduxLib/slices/productSlices';
-/* import { obtenerBuscoPosts } from "../../slices/buscoPostSlice"; */
-/* import { obtenerDatosUsuario } from "../../slices/usersSlice"; */
-/* import { getFavoriteProducts } from "../../slices/favoriteProductsSlice"; */
 import SearchByWords from '../busquedaPorTexto/SearchByWords';
 import NavbarCategories from '../categorias/NavbarCategories';
-/* import Navbar from "../Navbar"; */
 import HappyBanner from '../banners/HappyBanner';
 import { ProductoMasVistos } from '../googleAnalytics/ProductoMasVistos';
-/* import { Helmet } from 'react-helmet'; */
-
-/* import WebCamsContainer from "../webCams/WebCamsContainer"; */
-/* 
-import GoogleAds from '../adsense/GoogleAds'; */
 
 const MostrarProductos = () => {
   const productos = useSelector((state) => state.products.productos.prodAll);
@@ -41,21 +32,7 @@ const MostrarProductos = () => {
 
   const dispatch = useDispatch();
   const mostrarProductoMasVistos = busquedaquery === 'ultimos_productos';
-  console.log('productosMasVistos', mostrarProductoMasVistos);
-  /* const cargarBuscoPosts = () => dispatch(obtenerBuscoPosts()); */
   const userData = useSelector((state) => state.users.user);
-
-  /*  useEffect(() => {
-    if (sessionStorage.getItem("userId")) {
-      dispatch(obtenerDatosUsuario(sessionStorage.getItem("userId"))).then(
-        (res) => {
-          if (res.payload.status === 200) {
-            dispatch(getFavoriteProducts(res.payload.data.favoritos));
-          }
-        }
-      );
-    }
-  }, [sessionStorage.getItem("userId")]); */
 
   useEffect(() => {
     dispatch(obtenerProductosPorPalabras(searchWords));
