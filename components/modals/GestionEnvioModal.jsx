@@ -1,20 +1,26 @@
-import { Modal } from 'react-bootstrap';
+'use client';
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import FormularioDatosEnvio from '../gestionEnvios/FormularioDatosEnvio';
-import './modals.css';
 
 function GestionEnvioModal({ show, handleClose, datosRemitente }) {
   return (
-    <Modal show={show} onHide={handleClose} className='modal-content-custom'>
-      <Modal.Header closeButton>
-        <Modal.Title className='text-center w-100'>
-          <h5> Formulario de contacto </h5>
-          <h6>Rellena todos los campos que estén vacíos</h6>
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
+    <Dialog open={show} onOpenChange={(open) => !open && handleClose()}>
+      <DialogContent className="max-w-4xl bg-white border border-gray-200 rounded-lg">
+        <DialogHeader>
+          <DialogTitle className="text-center w-full">
+            <h5 className="font-saira-stencil text-lg"> Formulario de contacto </h5>
+            <h6 className="font-saira text-sm text-gray-600">Rellena todos los campos que estén vacíos</h6>
+          </DialogTitle>
+        </DialogHeader>
         <FormularioDatosEnvio handleClose={handleClose} datosRemitente={datosRemitente} />
-      </Modal.Body>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }
 

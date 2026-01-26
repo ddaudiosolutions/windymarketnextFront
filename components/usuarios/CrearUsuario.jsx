@@ -5,6 +5,9 @@ import { useDispatch } from 'react-redux';
 import { nuevoUsuario } from '@/reduxLib/slices/usersSlice';
 import { Field, Form } from 'react-final-form';
 import Swal from 'sweetalert2';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 
 // REGISTRO DE USUARIO EN LA BASE DE DATOS DE MONGO
 const CrearUsuario = () => {
@@ -34,70 +37,64 @@ const CrearUsuario = () => {
 
   return (
     <div className=' '>
-      <div className=' row justify-content-center' style={{ marginTop: '50px' }}>
-        <div className='col col-lg-4 col-xl-4 '>
+      <div className='flex justify-center mt-12'>
+        <div className='w-full max-w-md lg:max-w-lg'>
           <img
             src='/LOGO_CIRCULAR_SIN_FONDO.png'
             alt='WindyMArket_Logo windymarket windsurf segunda mano'
-            style={{ width: '20rem', objectFit: 'contain' }}
-            className='mx-auto d-block'
+            className='w-80 object-contain mx-auto block'
           ></img>
         </div>
-        <div className='col col-lg-4 col-xl-4 ms-2'>
-          <div className='ounded  p-3 bg-transparent'>
+        <div className='w-full max-w-md lg:max-w-lg ml-4'>
+          <div className='rounded  p-3 bg-transparent'>
             <div className='text-center'>
-              <h3 className='loginH3'>Registrarse</h3>
+              <h3 className='font-saira text-2xl mb-4'>Registrarse</h3>
             </div>
             <Form
               onSubmit={handleRegister}
               render={({ handleSubmit, values }) => (
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className='space-y-4'>
                   <div>
-                    <label htmlFor='nombre' className='loginLabel'>
+                    <Label htmlFor='nombre' className='mt-1'>
                       Nombre
-                    </label>
-                    <Field className='form-control mb-2' name='nombre' component='input' />
+                    </Label>
+                    <Field name='nombre'>
+                      {({ input }) => <Input {...input} id='nombre' className='mt-1' />}
+                    </Field>
                   </div>
                   <div>
-                    <label htmlFor='email' className='loginLabel'>
-                      Email
-                    </label>
-                    <Field className='form-control mb-2' name='email' component='input' />
+                    <Label htmlFor='email'>Email</Label>
+                    <Field name='email'>
+                      {({ input }) => <Input {...input} id='email' type='email' className='mt-1' />}
+                    </Field>
                   </div>
                   <div>
-                    <label htmlFor='password' className='loginLabel'>
+                    <Label htmlFor='password'>
                       Password
-                    </label>
-                    <Field
-                      className='form-control mb-2'
-                      name='password'
-                      component='input'
-                      type='password'
-                    />
+                    </Label>
+                    <Field name='password'>                     
+                       {({ input }) => <Input {...input} id='password' type='password' className='mt-1' />}
+                    </Field>
                   </div>
                   <div>
-                    <label htmlFor='doublePassword' className='loginLabel'>
-                      Repetir Password
-                    </label>
-                    <Field
-                      className='form-control mb-2'
-                      name='doublePassword'
-                      component='input'
-                      type='password'
-                    />
-                  </div>
-                  {/* <pre className='bg-success'>{JSON.stringify(values, 0, 2)}</pre> */}
-                  <div className='form-group text-center'>
-                    <button className='btn btn-outline-info btn-block '>Registrarse</button>
+                    <Label htmlFor='doublePassword'>Repetir Password</Label>
+                    <Field name='doublePassword'>
+                      {({ input }) => <Input {...input} id='doublePassword' type='password' className='mt-1' />}
+                    </Field>
+                  </div>                  
+                  <div className='text-center'>
+                    <Button type='submit' variant='outline' className='w-full mt-3'>
+                      Registrarse
+                    </Button>
                   </div>
                 </form>
               )}
             />
-            <div className='row mt-4'>
-              <Link href='/login' className='col-md-6'>
+            <div className='grid grid-cols-2 gap-4 mt-4'>
+              <Link href='/login' className='text-windy-cyan hover:underline'>
                 Inicia Sesion
               </Link>
-              <Link href='/forgotpassword' className='col-md-6'>
+              <Link href='/forgotpassword' className='text-windy-cyan hover:underline'>
                 Olvidé mi Contraseña
               </Link>
             </div>

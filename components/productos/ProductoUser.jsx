@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
-import './Producto.css';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
 import { useDispatch } from 'react-redux';
@@ -45,49 +46,65 @@ const ProductoUser = ({ producto }) => {
     router.push(`/productos/user/editar/${producto._id}`);
   };
   return (
-    <Fragment>
-      <div className='col'>
-        <div
-          className='card shadow-sm me-1 ms-1 '
-          type='button'
-          onClick={() => verProductoId(producto)}
-        >
-          {images[0]?.url === undefined ? (
-            <img
-              src='/LOGO_CIRCULAR_SIN_FONDO.png'
-              className='card-img-topAvatar ms-4 mt-3'
-              alt='avatar for User windymarket windsurf segunda mano'
-            ></img>
-          ) : (
-            <img src={images[0].url} className='card-img-top ' alt={images[0].filename}></img>
-          )}
-          <div className='card-body '>
-            <h5 className='titleH5-product  card-title'>{title}</h5>
-            <h5 className='product-price m-1 mb-1'>{price}€</h5>
-            <div className='prodPreDescription m-1 mb-1' rows='2'>
-              {description}
-            </div>
+    <div className='flex flex-col'>
+      <div className='w-[280px]'>
+        <Card className='w-[280px] h-auto shadow-lg hover:shadow-xl transition-shadow cursor-pointer'>
+          <div className='relative' onClick={() => verProductoId(producto)}>
+            {images[0]?.url === undefined ? (
+              <img
+                src='/LOGO_CIRCULAR_SIN_FONDO.png'
+                className='w-[280px] h-[220px] object-contain p-4'
+                alt='avatar for User windymarket windsurf segunda mano'
+              />
+            ) : (
+              <img
+                src={images[0].url}
+                className='w-[280px] h-[220px] object-cover rounded-t-xl'
+                alt={images[0].filename}
+              />
+            )}
+            {producto.reservado && (
+              <div className='absolute bottom-0 left-0 right-0 bg-black/70 py-2'>
+                <span className='text-white font-saira-stencil text-sm block text-center'>
+                  Reservado
+                </span>
+              </div>
+            )}
+            {producto.vendido && (
+              <div className='absolute bottom-0 left-0 right-0 bg-black/70 py-2'>
+                <span className='text-white font-saira-stencil text-sm block text-center'>
+                  Vendido
+                </span>
+              </div>
+            )}
           </div>
-        </div>
+          <CardContent className='px-4 py-3'>
+            <h5 className='font-saira text-black text-base font-semibold truncate'>{title}</h5>
+            <h5 className='font-saira text-windy-cyan text-lg font-bold mb-2'>{price}€</h5>
+            <p className='text-gray-600 text-sm line-clamp-2'>{description}</p>
+          </CardContent>
+        </Card>
+
         {producto.author._id === sessionStorage.getItem('userId') && (
-          <div className='card-footer text-center mb-3 gap-2 rounded m-2 me-2'>
-            <button
-              className='col-md-3 m-2 ms-3 btn btn-outline-success me-2'
+          <div className='flex gap-2 mt-3 justify-center'>
+            <Button
+              variant='outline'
+              className='flex-1 border-green-500 text-green-600 hover:bg-green-50'
               onClick={() => sendtoEdicion(producto)}
             >
               Editar
-            </button>
-
-            <button
-              className='col-md-4 m-2 ms-3 btn btn-outline-warning me-2'
+            </Button>
+            <Button
+              variant='outline'
+              className='flex-1 border-yellow-500 text-yellow-600 hover:bg-yellow-50'
               onClick={() => confirmarBorrarProducto(_id)}
             >
               Eliminar
-            </button>
+            </Button>
           </div>
         )}
       </div>
-    </Fragment>
+    </div>
   );
 };
 

@@ -3,6 +3,9 @@
 import { useEffect } from 'react';
 import { Field } from 'react-final-form';
 import { calculoPesoVolumetrico, calculoPrecioEnvio } from './formulasEnvio';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 
 const FormPaqueteEnvio = (props) => {
   const { alto, ancho, largo, form } = props;
@@ -27,103 +30,75 @@ const FormPaqueteEnvio = (props) => {
 
   return (
     <div className='mb-3'>
-      <h6 className='mt-1' style={{ color: 'red' }}>
+      <p className='text-red-500 text-sm font-semibold mt-1'>
         IMPORTANTE!! No olvides rellenar todos los datos de envio en tu perfil
-      </h6>
-      <h6 className='mt-1' style={{ color: 'red' }}>
+      </p>
+      <p className='text-red-500 text-sm font-semibold mt-1'>
         IMPORTANTE!! Si tu paquete tiene una medida máxima en uno de sus lados de 120cm NO OLVIDES
         AÑADIR EL PESO EN KGS
-      </h6>
+      </p>
       <Field name='balearicDelivery' type='checkbox'>
-        {({ input, meta }) => (
+        {({ input }) => (
           <div className='mb-4 mt-4'>
-            <div className='d-flex align-items-center'>
-              <label className='me-2'>Origen o destino Baleares</label>
-              <div className='btn-primary form-check form-switch mt-1'>
-                <input
-                  {...input}
-                  /* type='checkbox' */
-                  className='form-check-input'
-                  role='switch'
-                  id={`${input.name}-switch`}
-                />
-              </div>
+            <div className='flex items-center gap-2'>
+              <Label htmlFor='balearic-switch'>Origen o destino Baleares</Label>
+              <Switch checked={input.value} onCheckedChange={input.onChange} id='balearic-switch' />
             </div>
           </div>
         )}
       </Field>
-      <h5>Medidas producto (en metros)</h5>
-      <div className='d-flex justify-content-between'>
-        <div>
-          <label className='mb-2'>Alto</label>
-          <Field
-            className='form-control'
-            name='alto'
-            component='input'
-            type='number'
-            placeholder='Alto'
-          />
+      <h5 className='font-saira text-lg mb-3'>Medidas producto (en metros)</h5>
+      <div className='flex justify-between gap-3'>
+        <div className='flex-1'>
+          <Label className='mb-2'>Alto</Label>
+          <Field name='alto'>
+            {({ input }) => <Input {...input} type='number' placeholder='Alto' className='mt-1' />}
+          </Field>
         </div>
-        <div>
-          <label className='mb-2'>Ancho</label>
-          <Field
-            className='form-control'
-            name='ancho'
-            component='input'
-            type='number'
-            placeholder='Ancho'
-          />
+        <div className='flex-1'>
+          <Label className='mb-2'>Ancho</Label>
+          <Field name='ancho'>
+            {({ input }) => <Input {...input} type='number' placeholder='Ancho' className='mt-1' />}
+          </Field>
         </div>
-        <div>
-          <label className='mb-2'>Largo</label>
-          <Field
-            className='form-control'
-            name='largo'
-            component='input'
-            type='number'
-            placeholder='Largo'
-          />
+        <div className='flex-1'>
+          <Label className='mb-2'>Largo</Label>
+          <Field name='largo'>
+            {({ input }) => <Input {...input} type='number' placeholder='Largo' className='mt-1' />}
+          </Field>
         </div>
 
         {/* Campo Peso (actualizado automáticamente) */}
         {pesoVolumetrico >= 0 && (
-          <div>
-            <label className='mb-2'>Peso Volumétrico</label>
-            <Field
-              className='form-control'
-              name='pesoVolumetrico'
-              component='input'
-              type='number'
-              placeholder='pesoVolumetrico'
-              // No es necesario establecer el valor aquí; se gestiona a través de form.change
-            />
+          <div className='flex-1'>
+            <Label className='mb-2'>Peso Volumétrico</Label>
+            <Field name='pesoVolumetrico'>
+              {({ input }) => (
+                <Input {...input} type='number' placeholder='Peso volumétrico' className='mt-1' />
+              )}
+            </Field>
           </div>
         )}
         {/* Campo Peso en Kgs si medidas no superan 120cm */}
         {pesoVolumetrico <= -1 && (
-          <div>
-            <label className='mb-2'>Peso en Kilos</label>
-            <Field
-              className='form-control'
-              name='pesoKgs'
-              component='input'
-              type='number'
-              placeholder='Peso Kgs'
-            />
+          <div className='flex-1'>
+            <Label className='mb-2'>Peso en Kilos</Label>
+            <Field name='pesoKgs'>
+              {({ input }) => (
+                <Input {...input} type='number' placeholder='Peso Kgs' className='mt-1' />
+              )}
+            </Field>
           </div>
         )}
 
         {/* Campo Precio (actualizado automáticamente) */}
-        <div>
-          <label className='mb-2'>Precio Estimado en €</label>
-          <Field
-            className='form-control'
-            name='precioEstimado'
-            component='input'
-            type='number'
-            placeholder='precioEstimado'
-            // No es necesario establecer el valor aquí; se gestiona a través de form.change
-          />
+        <div className='flex-1'>
+          <Label className='mb-2'>Precio Estimado en €</Label>
+          <Field name='precioEstimado'>
+            {({ input }) => (
+              <Input {...input} type='number' placeholder='Precio estimado' className='mt-1' />
+            )}
+          </Field>
         </div>
       </div>
     </div>

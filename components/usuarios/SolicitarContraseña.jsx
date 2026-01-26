@@ -4,6 +4,9 @@ import { useDispatch } from 'react-redux';
 import Link from 'next/link';
 import { Field, Form } from 'react-final-form';
 import { resetPassword } from '@/reduxLib/slices/authSlice';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 
 function SolicitarContraseña() {
   const dispatch = useDispatch();
@@ -19,42 +22,48 @@ function SolicitarContraseña() {
 
   return (
     <div className=' '>
-      <div className=' row justify-content-center' style={{ marginTop: '50px' }}>
-        <div className='col col-lg-4 col-xl-4 '>
-          <img
-            src='/LOGO_CIRCULAR_SIN_FONDO.png'
-            alt='WindyMArket_Logo windymarket windsurf segunda mano'
-            style={{ width: '20rem', objectFit: 'contain' }}
-            className='mx-auto d-block'
-          ></img>
-        </div>
-        <div className='col col-lg-4 col-xl-4 ms-2'>
-          <div className='ounded  p-3 bg-transparent'>
+      <div className='flex justify-center mt-12'>
+      <div className='w-full max-w-md lg:max-w-lg'>
+        <img
+          src='/LOGO_CIRCULAR_SIN_FONDO.png'
+          alt='WindyMarket_Logo windymarket windsurf segunda mano'
+          className='w-80 object-contain mx-auto block'
+        />
+      </div>
+      <div className='w-full max-w-md lg:max-w-lg ml-4'>
+          <div className='rounded  p-3 bg-transparent'>
             <div className='text-center'>
-              <h3 className='loginH3'>Recupera tu Acceso</h3>
+              <h3 className='font-saira text-2xl mb-4'>Recupera tu Acceso</h3>
             </div>
             <Form
               onSubmit={handleRegister}
               render={({ handleSubmit, values }) => (
-                <form onSubmit={handleSubmit}>
-                  <div>
-                    <label htmlFor='email' className='loginLabel'>
-                      Email
-                    </label>
-                    <Field className='form-control mb-2' name='email' component='input' />
-                  </div>
-                  {/*   <pre className='bg-success'>{JSON.stringify(values, 0, 2)}</pre> */}
-                  <div className='form-group text-center'>
-                    <button className='btn btn-outline-info btn-block '>Solicitar Cambio</button>
+                <form onSubmit={handleSubmit} className='space-y-4'>
+                  <Field name='email'>
+                    {({ input, meta }) => (
+                      <div>
+                        <Label>Email</Label>
+                        <Input {...input} id='email' type='email' className='mt-1' />
+                        {(meta.error || meta.submitError) && meta.touched && (
+                          <span className='error'>{meta.error || meta.submitError}</span>
+                        )}
+                      </div>
+                    )}
+                  </Field>
+                  
+                  <div className='text-center'>
+                    <Button type='submit' variant='outline' className='w-full mt-3'>
+                      Solicitar Cambio
+                    </Button>
                   </div>
                 </form>
               )}
             />
-            <div className='row mt-4'>
-              <Link href='/login' className='col-md-6'>
+            <div className='grid grid-cols-2 gap-4 mt-4'>
+              <Link href='/login' className='text-windy-cyan hover:underline'>
                 Inicia Sesion
               </Link>
-              <Link href='/nuevousuario' className='col-md-6'>
+              <Link href='/nuevousuario' className='text-windy-cyan hover:underline'>
                 Registrate
               </Link>
             </div>

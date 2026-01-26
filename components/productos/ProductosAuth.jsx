@@ -2,10 +2,9 @@
 
 import { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import './Producto.css';
 import ProductoUser from './ProductoUser';
 import { cargarProductosAuthor } from '@/helpers/utils';
-import { useRouter, usePathname } from 'next/navigation'; 
+import { useRouter, usePathname } from 'next/navigation';
 
 const ProductosAuth = () => {
   const productos = useSelector((state) => state.products.productsAuth);
@@ -22,16 +21,19 @@ const ProductosAuth = () => {
 
   return (
     <Fragment>
-      <div className='container mt-4 '>
-        <div className='card'></div>
-      </div>
-      <div
-        className='row row-cols-2 row-cols-xs-2 
-      row-cols-sm-2 row-cols-lg-4 g-3 justify-content-center mt-2'
-      >
-        {!productos
-          ? null
-          : productos.map((producto) => <ProductoUser key={producto._id} producto={producto} />)}
+      <div className='max-w-7xl mx-auto mt-4 px-4'>
+        <div
+          className='
+    grid
+    grid-cols-[repeat(auto-fit,minmax(280px,280px))]
+    gap-6
+    justify-center
+  '
+        >
+          {productos?.map((producto) => (
+            <ProductoUser key={producto._id} producto={producto} />
+          ))}
+        </div>
       </div>
     </Fragment>
   );

@@ -1,8 +1,7 @@
 import { Saira_Stencil_One, Saira } from 'next/font/google';
-import 'bootstrap/dist/css/bootstrap.css'
+import './globals.css';
 import Navigation from '@/components/header/Navigation';
 import Providers from '@/reduxLib/provider';
-import BootstrapClient from '@/components/BootstrapClient';
 
 
 const sairaStencil = Saira_Stencil_One({
@@ -29,7 +28,6 @@ export default function RootLayout({ children }) {
       </head>
       <Providers>
         <body className={`${sairaStencil.className} ${sairaFont.className}`}>
-          <BootstrapClient />
           <header>
             <Navigation />
           </header>

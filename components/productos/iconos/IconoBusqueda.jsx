@@ -24,21 +24,9 @@ function IconoBusqueda({ typeProduct, handleIconClick }) {
       break;
   }
   return (
-    <div className='col-md'>
-      <div
-        className='card text-center mb-3 rounded border-light'
-        onClick={() => handleIconClick(typeProduct)}
-      >
-        <div className='col-md mx-auto'>
-          <img
-            className='card-img-top'
-            src={icono}
-            alt={typeProduct}
-            style={{ width: '60px', height: '60px' }}
-          />
-        </div>
-        <h6>{typeProduct}</h6>
-      </div>
+    <div className='flex flex-col items-center cursor-pointer' onClick={() => handleIconClick(typeProduct)}>
+      <img className='w-[60px] h-[60px] object-contain' src={icono} alt={typeProduct} />
+      <h6 className='text-sm mt-1 font-saira'>{typeProduct}</h6>
     </div>
   );
 }

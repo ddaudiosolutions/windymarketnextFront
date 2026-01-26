@@ -4,7 +4,6 @@ import { Fragment, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import './VerProducto.css';
 import { toDate, format } from 'date-fns';
 import { cargarProductoIdApi, cargarProductosAuthor, extraerIdDeURL } from '../../helpers/utils';
 import Footer from '../WhatsApp/layout/Footer';
@@ -27,9 +26,17 @@ import BotonReservarProducto from './botonesProducto/BotonReservarProducto';
 import BotonVendidoProducto from './botonesProducto/BotonVendidoProducto';
 import BotonEditarProducto from './botonesProducto/BotonEditarProducto';
 
-import { /* FacebookIcon, FacebookShareButton, */ WhatsappShareButton } from 'react-share';
+import { WhatsappShareButton } from 'react-share';
 import WhatsappIconShare from './iconos/WhatsappIconShare';
-/* import MetaTagsDinamicas from '../gestionOpenGraph/MetaTagsDinamicas'; */
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
 
 const VerProducto = () => {
   const producto = useSelector((state) => state.products.productoId);
@@ -184,32 +191,29 @@ const VerProducto = () => {
         datosRemitente={producto}
       />
       <div>{/* <GoogleAds /> */}</div>
-      <div className='container col-sm-9 col-md-9 col-lg-7 col-xl-7'>
-        <div className='cardVerProducto mt-3 '>
-          <div className='d-flex justify-content-between'>
+      <div className='container mx-auto px-4 max-w-3xl'>
+        <div className='bg-white rounded-xl shadow-sm mt-3 p-4'>
+          <div className='flex justify-between items-start'>
             <div
-              className='d-flex justify-content-start  mt-3'
-              type='button'
+              className='flex items-center cursor-pointer'
               onClick={() => cargarProductosAuthor(dispatch, router, producto)}
             >
-              {producto.author.imagesAvatar[0].url === undefined ? (
-                <img
-                  src='/Avatar_Default2.png'
-                  className='card-img-topAvatar ms-4 mt-3'
-                  alt='avatar for User windymarket windsurf segunda mano'
-                ></img>
-              ) : (
-                <img
-                  src={producto.author.imagesAvatar[0].url}
-                  className='card-img-topAvatar ms-4 mt-3'
-                  alt='avatarUser windymarket windsurf segunda mano'
-                ></img>
-              )}
-              <h5 className='h2Author ms-2 mt-4'>{authorName}</h5>
+              <Avatar className="w-12 h-12">
+                <AvatarImage
+                  src={producto.author.imagesAvatar[0]?.url || '/Avatar_Default2.png'}
+                  alt={`${authorName} avatar`}
+                />
+                <AvatarFallback className="bg-windy-cyan text-white">
+                  {authorName?.charAt(0)?.toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <h5 className='font-saira-stencil text-windy-cyan ml-3 text-lg'>
+                {authorName}
+              </h5>
             </div>
             <div>
               {userId === producto.author._id && (
-                <div className='mt-4'>
+                <div className='flex gap-2 flex-wrap justify-end'>
                   <BotonReservarProducto
                     reservado={reservado}
                     handleReservado={handleReservado}
@@ -225,160 +229,119 @@ const VerProducto = () => {
               )}
             </div>
           </div>
-          <div>
-            <div
-              id='carouselExampleControlsNoTouching'
-              className='carousel carousel-dark slide'
-              data-bs-touch='false'
-              data-bs-interval='false'
-            >
-              <div className='carousel-inner'>
-                <div className='carousel-item active'>
-                  <a
-                    className=' '
-                    href={
-                      producto.images && producto.images.length > 0 && producto.images[0].url
-                        ? producto.images[0].url
-                        : 'https://res.cloudinary.com/dhe1gcno9/image/upload/v1707814598/ProductosMarketV2/WINDY_fakeImage_fbkd2s.jpg'
-                    }
-                    target='_blank'
-                    rel='noreferrer'
-                  >
-                    <img
-                      src={
-                        producto.images && producto.images.length > 0 && producto.images[0].url
-                          ? producto.images[0].url
-                          : 'https://res.cloudinary.com/dhe1gcno9/image/upload/v1707814598/ProductosMarketV2/WINDY_fakeImage_fbkd2s.jpg'
-                      }
-                      style={{ height: '25rem' }}
-                      key={
-                        producto.images && producto.images.length > 0 && producto.images[0]._id
-                          ? producto.images[0]._id
-                          : 'fakeImage'
-                      }
-                      className='card-img-top mt-3'
-                      alt='...'
-                    ></img>
-                    {reservado && (
-                      <div className='text-container mt-3'>
-                        <div className='text-over-image'>Reservado</div>
-                      </div>
-                    )}
-                    {vendido && (
-                      <div className='text-container mt-3'>
-                        <div className='text-over-image'>Vendido</div>
-                      </div>
-                    )}
-                  </a>
-                </div>
-                {producto.images.slice(1).map((image) => (
-                  <div className='carousel-item' key={image._id}>
-                    <a className=' ' href={image.url} target='_blank' rel='noreferrer'>
+
+          <div className='mt-4 relative'>
+            <Carousel className="w-full">
+              <CarouselContent>
+                {(producto.images && producto.images.length > 0 ? producto.images : [{ url: 'https://res.cloudinary.com/dhe1gcno9/image/upload/v1707814598/ProductosMarketV2/WINDY_fakeImage_fbkd2s.jpg', _id: 'fakeImage' }]).map((image, index) => (
+                  <CarouselItem key={image._id || index}>
+                    <a href={image.url} target='_blank' rel='noreferrer' className="block relative">
                       <img
                         src={image.url}
-                        style={{ height: '25rem' }}
-                        key={image._id}
-                        className='card-img-top mt-3'
-                        alt='... windymarket windsurf segunda mano'
-                      ></img>
+                        className='w-full h-96 object-contain bg-gray-100 rounded-lg'
+                        alt={`Producto imagen ${index + 1}`}
+                      />
+                      {reservado && (
+                        <div className='absolute bottom-4 left-0 right-0 bg-black/70 py-2'>
+                          <span className='text-white font-saira-stencil text-base block text-center'>
+                            Reservado
+                          </span>
+                        </div>
+                      )}
+                      {vendido && (
+                        <div className='absolute bottom-4 left-0 right-0 bg-black/70 py-2'>
+                          <span className='text-white font-saira-stencil text-base block text-center'>
+                            Vendido
+                          </span>
+                        </div>
+                      )}
                     </a>
-                  </div>
+                  </CarouselItem>
                 ))}
-              </div>
-              <button
-                className='carousel-control-prev'
-                type='button'
-                data-bs-target='#carouselExampleControlsNoTouching'
-                data-bs-slide='prev'
-              >
-                <span className='carousel-control-prev-icon' aria-hidden='true'></span>
-                <span className='visually-hidden'>Previous</span>
-              </button>
-              <button
-                className='carousel-control-next'
-                type='button'
-                data-bs-target='#carouselExampleControlsNoTouching'
-                data-bs-slide='next'
-              >
-                <span className='carousel-control-next-icon' aria-hidden='true'></span>
-                <span className='visually-hidden'>Next</span>
-              </button>
-            </div>
+              </CarouselContent>
+              {producto.images && producto.images.length > 1 && (
+                <>
+                  <CarouselPrevious className="left-2" />
+                  <CarouselNext className="right-2" />
+                </>
+              )}
+            </Carousel>
           </div>
-          <div className='mt-3 me-2 d-flex justify-content-end'>
+          <div className='mt-3 flex justify-end'>
             <WhatsappShareButton url={url}>
               <WhatsappIconShare size={25} />
             </WhatsappShareButton>
-
-            {/* <FacebookShareButton url={url} className='ms-3'>
-              <FacebookIcon size={30} round={true} />
-            </FacebookShareButton> */}
           </div>
-          <div className='card-body'>
-            <h4 className=' price-hp1'>Precio: {producto.price} €</h4>
-            <h5 className='card-title titleH5VerProducto rounded mt-1'>{producto.title}</h5>
-            <div className='container'>
-              <div className='row align-items-end mb-3 mt-4'>
-                {isLogged && producto.delivery && (
-                  <div className='col-auto ' style={{ paddingLeft: 0 }}>
-                    <BotonGestionEnvio setShowForm={setShowForm} />
-                  </div>
-                )}
 
-                <div className='col d-flex justify-content-end'>
-                  <div className='col-3 pproductoTitleFecha '>{clonedDateFormat}</div>
-                  {isLogged &&
-                    (favorite ? (
-                      <BsHeartFill
-                        className='col-1  mb-1 rounded'
-                        style={{ color: 'red' }}
-                        onClick={() => {
-                          handleFavorite();
-                        }}
-                      />
-                    ) : (
-                      <BsHeart
-                        className='col-1   mb-1 rounded'
-                        style={{ color: 'black' }}
-                        onClick={() => {
-                          handleFavorite();
-                        }}
-                      />
-                    ))}
-                </div>
-              </div>
-            </div>
-            <div className='card-header mb-2'>
-              <p className='card-title pproductoTitle'>{producto.description}</p>
-            </div>
-            <div className='card-header'>
-              <div className='card-title pproductoTitle'>
+          <div className='mt-4'>
+            <h4 className='font-saira-stencil text-windy-cyan text-2xl mb-2'>
+              Precio: {producto.price} €
+            </h4>
+            <h5 className='font-saira text-gray-800 text-lg mb-4'>
+              {producto.title}
+            </h5>
+
+            <div className='flex items-center justify-between mb-4'>
+              {isLogged && producto.delivery && (
+                <BotonGestionEnvio setShowForm={setShowForm} />
+              )}
+
+              <div className='flex items-center gap-4 ml-auto'>
+                <span className='font-saira text-gray-500 text-sm'>
+                  {clonedDateFormat}
+                </span>
                 {isLogged && (
-                  <>
-                    {!producto.author.showPhone && (
-                      <div>
-                        <label>Llámame o manda un WhatsApp: {producto.author.telefono}</label>
-                      </div>
-                    )}
-                    <ContactoentreUsers
-                      productId={productoId}
-                      sellerEmail={producto.author.email}
-                      sellerName={producto.author.nombre}
+                  favorite ? (
+                    <BsHeartFill
+                      className='text-red-500 cursor-pointer text-xl'
+                      onClick={handleFavorite}
                     />
-                  </>
+                  ) : (
+                    <BsHeart
+                      className='text-black cursor-pointer text-xl'
+                      onClick={handleFavorite}
+                    />
+                  )
                 )}
-                {/* <SendMessage phoneNumber={producto.author.telefono} /> */}
-                <Footer />
               </div>
             </div>
 
-            <div className='text-center my-4'>
-              <Link
-                href={`/productos?busqueda=${producto.categoria}&page=${paginaActual}`}
-                className='btn btn-outline-success'
+            <div className='bg-gray-50 rounded-lg p-4 mb-4'>
+              <p className='font-saira text-gray-700 whitespace-pre-wrap'>
+                {producto.description}
+              </p>
+            </div>
+
+            <div className='bg-gray-50 rounded-lg p-4'>
+              {isLogged && (
+                <>
+                  {!producto.author.showPhone && (
+                    <div className='mb-2'>
+                      <label className='font-saira text-gray-700'>
+                        Llámame o manda un WhatsApp: {producto.author.telefono}
+                      </label>
+                    </div>
+                  )}
+                  <ContactoentreUsers
+                    productId={productoId}
+                    sellerEmail={producto.author.email}
+                    sellerName={producto.author.nombre}
+                  />
+                </>
+              )}
+              <Footer />
+            </div>
+
+            <div className='text-center my-6'>
+              <Button
+                variant="outline"
+                className="border-windy-cyan text-windy-cyan hover:bg-windy-cyan hover:text-white font-saira"
+                asChild
               >
-                Volver a Categoria: {producto.categoria.toUpperCase()}
-              </Link>
+                <Link href={`/productos?busqueda=${producto.categoria}&page=${paginaActual}`}>
+                  Volver a Categoria: {producto.categoria.toUpperCase()}
+                </Link>
+              </Button>
             </div>
           </div>
         </div>

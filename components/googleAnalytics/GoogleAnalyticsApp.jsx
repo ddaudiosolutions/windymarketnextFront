@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
-import { Button } from 'react-bootstrap';
+import { Button } from '@/components/ui/button';
 // eslint-disable-next-line max-len
 /* import web from '../../client_secret_65165896958-keasbil4r5ui0mlvafu64svvcm4sb6cv.apps.googleusercontent.com.json'; */
 
