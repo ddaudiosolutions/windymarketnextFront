@@ -12,7 +12,7 @@ export const getFavoriteProducts = createAsyncThunk(
       const getFavoriteProducts = await UsersService.getFavoriteProducts(productId);
       return getFavoriteProducts.data;
     } catch (error) {
-      throw rejectedWithValue(error.message);
+      return rejectedWithValue(error.message);
     }
   }
 );

@@ -19,11 +19,11 @@ const Login = () => {
 
   const submitLogin = (values) => {
     setLoading(true);
+
     dispatch(loginUsuario({ email: values.email, password: values.password }))
-      .then((res) => {
-        if (res.payload.status === 200) {
-          router.push('/');
-        }
+      .unwrap()
+      .then(() => {
+        router.push('/');
       })
       .catch((error) => {
         console.error('Error en login:', error);
@@ -86,7 +86,9 @@ const Login = () => {
                   {submitError && <div className='error'>{submitError}</div>}
                   <div className='form-group text-center'>
                     <Button
-                      type='submit' variant='outline' className='w-full mt-3'
+                      type='submit'
+                      variant='outline'
+                      className='w-full mt-3'
                       disabled={loading}
                       onClick={trackLoginButton}
                     >

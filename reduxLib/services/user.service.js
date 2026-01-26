@@ -1,49 +1,32 @@
-import clienteAxios from '../../config/axios';
-import { getAuthHeaders } from '@/helpers/utils';
-/* const user = sessionStorage.getItem('userToken'); */
-let data = {
-  headers: {
-    'x-auth-token': 'user',
-  },
-  // body: {imagenData},
-};
+import apiClient from '@/lib/apiClient';
 
 const registroUsuario = (newUserData) => {
   const { nombre, email, password } = newUserData;
-  return clienteAxios.post('usuarios/newuser', { nombre, email, password });
+  return apiClient.post('usuarios/newuser', { nombre, email, password });
 };
 
 /* const confirmarCuenta = (id) => {    
-  return clienteAxios.post(`usuarios/confirmarcuenta/${id}`);
+  return apiClient.post(`usuarios/confirmarcuenta/${id}`);
 } */
 
 const loginUsuarioActions = (userData) => {
-  return clienteAxios.post('auth', userData, data);
+  return apiClient.post('auth', userData);
 };
 
 // CARGAR DATOS DE USUARIO DESDE LA BB DE DATOS
 const obtenerDatosUsuario = (userId) => {
-
-  if (userId !== null) {
-    data = {
-      headers: {
-        'x-auth-token': sessionStorage.getItem('userToken'),
-      },
-      // body: {imagenData},
-    };
-    return clienteAxios.get(`usuarios/${userId}`, getAuthHeaders());
-  }
-  return clienteAxios.get(`usuarios/${userId}`, getAuthHeaders());
+  if (!userId) return Promise.reject('No userId');
+  return apiClient.get(`usuarios/${userId}`);
 };
 
 // EDITAR USUARIO
 const editarUsuario = (userData) => {
-  return clienteAxios.put(`usuarios/editar/${userData.id}`, userData.formData, getAuthHeaders());
+  return apiClient.put(`usuarios/editar/${userData.id}`, userData.formData);
 };
 
 // ELIMINAR USUARIO
 const eliminarUsuario = (id) => {
-  return clienteAxios.delete(`usuarios/${id}`, getAuthHeaders());
+  return apiClient.delete(`usuarios/${id}`);
 };
 
 // LOG-OUT USUARIO
@@ -53,22 +36,22 @@ const logoutUsuario = (nombreUser) => {
 
 /// AÑADIR PRODUCTO A FAVORITOS
 const addFavoriteProduct = (productData) => {
-  return clienteAxios.post('favoriteProducts/addFavorite', productData, getAuthHeaders());
+  return apiClient.post('favoriteProducts/addFavorite', productData);
 };
 
 /// BORRAR PRODUCTO DE FAVORITOS DE UN USUARIO
 const removeFavorite = (productId) => {
-  return clienteAxios.post('favoriteProducts/removeFavorite', productId, getAuthHeaders());
+  return apiClient.post('favoriteProducts/removeFavorite', productId);
 };
 
 /// OBTENER LOS PRODUCTOS DE FAVORITOS DE UN USUARIO
 const getFavoriteProducts = (favoriteProductsId) => {
-  return clienteAxios.post('favoriteProducts/getFavorite', favoriteProductsId, getAuthHeaders());
+  return apiClient.post('favoriteProducts/getFavorite', favoriteProductsId);
 };
 
 // Enviar email interes por producto entre users
 const sendMailToUser = (emailData) => {
-  return clienteAxios.post('usuarios/correoentreusuarios', emailData);
+  return apiClient.post('usuarios/correoentreusuarios', emailData);
 };
 
 const UsersService = {

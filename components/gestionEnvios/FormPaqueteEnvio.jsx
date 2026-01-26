@@ -93,7 +93,7 @@ const FormPaqueteEnvio = (props) => {
 
         {/* Campo Precio (actualizado automáticamente) */}
         <div className='flex-1'>
-          <Label className='mb-2'>Precio Estimado en €</Label>
+          <Label className='mb-2'>Precio Estimado (€)</Label>
           <Field name='precioEstimado'>
             {({ input }) => (
               <Input {...input} type='number' placeholder='Precio estimado' className='mt-1' />

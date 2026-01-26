@@ -1,9 +1,8 @@
-import { Fragment } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   borrarProducto,
   setProductId,
@@ -15,6 +14,7 @@ const ProductoUser = ({ producto }) => {
   const { title, price, images, _id, description } = producto;
   const dispatch = useDispatch();
   const router = useRouter();
+  const user = useSelector((state) => state.users.user);
 
   // Confirmar si desea Eliminar el Producto
   const confirmarBorrarProducto = (_id) => {
@@ -85,7 +85,7 @@ const ProductoUser = ({ producto }) => {
           </CardContent>
         </Card>
 
-        {producto.author._id === sessionStorage.getItem('userId') && (
+        {user && producto.author._id === user._id && (
           <div className='flex gap-2 mt-3 justify-center'>
             <Button
               variant='outline'

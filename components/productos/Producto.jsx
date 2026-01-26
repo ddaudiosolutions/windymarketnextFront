@@ -10,44 +10,30 @@ import { Card, CardContent } from '@/components/ui/card';
 
 const Producto = ({ producto }) => {
   const { title, price, images, delivery } = producto;
-  const favoritos = useSelector((state) => state.users?.user?.favoritos || []);
-  const productoFavoritos =
-    sessionStorage.getItem('userId') !== null && favoritos !== undefined ? favoritos : null;
   const dispatch = useDispatch();
   const router = useRouter();
-  const existe = (productoFavoritos, producto) => {
-    return _.includes(productoFavoritos, producto);
-  };
+  const user = useSelector((state) => state.users.user);
+  const favoritos = user?.favoritos || [];
 
-  const verProductoId = (producto) => {
+  const esFavorito = _.includes(favoritos, producto._id);
+
+  const verProductoId = () => {
     dispatch(setProductId(producto));
     router.push(`/productos/${producto._id}`);
   };
 
-  const [favorite, setFavorite] = useState(existe(productoFavoritos, producto._id));
-
   const handleFavorite = () => {
-    setFavorite(!favorite);
-    if (favorite) {
-      dispatch(
-        removeFavoriteProduct({
-          productId: producto._id,
-          userId: sessionStorage.getItem('userId'),
-        })
-      ).then((res) => {
-        if (res.payload.status === 200) {
-          dispatch(getFavoriteProducts(res.payload.data.user.favoritos));
-        }
-      });
-    } else if (favorite === false) {
-      dispatch(
-        addFavoriteProduct({ productId: producto._id, userId: sessionStorage.getItem('userId') })
-      ).then((res) => {
-        if (res.payload.status === 200) {
-          dispatch(getFavoriteProducts(res.payload.data.user.favoritos));
-        }
-      });
-    }
+    if (!user) return;
+
+    const action = esFavorito
+      ? removeFavoriteProduct({ productId: producto._id, userId: user._id })
+      : addFavoriteProduct({ productId: producto._id, userId: user._id });
+
+    dispatch(action).then((res) => {
+      if (res.payload?.status === 200) {
+        dispatch(getFavoriteProducts(res.payload.data.user.favoritos));
+      }
+    });
   };
 
   const firstImage =
@@ -58,71 +44,54 @@ const Producto = ({ producto }) => {
   const firstFilename = (images.length === 0 || images[0].filename) ?? 'WindyMarket';
 
   return (
-    <Card className="product-card">
-      <div
-        className="relative"
-        onClick={() => verProductoId(producto)}
-      >
-        <img
-          src={firstImage}
-          className="w-full"
-          alt={firstFilename}
-        />
+    <Card className='product-card'>
+      <div className='relative' onClick={() => verProductoId(producto)}>
+        <img src={firstImage} className='w-full' alt={firstFilename} />
         {producto.reservado && (
-          <div className="absolute bottom-0 left-0 right-0 bg-black/70 py-2">
-            <span className="text-white font-saira-stencil text-sm block text-center">
+          <div className='absolute bottom-0 left-0 right-0 bg-black/70 py-2'>
+            <span className='text-white font-saira-stencil text-sm block text-center'>
               Reservado
             </span>
           </div>
         )}
         {producto.vendido && (
-          <div className="absolute bottom-0 left-0 right-0 bg-black/70 py-2">
-            <span className="text-white font-saira-stencil text-sm block text-center">
-              Vendido
-            </span>
+          <div className='absolute bottom-0 left-0 right-0 bg-black/70 py-2'>
+            <span className='text-white font-saira-stencil text-sm block text-center'>Vendido</span>
           </div>
         )}
       </div>
-      <CardContent>
-        <div className="flex items-center justify-between">
-          <h5 className="font-saira text-black text-sm font-medium">
-            {price}€
-          </h5>
-          {sessionStorage.getItem('userId') !== null && (
-            favorite ? (
-              <BsHeartFill
-                className="text-red-500 cursor-pointer text-lg"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleFavorite();
-                }}
+      <CardContent className='space-y-1 p-2'>
+        {/* Precio + acciones */}
+        <div className='flex items-center justify-between'>
+          <span className='text-base font-semibold text-slate-900'>{price}€</span>
+
+          <div className='flex items-center gap-2'>
+            {delivery && (
+              <img
+                src='/images/wm_delivery.jpg'
+                alt='DeliveryWindymarket_icon'
+                className='h-4 w-4 opacity-80'
+                title='Envío disponible'
               />
-            ) : (
-              <BsHeart
-                className="text-black cursor-pointer text-lg"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleFavorite();
-                }}
-              />
-            )
-          )}
-        </div>
-        <h5 className="font-saira text-windy-cyan text-sm font-normal truncate overflow-hidden whitespace-nowrap">
-          {title}
-        </h5>
-        {delivery && (
-          <div className="flex items-center mt-1">
-            <img
-              src="/images/wm_delivery.jpg"
-              alt="DeliveryWindymarket_icon"
-              className="w-6 h-6 object-contain"
-            />
-            <h6 className="font-saira-stencil text-windy-cyan text-xs ml-2">
-              Envio Disponible
-            </h6>
+            )}
+
+            {user &&
+              (esFavorito ? (
+                <BsHeartFill
+                  className='text-red-500 text-lg cursor-pointer'
+                  onClick={handleFavorite}
+                />
+              ) : (
+                <BsHeart
+                  className='text-slate-700 text-lg cursor-pointer'
+                  onClick={handleFavorite}
+                />
+              ))}
           </div>
-        )}
+        </div>
+
+        {/* Título */}
+        <p className='truncate text-sm text-slate-500'>{title}</p>
       </CardContent>
     </Card>
   );

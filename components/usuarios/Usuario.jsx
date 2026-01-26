@@ -1,12 +1,12 @@
 'use client';
 
-import { Fragment, useEffect } from 'react';
+import { Fragment } from 'react';
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
-import { eliminarUsuario, obtenerDatosUsuario } from '@/reduxLib/slices/usersSlice';
+import { eliminarUsuario } from '@/reduxLib/slices/usersSlice';
 import Swal from 'sweetalert2';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -14,13 +14,6 @@ import { Switch } from '@/components/ui/switch';
 const Usuario = () => {
   const dispatch = useDispatch();
   const datosUsuario = useSelector((state) => state.users.user);
-
-  useEffect(() => {
-    const userId = typeof window !== 'undefined' ? sessionStorage.getItem('userId') : null;
-    if (!datosUsuario && userId) {
-      dispatch(obtenerDatosUsuario(userId));
-    }
-  }, [dispatch, datosUsuario]);
 
   if (!datosUsuario) {
     return (

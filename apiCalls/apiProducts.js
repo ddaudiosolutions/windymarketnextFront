@@ -1,10 +1,10 @@
 export const fetchProducts = ({ busquedapage }) => {
   /*  console.log('busquedapage', busquedapage) */
-  const backendUrl = process.env.NEXT_BACKEND_URL
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
   console.log('Backend URL:', backendUrl);
   const { busquedaquery, pagequery } = busquedapage;
   return fetch(
-    process.env.NEXT_BACKEND_URL + `productos?busqueda=${busquedaquery}&page=${pagequery}`, {
+    process.env.NEXT_PUBLIC_BACKEND_URL + `productos?busqueda=${busquedaquery}&page=${pagequery}`, {
     next: {
       revalidate: 60
     }
@@ -16,7 +16,7 @@ export const fetchProductId = (productId) => {
   // Aceptar directamente el ID del producto
   const idProducto = typeof productId === 'string' ? productId : productId.producto;
   return fetch(
-    process.env.NEXT_BACKEND_URL + `productos/${idProducto}`, {
+    process.env.NEXT_PUBLIC_BACKEND_URL + `productos/${idProducto}`, {
     next: {
       revalidate: 60
     }

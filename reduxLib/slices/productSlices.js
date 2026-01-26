@@ -20,7 +20,7 @@ export const obtenerProductos = createAsyncThunk(
       const products = await ProductService.obtenerCategoriaActions(pageAndData);
       return products;
     } catch (error) {
-      throw rejectedWithValue(error.message);
+      return rejectedWithValue(error.message);
     }
   }
 );
@@ -30,13 +30,13 @@ export const obtenerProductosMasVistos = createAsyncThunk(
   async (data, { rejectedWithValue }) => {
     /* console.log('entrando en productos mas vistos', data); */
     try {
-      const mostviewedProductos = await ProductService.obtenerProductosMasVistos();/* 
+      const mostviewedProductos = await ProductService.obtenerProductosMasVistos(); /* 
       console.log('mostviewedProductosMasVistos', mostviewedProductos); */
       return mostviewedProductos;
     } catch (error) {
       /* console.log('entrando en productos mas vistos');
       console.log('error mostviewedProductosMasVistos', error); */
-      throw rejectedWithValue(error.message);
+      return rejectedWithValue(error.message);
     }
   }
 );
@@ -48,7 +48,7 @@ export const crearNuevoProducto = createAsyncThunk(
       const products = await ProductService.crearNuevoProductoAction(productData);
       return products;
     } catch (error) {
-      throw rejectedWithValue(error.message);
+      return rejectedWithValue(error.message);
     }
   }
 );
@@ -60,7 +60,7 @@ export const obtenerProductosUser = createAsyncThunk(
       const products = await ProductService.obtenerProductosUser(pageNuser);
       return products;
     } catch (error) {
-      throw rejectedWithValue(error.message);
+      return rejectedWithValue(error.message);
     }
   }
 );
@@ -72,7 +72,7 @@ export const obtenerProductoIdApi = createAsyncThunk(
       const producto = await ProductService.obtenerProductoIdApi(productoid);
       return producto;
     } catch (error) {
-      throw rejectedWithValue(error.message);
+      return rejectedWithValue(error.message);
     }
   }
 );
@@ -84,7 +84,7 @@ export const obtenerProductosAuthor = createAsyncThunk(
       const producto = await ProductService.obtenerProductosAuthor(authorId);
       return producto;
     } catch (error) {
-      throw rejectedWithValue(error.message);
+      return rejectedWithValue(error.message);
     }
   }
 );
@@ -96,7 +96,7 @@ export const obtenerProductosPorPalabras = createAsyncThunk(
       const productosByWords = await ProductService.obtenerProductosPorPalabras(words);
       return productosByWords;
     } catch (error) {
-      throw rejectedWithValue(error.message);
+      return rejectedWithValue(error.message);
     }
   }
 );
@@ -108,7 +108,7 @@ export const editarProducto = createAsyncThunk(
       const producto = await ProductService.editarProducto(productData);
       return producto;
     } catch (error) {
-      throw rejectedWithValue(error.message);
+      return rejectedWithValue(error.message);
     }
   }
 );
@@ -120,7 +120,7 @@ export const borrarProducto = createAsyncThunk(
       const products = await ProductService.borrarProducto(id);
       return products;
     } catch (error) {
-      throw rejectedWithValue(error.message);
+      return rejectedWithValue(error.message);
     }
   }
 );
@@ -132,7 +132,7 @@ export const sendMailPegatinas = createAsyncThunk(
       const sendMailPegatinas = await ProductService.sendMailPegatinas(emailData);
       return sendMailPegatinas;
     } catch (error) {
-      throw rejectedWithValue(error.message);
+      return rejectedWithValue(error.message);
     }
   }
 );
@@ -144,7 +144,7 @@ export const changeReservedProductState = createAsyncThunk(
       const reservedState = await ProductService.editReservedState(reservedData);
       return reservedState;
     } catch (error) {
-      throw rejectedWithValue(error.message);
+      return rejectedWithValue(error.message);
     }
   }
 );
@@ -156,7 +156,7 @@ export const changeVendidoProductState = createAsyncThunk(
       const vendidoState = await ProductService.editVendidoState(vendidoData);
       return vendidoState;
     } catch (error) {
-      throw rejectedWithValue(error.message);
+      return rejectedWithValue(error.message);
     }
   }
 );
@@ -174,13 +174,15 @@ const productsSlices = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(obtenerProductos.fulfilled, (state, action) => {
-      console.log(action.payload)
+      console.log(action.payload);
       state.productos = action.payload.data;
     });
     builder.addCase(obtenerProductos.rejected, (state, action) => {
       Swal.fire({
-        title: 'Servidor Caido 2', text: `Estamos Teniendo Problemas con el servidor, Esperamos se reestablezca la conexión
-      lo antes posible`, imageUrl: './WINDMARKET_LOGO_CIRCULO_uadyzn.png'
+        title: 'Servidor Caido 2',
+        text: `Estamos Teniendo Problemas con el servidor, Esperamos se reestablezca la conexión
+      lo antes posible`,
+        imageUrl: './WINDMARKET_LOGO_CIRCULO_uadyzn.png',
       }).then(function () {
         navigateTo('/');
       });
@@ -242,7 +244,7 @@ const productsSlices = createSlice({
           text: `Email Enviado!! en breve recibiar un email con el precio definitivo 
             y el enlace de pago.
             Gracias por confiar tu envio a WindyMarket`,
-          icon: 'success'
+          icon: 'success',
         }).then(function () {
           navigateTo('/');
         });
