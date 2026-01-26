@@ -1,4 +1,6 @@
 import { Field, Form } from 'react-final-form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 const SearchByWords = ({ setSearchWords }) => {
   const onSubmit = async (values) => {
@@ -7,31 +9,33 @@ const SearchByWords = ({ setSearchWords }) => {
   };
 
   return (
-    <div className='row justify-content-center'>
-      <div className='col-9  mt-4'>
+    <div className='flex justify-center gap-2'>
+      <div className='flex-1 max-w-2xl mt-4'>
         <Form
           onSubmit={onSubmit}
           render={({ handleSubmit }) => (
             <form id='searchForm' onSubmit={handleSubmit}>
               <div>
-                <Field
-                  className='form-control'
-                  name='search'
-                  component='input'
-                  type='text'
-                  placeholder='Escribe tu búsqueda aquí'
-                />
+                <Field name='search'>
+                {({ input }) => (
+                  <Input
+                    {...input}
+                    type='text'
+                    placeholder='Escribe tu búsqueda aquí'
+                  />
+                )}
+              </Field>
               </div>
             </form>
           )}
         />
       </div>
-      <div className='col-1 '>
-        <button type='submit' form='searchForm' className='btn btn-success mt-4'>
+      <div className='mt-4'>
+        <Button type='submit' form='searchForm' variant='success'>
           Buscar
-        </button>
+        </Button>
       </div>
-    </div>
+      </div>
   );
 };
 

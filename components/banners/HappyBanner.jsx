@@ -1,7 +1,7 @@
 const HappyBanner = () => {
   return (
     <>
-      <div className='mt-3 justify-align-center'>
+      <div className=''>
         <h3 className='text-center'>
           <a href='https://www.happywindsurfbarcares.com' target='_blank' rel='noopener noreferrer'>
             <img

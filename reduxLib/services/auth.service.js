@@ -1,4 +1,4 @@
-import clienteAxios from '../config/axios';
+import clienteAxios from '../../config/axios';
 
 const checkAuth = (data) => {
   return clienteAxios.post(`auth/`, data);

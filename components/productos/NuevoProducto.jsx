@@ -1,8 +1,7 @@
 'use client';
 
 //* AQUI ESTARÁ EL FORMULARIO PARA EL PRODUCTO
-import styled from 'styled-components';
-import './NuevoProducto.module.css';
+
 import { useState, useEffect } from 'react';
 import FormData from 'form-data';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,13 +16,21 @@ import {
   verificarPesoImagenes,
 } from '@/helpers/utils';
 import FormPaqueteEnvio from '@/components/gestionEnvios/FormPaqueteEnvio';
-
-const Label = styled.label`
-  font-family: Saira;
-`;
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 const NuevoProducto = () => {
-  console.log('ENTRANDO EN NUEVOPRODUCTO')
+  console.log('ENTRANDO EN NUEVOPRODUCTO');
   const dispatch = useDispatch();
   const usuario = useSelector((state) => state.users.user);
   const [images, setImage] = useState('');
@@ -31,7 +38,7 @@ const NuevoProducto = () => {
   // Cargar datos del usuario al montar
   useEffect(() => {
     const userId = sessionStorage.getItem('userId');
-    console.log('NuevoProducto_userId', userId)
+    console.log('NuevoProducto_userId', userId);
     if (!usuario && userId) {
       dispatch(obtenerDatosUsuario(userId));
     }
@@ -40,7 +47,7 @@ const NuevoProducto = () => {
   // Mostrar loading mientras carga el usuario
   if (!usuario) {
     return (
-      <div className='container text-center mt-5'>
+      <div className='main-container text-center mt-12'>
         <p>Cargando datos del usuario...</p>
       </div>
     );
@@ -92,10 +99,10 @@ const NuevoProducto = () => {
   const required = (value) => value === (undefined || '') && 'Debes Rellenar este campo';
 
   return (
-    <div className='container-fluid  rounded my-4 p-2'>
-      <div className='d-flex justify-content-center'>
-        <div className='rounded col-12 col-sm-12 shadow-lg p-3 bg-trasparent'>
-          <h2 className='text-center mx-auto font-wight-bold mb-5'>Agregar Nuevo Producto</h2>
+    <div className='main-container rounded my-4 p-2'>
+      <div className='flex justify-center'>
+        <div className='rounded w-full shadow-lg p-3 bg-transparent'>
+          <h2 className='text-center mx-auto font-bold mb-5 font-saira'>Agregar Nuevo Producto</h2>
           <Form
             onSubmit={submitNuevoProducto}
             initialValues={{
@@ -111,87 +118,101 @@ const NuevoProducto = () => {
                 <div className='mb-3'>
                   <Field name='categoria' validate={required}>
                     {({ input, meta }) => (
-                      <div>
+                      <div className='mb-3'>
                         <Label className='mb-2'>Selecciona el tipo de producto</Label>
-                        <select {...input} className='form-select mb-2'>
-                          <option value=''></option>
-                          <option value='tablas'>Tabla</option>
-                          <option value='velas'>Vela</option>
-                          <option value='botavaras'>Botavara</option>
-                          <option value='mastiles'>Mastil</option>
-                          <option value='accesorios'>Accesorio</option>
-                        </select>
+                        <Select onValueChange={input.onChange} value={input.value}>
+                          <SelectTrigger className='mt-1'>
+                            <SelectValue placeholder='Selecciona...' />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value='tablas'>Tabla</SelectItem>
+                            <SelectItem value='velas'>Vela</SelectItem>
+                            <SelectItem value='botavaras'>Botavara</SelectItem>
+                            <SelectItem value='mastiles'>Mastil</SelectItem>
+                            <SelectItem value='accesorios'>Accesorio</SelectItem>
+                          </SelectContent>
+                        </Select>
                         {meta.error && meta.touched && (
-                          <span className='error'>Este campo es requerido</span>
+                          <span className='text-red-500 text-sm'>Este campo es requerido</span>
                         )}
                       </div>
                     )}
                   </Field>
-                  <Field name='subCategoria' validate={required}>
-                    {({ input, meta }) => (
-                      <div>
-                        <Label className='mb-2'>Selecciona la SubCategoria</Label>
-                        <select {...input} className='form-select mb-2'>
-                          <option value=''></option>
-                          <option value='slalom'>Slalom</option>
-                          <option value='freeride'>Free-Ride</option>
-                          <option value='freerace'>Free-Race</option>
-                          <option value='freestyle'>Free-Style</option>
-                          <option value='foil'>Foil</option>
-                          <option value='waves'>Waves</option>
-                          <option value='carbono'>Carbono</option>
-                          <option value='aluminio'>Aluminio</option>
-                          <option value='mixta'>Mixta</option>
-                          <option value='rdm'>RDM</option>
-                          <option value='sdm'>SDM</option>
-                          <option value='aleta'>ALETA</option>
-                          <option value='arnes'>ARNES</option>
-                          <option value='alargador'>ALARGADOR</option>
-                        </select>
-                        {meta.error && meta.touched && (
-                          <span className='error'>Este campo es requerido</span>
-                        )}
-                      </div>
-                    )}
-                  </Field>
+                  <div className='mb-3'>
+                    <Field name='subCategoria' validate={required}>
+                      {({ input, meta }) => (
+                        <div>
+                          <Label className='mb-2'>Selecciona la SubCategoria</Label>
+                          <Select onValueChange={input.onChange} value={input.value}>
+                            <SelectTrigger className='mt-1'>
+                              <SelectValue placeholder='Selecciona...' />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value='slalom'>Slalom</SelectItem>
+                              <SelectItem value='freeride'>Free-Ride</SelectItem>
+                              <SelectItem value='freerace'>Free-Race</SelectItem>
+                              <SelectItem value='freestyle'>Free-Style</SelectItem>
+                              <SelectItem value='foil'>Foil</SelectItem>
+                              <SelectItem value='waves'>Waves</SelectItem>
+                              <SelectItem value='carbono'>Carbono</SelectItem>
+                              <SelectItem value='aluminio'>Aluminio</SelectItem>
+                              <SelectItem value='mixta'>Mixta</SelectItem>
+                              <SelectItem value='rdm'>RDM</SelectItem>
+                              <SelectItem value='sdm'>SDM</SelectItem>
+                              <SelectItem value='aleta'>ALETA</SelectItem>
+                              <SelectItem value='arnes'>ARNES</SelectItem>
+                              <SelectItem value='alargador'>ALARGADOR</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          {meta.error && meta.touched && (
+                            <span className='text-red-500 text-sm'>Este campo es requerido</span>
+                          )}
+                        </div>
+                      )}
+                    </Field>
+                  </div>
                   <Field name='title' validate={required}>
                     {({ input, meta }) => (
-                      <div>
+                      <div className='mb-3'>
                         <Label className='mb-2'>Título</Label>
-                        <input {...input} type='text' className='form-control mb-2' />
+                        <Input {...input} type='text' className='mt-1' />
                         {meta.error && meta.touched && (
-                          <span className='error'>Este campo es requerido</span>
+                          <span className='text-red-500 text-sm'>Este campo es requerido</span>
                         )}
                       </div>
                     )}
                   </Field>
-                  <Field name='price' validate={required}>
-                    {({ input, meta }) => (
-                      <div>
-                        <Label className='mb-2'>Precio</Label>
-                        <input {...input} type='number' className='form-control mb-2' />
-                        {meta.error && meta.touched && (
-                          <span className='error'>Este campo es requerido</span>
-                        )}
-                      </div>
-                    )}
-                  </Field>
-                  <Field name='description' validate={required}>
-                    {({ input, meta }) => (
-                      <div>
-                        <Label className='mb-2'>Descripción del Producto</Label>
-                        <textarea {...input} type='textarea' className='form-control mb-2' />
-                        {meta.error && meta.touched && (
-                          <span className='error'>Introduce una descripción</span>
-                        )}
-                      </div>
-                    )}
-                  </Field>
+                  <div className='mb-3'>
+                    <Field name='price' validate={required}>
+                      {({ input, meta }) => (
+                        <div>
+                          <Label className='mb-2'>Precio</Label>
+                          <Input {...input} type='number' className='mt-1' />
+                          {meta.error && meta.touched && (
+                            <span className='error'>Este campo es requerido</span>
+                          )}
+                        </div>
+                      )}
+                    </Field>
+                  </div>
+                  <div className='mb-3'>
+                    <Field name='description' validate={required}>
+                      {({ input, meta }) => (
+                        <div>
+                          <Label className='mb-2'>Descripción del Producto</Label>
+                          <Textarea {...input} type='textarea' className='mt-1' />
+                          {meta.error && meta.touched && (
+                            <span className='error'>Introduce una descripción</span>
+                          )}
+                        </div>
+                      )}
+                    </Field>
+                  </div>
                   <Field name='contacto' validate={required}>
                     {({ input, meta }) => (
                       <div>
                         <Label className='mb-2'>Contacto</Label>
-                        <input {...input} type='textarea' className='form-control mb-2' />
+                        <Input {...input} type='textarea' className='mt-1' />
                         {meta.error && meta.touched && (
                           <span className='error'>Este campo es requerido</span>
                         )}
@@ -201,20 +222,16 @@ const NuevoProducto = () => {
                   <Field name='delivery' type='checkbox'>
                     {({ input, meta }) => (
                       <div className='mb-4 mt-4'>
-                        <div className='d-flex align-items-center'>
-                          <Label className='me-2'>¿Envío disponible?</Label>
-                          <div className='btn-primary form-check form-switch mt-1'>
-                            <input
-                              {...input}
-                              /* type='checkbox' */
-                              className='form-check-input'
-                              role='switch'
-                              id={`${input.name}-switch`}
-                            />
-                          </div>
+                        <div className='flex items-center gap-2'>
+                          <Label htmlFor='delivery-switch'>¿Envío disponible?</Label>
+                          <Switch
+                            checked={input.value}
+                            onCheckedChange={input.onChange}
+                            id='delivery-switch'
+                          />
                         </div>
                         {meta.error && meta.touched && (
-                          <span className='error'>Este campo es requerido</span>
+                          <span className='text-red-500 text-sm'>Este campo es requerido</span>
                         )}
                       </div>
                     )}
@@ -231,40 +248,54 @@ const NuevoProducto = () => {
                     />
                   )}
 
-                  <div>
-                    <div>
-                      <Label className=''>Sube Tus Fotos:</Label>
-                      <h5 className='text-danger'>
-                        Las Imagenes no pueden pesar más de 1MB cada Una{' '}
-                      </h5>
+                  <div className='mb-3'>
+                    <Label className='mb-2'>Sube Tus Fotos:</Label>
+                    <p className='text-red-500 text-sm mb-2'>
+                      Las Imagenes no pueden pesar más de 1MB cada Una
+                    </p>
+                    <div className='flex items-center gap-3'>
+                      <Button
+                        type='button'
+                        variant='outline'
+                        onClick={() => document.getElementById('images').click()}
+                        className='border-windy-cyan text-windy-cyan hover:bg-windy-cyan hover:text-white'
+                      >
+                        Seleccionar Archivos
+                      </Button>
+                      <span className='text-sm text-gray-600'>
+                        {images.length > 0
+                          ? `${images.length} archivo(s) seleccionado(s)`
+                          : 'Ningún archivo seleccionado'}
+                      </span>
                     </div>
-                    <input
-                      className='form-input btn-file-upload'
+                    <Input
+                      className='hidden'
                       id='images'
                       type='file'
                       multiple
+                      accept='image/*'
                       onChange={(e) => setImage(e.target.files)}
-                    ></input>
+                    />
                   </div>
                 </div>
-                {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
                 <div className='mb-3 mt-3 text-center'>
-                  <button
-                    className='btn btn-outline-warning'
+                  <Button
+                    variant='outline'
                     type='submit'
                     disabled={images.length > 8}
+                    className='border-yellow-500 text-yellow-600 hover:bg-yellow-50'
                   >
                     Agregar Producto
-                  </button>
+                  </Button>
                 </div>
               </form>
             )}
           />
-          {images.length > 8 ? (
-            <h6 className='alert alert-warning col-6 text-center mx-auto mt-2'>
-              Solo puedes subir un maximo de 8 fotos
-            </h6>
-          ) : null}
+          {images.length > 8 && (
+            <div className='bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded text-center max-w-md mx-auto mt-2'>
+              Solo puedes subir un máximo de 8 fotos
+            </div>
+          )}
         </div>
       </div>
     </div>

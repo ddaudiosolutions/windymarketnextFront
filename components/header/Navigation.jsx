@@ -4,9 +4,16 @@ import Link from 'next/link';
 import { Fragment, useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { obtenerDatosUsuario } from '../../reduxLib/slices/usersSlice';
-import { jwtDecode } from 'jwt-decode'; 
-import { cargarProductosAuthor } from "../../helpers/utils"; 
+import { jwtDecode } from 'jwt-decode';
+import { cargarProductosAuthor } from "../../helpers/utils";
 import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const Navigation = () => {
   const router = useRouter();
@@ -66,93 +73,93 @@ const Navigation = () => {
   console.log('userTokenCheck', userTokenCheck);
   return (
     <>
-      <nav className='mt-2 bg-nav  d-flex align-items-end '>
-        <div className='container-fluid col-md '>
+      <nav className='nav-flex flex items-center justify-between bg-white px-4 py-2 border-b'>
+        <div>
           <Image
             src='/LOGO_CIRCULAR_SIN_FONDO.png'
             alt='WindyMArket_Logo windsurf segunda mano'
-            className='navbar-brand ms-4 mt-2 mb-2'
+            className='cursor-pointer'
             width='128'
             height='72'
             onClick={() => router.push('/')}
           />
         </div>
-        <div className=' me-4 mb-3'>
+        <div className='ml-auto flex items-center gap-4'>
           {userTokenCheck === null ? (
             <Fragment>
-              <div className='d-flex '>
-                <Link href={'/login'} className='nav-link typeHeader '>
+              {/* <div className='ml-auto flex items-center gap-4'> */}
+                <Link href={'/login'} className='font-saira-stencil text-windy-cyan hover:text-windy-red text-sm tracking-wider no-underline'>
                   Login
                 </Link>
-              </div>
-              <div className='d-flex'>
-                <Link href={'/nuevousuario'} className='nav-link typeHeader '>
+                <Link href={'/nuevousuario'} className='font-saira-stencil text-windy-cyan hover:text-windy-red text-sm tracking-wider no-underline'>
                   Registrarse
                 </Link>
-              </div>
+              {/* </div> */}
             </Fragment>
           ) : (
             <Fragment>
-              <div className=''>
-                <div className='container text-center'>
-                  <div className='d-flex justify-content-center'>
-                    <h5 className='typeHeader mt-3 '>Bienvenid@ {nombreUsuario}</h5>
-                  </div>
+              {/* <div className='text-center'> */}
+                {/* <div className='ml-auto flex items-center gap-4'> */}
+                  <h5 className='font-saira-stencil text-windy-cyan text-sm mb-0'>
+                    Bienvenid@ {nombreUsuario}
+                  </h5>
 
-                  <div className='d-flex justify-content-center'>
-                    <button
-                      type='button'
-                      className='btn btn-outline-primary ms-1'
-                      data-bs-toggle='dropdown'
-                      aria-expanded='false'
-                    >
-                      Mi Cuenta
-                    </button>
-                    <ul className='dropdown-menu'>
-                      <li>
-                        <Link href={'/productos/nuevo'} className='nav-link typeHeader'>
+                {/* </div> */}
+
+                {/* <div className='flex justify-center'> */}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="outline"
+                        /* className="border-windy-red text-windy-red hover:bg-windy-red hover:text-white font-saira text-sm" */
+                      >
+                        Mi Cuenta
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem asChild>
+                        <Link href={'/productos/nuevo'} className='font-saira-stencil text-windy-cyan hover:text-windy-red text-sm tracking-wider cursor-pointer no-underline'>
                           Subir Producto
                         </Link>
-                      </li>
-                      <li>
-                        <Link href={'/buscoposts/nuevo'} className='nav-link typeHeader'>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href={'/buscoposts/nuevo'} className='font-saira-stencil text-windy-cyan hover:text-windy-red text-sm tracking-wider cursor-pointer no-underline'>
                           Publicar Busqueda
                         </Link>
-                      </li>
-                      <li>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
                         <Link
                           href={`/productos/auth/${userId}`}
-                          className='nav-link  typeHeader'
+                          className='font-saira-stencil text-windy-cyan hover:text-windy-red text-sm tracking-wider cursor-pointer no-underline'
                           onClick={() =>
                             cargarProductosAuthor(dispatch, router, {
                               author: { _id: userId },
-                            })                            
+                            })
                           }
                         >
                           Mis Productos
                         </Link>
-                      </li>
-                      <li>
-                        <Link href={`/productos/favoritos/`} className='nav-link  typeHeader'>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href={`/productos/favoritos/`} className='font-saira-stencil text-windy-cyan hover:text-windy-red text-sm tracking-wider cursor-pointer no-underline'>
                           Favoritos
                         </Link>
-                      </li>
-                      <li>
-                        <Link href={`/usuarios/${userId}`} className='nav-link typeHeader'>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href={`/usuarios/${userId}`} className='font-saira-stencil text-windy-cyan hover:text-windy-red text-sm tracking-wider cursor-pointer no-underline'>
                           Mi perfil
                         </Link>
-                      </li>
-                      <li
-                        type='button'
-                        className='nav-link typeHeader'
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className='font-saira-stencil text-windy-cyan hover:text-windy-red text-sm tracking-wider cursor-pointer'
                         onClick={logOut}
                       >
                         LogOut
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+               {/*  </div> */}
+              {/* </div> */}
             </Fragment>
           )}
         </div>
