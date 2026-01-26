@@ -1,11 +1,9 @@
 'use client';
 
-import styled from 'styled-components';
 import { useState, useEffect, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FormData from 'form-data';
 import { editarProducto } from '@/reduxLib/slices/productSlices';
-import './EditarProducto.module.css';
 import VerImagesEdit from '@/components/productos/VerImagesEdit';
 import Swal from 'sweetalert2';
 import {
@@ -16,67 +14,48 @@ import {
 } from '@/helpers/utils';
 import { Field, Form } from 'react-final-form';
 import FormPaqueteEnvio from '@/components/gestionEnvios/FormPaqueteEnvio';
-// STYLED COMPONENTS
-const Label = styled.label`
-  font-family: Saira;
-`;
+import useProductImages from '@/hooks/useProductImages';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 // FUNCION PARA EDITAR PRODUCTO
 
 const EditarProducto = () => {
   const dispatch = useDispatch();
-
-  // OPCIONES DESDE NUEVO PRODUCTO;
-  const [images, setImage] = useState(''); // IMAGENES DEL STATE INICIAL
+  const productoEditar = useSelector((state) => state.products.productToEdit);
   const [id, setId] = useState('');
 
-  const productoEditar = useSelector((state) => state.products.productToEdit);
-  const [imagesTotales, setImagesTotales] = useState(''); // NUM TOTA DE IMGS (SUBIDAS Y POR SUBIR)
-  const [imagesT, setImages] = useState(''); // NUEVAS IMAGENES PARA SUBIR
-  const imagesState = parseInt(productoEditar.images.length); // NUM IMAGENES YA SUBIDAS
-  const imagesSelect = parseInt(imagesT.length); // NUMERO DE IMAGENES A SUBIR
-
-  // STATE DE IMAGENES A BORRAR
-  const [imageSel, setImageSel] = useState(''); // creamos el state que llenamos desde el hijo
-
-  // DIFERENCIA ENTRE ALMACENADAS Y CARGADAS PARA SUBIR
-  const [imageDif, setImageDif] = useState();
-
-  // STATE PESO IMAGENES
-  const [imagesSize, setImagesSize] = useState(0);
-  /*  const [verifySize, setVerifySize] = useState(false); */
+  // Custom hook para manejar lógica de imágenes
+  const {
+    imagesToUpload,
+    imagesToDelete,
+    errors,
+    isValid,
+    handleFileChange,
+    handleToggleDelete,
+  } = useProductImages({
+    existingImages: productoEditar.images || [],
+    maxImages: 8,
+    mode: 'edit',
+  });
 
   const sendDataToParent = (filename, status) => {
-    if (status.checked === false) {
-      addImagesSel(filename);
-    } else {
-      deleteImage(filename);
-    }
+    handleToggleDelete(filename, !status.checked);
   };
-
-  const addImagesSel = (filename) => {
-    setImageSel([...imageSel, filename]);
-  };
-  const deleteImage = (filename) => {
-    setImageSel(imageSel.filter((image) => image !== filename));
-  };
-
-  const total = 0;
 
   useEffect(() => {
-    setImageDif(imagesTotales - imageSel.length);
-    setImagesSize(total);
-    setImages(imagesT); // NUEVAS IMAGENES PARA SUBIR
-    setImage(productoEditar.images); // IMAGENES DE ESTADO INICAL
-    setImagesTotales(imagesState + imagesSelect);
     setId(productoEditar._id);
-    if (imageSel.length === productoEditar.images.length && imagesT.length === 0) {
-      Swal.fire({
-        icon: 'error',
-        text: 'No puedes borrar todas las imagenes, deja al menos una, o cargar una imagen nueva',
-      });
-    }
-  }, [imageSel, imagesT, imagesSize, imageDif, imagesSelect]);
+  }, [productoEditar._id]);
 
   const sendDataEditProduct = (producto, id) => {
     dispatch(editarProducto(producto, id));
@@ -86,17 +65,23 @@ const EditarProducto = () => {
     if (values.delivery && values.pesoVolumetrico <= -1 && values.pesoKgs <= 0) {
       swalPesoKgsAlert();
     } else {
-      mostrarAlertaYEnviarDatos(sendDataEditProduct, imagesT, imageSel, id, values);
+      mostrarAlertaYEnviarDatos(sendDataEditProduct, imagesToUpload, imagesToDelete, id, values);
     }
   };
 
   const submitEditarProducto = (values) => {
-    if (imageSel.length === productoEditar.images.length && imagesT.length === 0) {
-      Swal.fire({
-        icon: 'error',
-        text: 'No puedes borrar todas las imagenes, deja al menos una, o cargar una imagen nueva',
-      });
-    } else if (verificarPesoImagenes(imagesT)) {
+    // Validar con el hook
+    if (!isValid) {
+      if (errors.noImages) {
+        Swal.fire({
+          icon: 'error',
+          text: errors.noImages,
+        });
+      }
+      return;
+    }
+
+    if (verificarPesoImagenes(imagesToUpload)) {
       swalFirePesoImagenes().then((result) => {
         if (result.isConfirmed) {
           if (productoEditar.author.telefono === undefined) {
@@ -124,216 +109,240 @@ const EditarProducto = () => {
 
   const required = (value) => value === (undefined || '') && 'Debes Rellenar este campo';
   return (
-    <div className='container-fluid  rounded my-4 p-3'>
-      <div className='d-flex justify-content-center'>
-        <div className='rounded col-12 col-sm-12 shadow-lg p-3 bg-trasparent'>
-          <h2 className='text-center mx-auto font-wight-bold mb-5'>Editar Producto</h2>
+    <div className='mx-auto max-w-4xl py-10'>
+      <div className='rounded-xl border bg-white p-6 shadow-sm'>
+        <h2 className='mb-8 text-center text-2xl font-semibold'>Editar producto</h2>
 
-          <Form
-            onSubmit={submitEditarProducto}
-            initialValues={{
-              categoria: productoEditar.categoria,
-              subCategoria: productoEditar.subCategoria,
-              title: productoEditar.title,
-              price: productoEditar.price,
-              description: productoEditar.description,
-              contacto: productoEditar.author.nombre,
-              delivery: productoEditar.delivery,
-              alto: productoEditar.alto,
-              ancho: productoEditar.ancho,
-              largo: productoEditar.largo,
-              pesoVolumetrico: parseFloat(productoEditar.pesoVolumetrico),
-              pesoKgs: productoEditar.pesoKgs,
-              precioEstimado: parseFloat(productoEditar.precioEstimado),
-              balearicDelivery: productoEditar.balearicDelivery,
-              reservado: productoEditar.reservado,
-              vendido: productoEditar.vendido,
-            }}
-            render={({ handleSubmit, values, form }) => (
-              <form onSubmit={handleSubmit}>
-                <div className='mb-3'>
-                  <Field name='categoria' validate={required}>
-                    {({ input, meta }) => (
-                      <div>
-                        <Label className='mb-2'>Selecciona el tipo de producto</Label>
-                        <select {...input} className='form-select mb-2'>
-                          <option value=''></option>
-                          <option value='tablas'>Tabla</option>
-                          <option value='velas'>Vela</option>
-                          <option value='botavaras'>Botavara</option>
-                          <option value='mastiles'>Mastil</option>
-                          <option value='accesorios'>Accesorio</option>
-                        </select>
-                        {meta.error && meta.touched && (
-                          <span className='error'>Este campo es requerido</span>
-                        )}
-                      </div>
+        <Form
+          onSubmit={submitEditarProducto}
+          initialValues={{
+            categoria: productoEditar.categoria,
+            subCategoria: productoEditar.subCategoria,
+            title: productoEditar.title,
+            price: productoEditar.price,
+            description: productoEditar.description,
+            contacto: productoEditar.author.nombre,
+            delivery: productoEditar.delivery,
+            alto: productoEditar.alto,
+            ancho: productoEditar.ancho,
+            largo: productoEditar.largo,
+            pesoVolumetrico: parseFloat(productoEditar.pesoVolumetrico),
+            pesoKgs: productoEditar.pesoKgs,
+            precioEstimado: parseFloat(productoEditar.precioEstimado),
+            balearicDelivery: productoEditar.balearicDelivery,
+            reservado: productoEditar.reservado,
+            vendido: productoEditar.vendido,
+          }}
+          render={({ handleSubmit, values, form }) => (
+            <form onSubmit={handleSubmit} className='space-y-6'>
+              {/* CATEGORIA */}
+              <Field name='categoria' validate={required}>
+                {({ input, meta }) => (
+                  <div className='space-y-1'>
+                    <Label>Selecciona el tipo de producto</Label>
+                    <Select onValueChange={input.onChange} value={input.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder='Selecciona...' />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value='tablas'>Tabla</SelectItem>
+                        <SelectItem value='velas'>Vela</SelectItem>
+                        <SelectItem value='botavaras'>Botavara</SelectItem>
+                        <SelectItem value='mastiles'>Mástil</SelectItem>
+                        <SelectItem value='accesorios'>Accesorio</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    {meta.touched && meta.error && (
+                      <p className='text-sm text-red-500'>Este campo es requerido</p>
                     )}
-                  </Field>
-                  <Field name='subCategoria' validate={required}>
-                    {({ input, meta }) => (
-                      <div>
-                        <Label className='mb-2'>Selecciona la SubCategoria</Label>
-                        <select {...input} className='form-select mb-2'>
-                          <option value=''></option>
-                          <option value='slalom'>Slalom</option>
-                          <option value='freeride'>Free-Ride</option>
-                          <option value='freerace'>Free-Race</option>
-                          <option value='freestyle'>Free-Style</option>
-                          <option value='foil'>Foil</option>
-                          <option value='waves'>Waves</option>
-                          <option value='carbono'>Carbono</option>
-                          <option value='aluminio'>Aluminio</option>
-                          <option value='mixta'>Mixta</option>
-                          <option value='rdm'>RDM</option>
-                          <option value='sdm'>SDM</option>
-                          <option value='aleta'>ALETA</option>
-                          <option value='arnes'>ARNES</option>
-                          <option value='alargador'>ALARGADOR</option>
-                        </select>
-                        {meta.error && meta.touched && (
-                          <span className='error'>Este campo es requerido</span>
-                        )}
-                      </div>
+                  </div>
+                )}
+              </Field>
+
+              {/* SUBCATEGORIA */}
+              <Field name='subCategoria' validate={required}>
+                {({ input, meta }) => (
+                  <div className='space-y-1'>
+                    <Label>Selecciona la subcategoría</Label>
+                    <Select onValueChange={input.onChange} value={input.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder='Selecciona...' />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value='slalom'>Slalom</SelectItem>
+                        <SelectItem value='freeride'>Free-Ride</SelectItem>
+                        <SelectItem value='freerace'>Free-Race</SelectItem>
+                        <SelectItem value='freestyle'>Free-Style</SelectItem>
+                        <SelectItem value='foil'>Foil</SelectItem>
+                        <SelectItem value='waves'>Waves</SelectItem>
+                        <SelectItem value='carbono'>Carbono</SelectItem>
+                        <SelectItem value='aluminio'>Aluminio</SelectItem>
+                        <SelectItem value='mixta'>Mixta</SelectItem>
+                        <SelectItem value='rdm'>RDM</SelectItem>
+                        <SelectItem value='sdm'>SDM</SelectItem>
+                        <SelectItem value='aleta'>Aleta</SelectItem>
+                        <SelectItem value='arnes'>Arnés</SelectItem>
+                        <SelectItem value='alargador'>Alargador</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    {meta.touched && meta.error && (
+                      <p className='text-sm text-red-500'>Este campo es requerido</p>
                     )}
-                  </Field>
-                  <Field name='title' validate={required}>
-                    {({ input, meta }) => (
-                      <div>
-                        <Label className='mb-2'>Título</Label>
-                        <input {...input} type='text' className='form-control mb-2' />
-                        {meta.error && meta.touched && (
-                          <span className='error'>Este campo es requerido</span>
-                        )}
-                      </div>
+                  </div>
+                )}
+              </Field>
+
+              {/* TITULO */}
+              <Field name='title' validate={required}>
+                {({ input, meta }) => (
+                  <div className='space-y-1'>
+                    <Label>Título</Label>
+                    <Input {...input} type='text' />
+                    {meta.touched && meta.error && (
+                      <p className='text-sm text-red-500'>Este campo es requerido</p>
                     )}
-                  </Field>
-                  <Field name='price' validate={required}>
-                    {({ input, meta }) => (
-                      <div>
-                        <Label className='mb-2'>Precio</Label>
-                        <input {...input} type='number' className='form-control mb-2' />
-                        {meta.error && meta.touched && (
-                          <span className='error'>Este campo es requerido</span>
-                        )}
-                      </div>
+                  </div>
+                )}
+              </Field>
+
+              {/* PRECIO */}
+              <Field name='price' validate={required}>
+                {({ input, meta }) => (
+                  <div className='space-y-1'>
+                    <Label>Precio</Label>
+                    <Input {...input} type='number' />
+                    {meta.touched && meta.error && (
+                      <p className='text-sm text-red-500'>Este campo es requerido</p>
                     )}
-                  </Field>
-                  <Field name='description' validate={required}>
-                    {({ input, meta }) => (
-                      <div>
-                        <Label className='mb-2'>Descripción del Producto</Label>
-                        <textarea {...input} type='textarea' className='form-control mb-2' />
-                        {meta.error && meta.touched && (
-                          <span className='error'>Introduce una descripción</span>
-                        )}
-                      </div>
+                  </div>
+                )}
+              </Field>
+
+              {/* DESCRIPCION */}
+              <Field name='description' validate={required}>
+                {({ input, meta }) => (
+                  <div className='space-y-1'>
+                    <Label>Descripción del producto</Label>
+                    <Textarea {...input} rows={4} />
+                    {meta.touched && meta.error && (
+                      <p className='text-sm text-red-500'>Introduce una descripción</p>
                     )}
-                  </Field>
-                  <Field name='contacto' validate={required}>
-                    {({ input, meta }) => (
-                      <div>
-                        <Label className='mb-2'>Contacto</Label>
-                        <input {...input} type='textarea' className='form-control mb-2' />
-                        {meta.error && meta.touched && (
-                          <span className='error'>Este campo es requerido</span>
-                        )}
-                      </div>
+                  </div>
+                )}
+              </Field>
+
+              {/* CONTACTO */}
+              <Field name='contacto' validate={required}>
+                {({ input, meta }) => (
+                  <div className='space-y-1'>
+                    <Label>Contacto</Label>
+                    <Input {...input} />
+                    {meta.touched && meta.error && (
+                      <p className='text-sm text-red-500'>Este campo es requerido</p>
                     )}
-                  </Field>
-                  <Field name='delivery' type='checkbox'>
-                    {({ input, meta }) => (
-                      <div className='mb-4 mt-4'>
-                        <div className='d-flex align-items-center'>
-                          <Label className='me-2'>¿Envío disponible?</Label>
-                          <div className='btn-primary form-check form-switch mt-1'>
-                            <input
-                              {...input}
-                              /* type='checkbox' */
-                              className='form-check-input'
-                              role='switch'
-                              id={`${input.name}-switch`}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </Field>
-                  {values.delivery && (
-                    <FormPaqueteEnvio
-                      alto={values.alto}
-                      ancho={values.ancho}
-                      largo={values.largo}
-                      pesoVolumetrico={values.pesoVolumetrico}
-                      pesoKgs={values.pesoKgs}
-                      balearicDelivery={values.balearicDelivery}
-                      form={form}
+                  </div>
+                )}
+              </Field>
+
+              {/* DELIVERY */}
+              <Field name='delivery' type='checkbox'>
+                {({ input }) => (
+                  <div className='flex items-center gap-3 pt-4'>
+                    <Switch
+                      checked={input.value}
+                      onCheckedChange={input.onChange}
+                      id='delivery-switch'
                     />
-                  )}
+                    <Label htmlFor='delivery-switch'>¿Envío disponible?</Label>
+                  </div>
+                )}
+              </Field>
 
-                  <div>
-                    <div className='container'>
-                      <div className='row d-flex'>
-                        <div>
-                          <h6>Selecciona las imagenes que quieres sutituir : </h6>
-                        </div>
-                        {!images
-                          ? null
-                          : images.map((imagenEdit) => (
-                              <VerImagesEdit
-                                key={imagenEdit._id}
-                                className=''
-                                imagenEdit={imagenEdit}
-                                sendDataToParent={sendDataToParent}
-                                numImages={images.length}
-                              />
-                            ))}
-                      </div>
-                    </div>
-                    <div className='text-center'></div>
-                    <input
-                      className='form-input'
-                      id='images'
-                      type='file'
-                      multiple
-                      onChange={(e) => setImages(e.target.files)}
-                    ></input>
-                  </div>
-                  <div className='mb-3 mt-3 text-center'>
-                    <button
-                      className='btn btn-outline-warning'
-                      type='submit'
-                      disabled={imageDif > 8}
-                    >
-                      Editar Producto
-                    </button>
-                  </div>
+              {values.delivery && (
+                <FormPaqueteEnvio
+                  alto={values.alto}
+                  ancho={values.ancho}
+                  largo={values.largo}
+                  pesoVolumetrico={values.pesoVolumetrico}
+                  pesoKgs={values.pesoKgs}
+                  balearicDelivery={values.balearicDelivery}
+                  form={form}
+                />
+              )}
+
+              {/* IMAGENES EXISTENTES */}
+              <div className='space-y-3 pt-6'>
+                <Label>Selecciona las imágenes que quieres sustituir</Label>
+
+                <div className='grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4'>
+                  {productoEditar.images?.map((imagenEdit) => (
+                    <VerImagesEdit
+                      key={imagenEdit._id}
+                      imagenEdit={imagenEdit}
+                      sendDataToParent={sendDataToParent}
+                      numImages={productoEditar.images.length}
+                    />
+                  ))}
                 </div>
 
-                {/*  <pre className='bg-success'>{JSON.stringify(values, 0, 2)}</pre> */}
-              </form>
-            )}
-          />
-          {imageDif > 8 ? (
-            <Fragment>
-              <h6 className='alert alert-success col-6 text-center mx-auto'>
-                El numero máximo de imágenes es 8.
-              </h6>
-              <h5 className='alert alert-success col-6 text-center mx-auto'>
-                Selecciona las imagenes que quieres sustituir
-              </h5>
-            </Fragment>
-          ) : null}
-        </div>
+                <div>
+                  <Label className='mb-2'>Sube nuevas fotos:</Label>
+                  <p className='text-red-500 text-sm mb-2'>
+                    Las Imagenes no pueden pesar más de 1MB cada Una
+                  </p>
+                  <div className='flex items-center gap-3'>
+                    <Button
+                      type='button'
+                      variant='outline'
+                      onClick={() => document.getElementById('images-edit').click()}
+                      className='border-windy-cyan text-windy-cyan hover:bg-windy-cyan hover:text-white'
+                    >
+                      Seleccionar Archivos
+                    </Button>
+                    <span className='text-sm text-gray-600'>
+                      {imagesToUpload.length > 0
+                        ? `${imagesToUpload.length} archivo(s) seleccionado(s)`
+                        : 'Ningún archivo seleccionado'}
+                    </span>
+                  </div>
+                  <Input
+                    className='hidden'
+                    id='images-edit'
+                    type='file'
+                    multiple
+                    accept='image/*'
+                    onChange={handleFileChange}
+                  />
+                </div>
+              </div>
+
+              {/* SUBMIT */}
+              <div className='pt-6 text-center'>
+                <Button type='submit' variant='outline' disabled={!isValid}>
+                  Editar producto
+                </Button>
+              </div>
+            </form>
+          )}
+        />
+
+        {errors.maxImages && (
+          <Fragment>
+            <p className='mt-4 text-center text-sm text-red-500'>{errors.maxImages}</p>
+            <p className='text-center text-sm text-red-500'>
+              Selecciona las imágenes que quieres sustituir.
+            </p>
+          </Fragment>
+        )}
       </div>
     </div>
   );
 };
 
-function mostrarAlertaYEnviarDatos(sendDataEditProduct, images, imageSel, id, values) {
+function mostrarAlertaYEnviarDatos(sendDataEditProduct, imagesToUpload, imagesToDelete, id, values) {
   const formData = new FormData();
-  for (let j = 0; j < images.length; j++) {
-    formData.append('images', images[j]);
+  for (let j = 0; j < imagesToUpload.length; j++) {
+    formData.append('images', imagesToUpload[j]);
   }
   formData.set('title', values.title);
   formData.set('categoria', values.categoria);
@@ -353,8 +362,8 @@ function mostrarAlertaYEnviarDatos(sendDataEditProduct, images, imageSel, id, va
   formData.set('vendido', values.vendido);
   formData.set('reservado', values.reservado);
 
-  for (let i = 0; i < imageSel.length; i++) {
-    formData.append('imagesDelete', imageSel[i]);
+  for (let i = 0; i < imagesToDelete.length; i++) {
+    formData.append('imagesDelete', imagesToDelete[i]);
   }
   sendDataEditProduct({ formData, id, history });
 }

@@ -1,11 +1,31 @@
-'use client'
-import { Provider } from "react-redux";
-import store from './store';
+'use client';
+
+import { useRef } from 'react';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { makeStore } from './store';
+import { injectTokenGetter } from '@/lib/apiClient';
 
 const Providers = ({ children }) => {
-  return <Provider store={store}>
-    {children}
-  </Provider>
-}
+  const storeRef = useRef(null);
+  const persistorRef = useRef(null);
 
-export default Providers
+  if (!storeRef.current) {
+    const { store, persistor } = makeStore();
+    storeRef.current = store;
+    persistorRef.current = persistor;
+
+    // Inyectamos el getter del token en apiClient
+    injectTokenGetter(() => store.getState().users?.token);
+  }
+
+  return (
+    <Provider store={storeRef.current}>
+      <PersistGate loading={null} persistor={persistorRef.current}>
+        {children}
+      </PersistGate>
+    </Provider>
+  );
+};
+
+export default Providers;

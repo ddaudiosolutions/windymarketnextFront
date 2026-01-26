@@ -1,15 +1,15 @@
-import clienteAxios from '../../config/axios';
+import apiClient from '@/lib/apiClient';
 
 const checkAuth = (data) => {
-  return clienteAxios.post(`auth/`, data);
+  return apiClient.post(`auth/`, data);
 };
 
 const resetPassword = (email) => {
-  return clienteAxios.post('auth/resetPassword', email);
+  return apiClient.post('auth/resetPassword', email);
 };
 
 const changePasswordUser = (data) => {
-  return clienteAxios.post('auth/changePasswordUser', data);
+  return apiClient.post('auth/changePasswordUser', data);
 };
 
 const AuthServices = {

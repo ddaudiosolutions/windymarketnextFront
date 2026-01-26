@@ -1,14 +1,36 @@
-import { configureStore } from '@reduxjs/toolkit'
-
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from '../lib/storage';
 import productsReducer from './slices/productSlices';
 import usersReducer from './slices/usersSlice';
-import favoriteProductsReducer from './slices/favoriteProductsSlice'; 
+import favoriteProductsReducer from './slices/favoriteProductsSlice';
 
-export default configureStore({
-  reducer: {
-    products: productsReducer,
-    users: usersReducer,
-    favoriteProducts: favoriteProductsReducer
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['users'], // solo users
+};
 
-  }
+const rootReducer = combineReducers({
+  products: productsReducer,
+  users: usersReducer,
+  favoriteProducts: favoriteProductsReducer,
 });
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const makeStore = () => {
+  const store = configureStore({
+    reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+        },
+      }),
+  });
+
+  const persistor = persistStore(store);
+
+  return { store, persistor };
+};

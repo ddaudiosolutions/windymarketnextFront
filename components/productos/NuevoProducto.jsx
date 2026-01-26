@@ -2,11 +2,9 @@
 
 //* AQUI ESTARÁ EL FORMULARIO PARA EL PRODUCTO
 
-import { useState, useEffect } from 'react';
 import FormData from 'form-data';
 import { useDispatch, useSelector } from 'react-redux';
 import { crearNuevoProducto } from '@/reduxLib/slices/productSlices';
-import { obtenerDatosUsuario } from '@/reduxLib/slices/usersSlice';
 import { Form, Field } from 'react-final-form';
 import Swal from 'sweetalert2';
 import {
@@ -28,21 +26,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import useProductImages from '@/hooks/useProductImages';
 
 const NuevoProducto = () => {
-  console.log('ENTRANDO EN NUEVOPRODUCTO');
   const dispatch = useDispatch();
   const usuario = useSelector((state) => state.users.user);
-  const [images, setImage] = useState('');
 
-  // Cargar datos del usuario al montar
-  useEffect(() => {
-    const userId = sessionStorage.getItem('userId');
-    console.log('NuevoProducto_userId', userId);
-    if (!usuario && userId) {
-      dispatch(obtenerDatosUsuario(userId));
-    }
-  }, [dispatch, usuario]);
+  // Custom hook para manejar lógica de imágenes
+  const { imagesToUpload, errors, isValid, handleFileChange } = useProductImages({
+    maxImages: 8,
+    mode: 'create',
+  });
 
   // Mostrar loading mientras carga el usuario
   if (!usuario) {
@@ -59,41 +53,46 @@ const NuevoProducto = () => {
     if (values.delivery && values.pesoVolumetrico <= -1 && values.pesoKgs <= 0) {
       swalPesoKgsAlert();
     } else {
-      mostrarAlertaYEnviarDatos(agregarProducto, images, values);
+      mostrarAlertaYEnviarDatos(agregarProducto, imagesToUpload, values);
     }
   };
+
   const submitNuevoProducto = (values) => {
-    if (images.length > 0) {
-      if (verificarPesoImagenes(images)) {
-        swalFirePesoImagenes().then((result) => {
+    // Validar con el hook
+    if (!isValid) {
+      if (errors.minImages) {
+        Swal.fire({
+          icon: 'error',
+          text: errors.minImages,
+        });
+      }
+      return;
+    }
+
+    if (verificarPesoImagenes(imagesToUpload)) {
+      swalFirePesoImagenes().then((result) => {
+        if (result.isConfirmed) {
+          if (usuario.telefono === undefined) {
+            swalFireFaltaTelefono().then((result) => {
+              if (result.isConfirmed) {
+                verificarPesoVolumetricoYEnviar(values);
+              }
+            });
+          } else {
+            verificarPesoVolumetricoYEnviar(values);
+          }
+        }
+      });
+    } else {
+      if (usuario.telefono === undefined) {
+        swalFireFaltaTelefono().then((result) => {
           if (result.isConfirmed) {
-            if (usuario.telefono === undefined) {
-              swalFireFaltaTelefono().then((result) => {
-                if (result.isConfirmed) {
-                  verificarPesoVolumetricoYEnviar(values);
-                }
-              });
-            } else {
-              verificarPesoVolumetricoYEnviar(values);
-            }
+            verificarPesoVolumetricoYEnviar(values);
           }
         });
       } else {
-        if (usuario.telefono === undefined) {
-          swalFireFaltaTelefono().then((result) => {
-            if (result.isConfirmed) {
-              verificarPesoVolumetricoYEnviar(values);
-            }
-          });
-        } else {
-          verificarPesoVolumetricoYEnviar(values);
-        }
+        verificarPesoVolumetricoYEnviar(values);
       }
-    } else {
-      Swal.fire({
-        icon: 'error',
-        text: 'Debes subir al menos una imagen',
-      });
     }
   };
   const required = (value) => value === (undefined || '') && 'Debes Rellenar este campo';
@@ -263,8 +262,8 @@ const NuevoProducto = () => {
                         Seleccionar Archivos
                       </Button>
                       <span className='text-sm text-gray-600'>
-                        {images.length > 0
-                          ? `${images.length} archivo(s) seleccionado(s)`
+                        {imagesToUpload.length > 0
+                          ? `${imagesToUpload.length} archivo(s) seleccionado(s)`
                           : 'Ningún archivo seleccionado'}
                       </span>
                     </div>
@@ -274,7 +273,7 @@ const NuevoProducto = () => {
                       type='file'
                       multiple
                       accept='image/*'
-                      onChange={(e) => setImage(e.target.files)}
+                      onChange={handleFileChange}
                     />
                   </div>
                 </div>
@@ -282,7 +281,7 @@ const NuevoProducto = () => {
                   <Button
                     variant='outline'
                     type='submit'
-                    disabled={images.length > 8}
+                    disabled={!isValid}
                     className='border-yellow-500 text-yellow-600 hover:bg-yellow-50'
                   >
                     Agregar Producto
@@ -291,9 +290,9 @@ const NuevoProducto = () => {
               </form>
             )}
           />
-          {images.length > 8 && (
+          {errors.maxImages && (
             <div className='bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded text-center max-w-md mx-auto mt-2'>
-              Solo puedes subir un máximo de 8 fotos
+              {errors.maxImages}
             </div>
           )}
         </div>
@@ -302,10 +301,10 @@ const NuevoProducto = () => {
   );
 };
 
-function mostrarAlertaYEnviarDatos(agregarProducto, images, values) {
+function mostrarAlertaYEnviarDatos(agregarProducto, imagesToUpload, values) {
   const formData = new FormData();
-  for (let j = 0; j < images.length; j++) {
-    formData.append('images', images[j]);
+  for (let j = 0; j < imagesToUpload.length; j++) {
+    formData.append('images', imagesToUpload[j]);
   }
   formData.set('title', values.title);
   formData.set('categoria', values.categoria);

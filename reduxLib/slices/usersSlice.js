@@ -15,7 +15,7 @@ export const nuevoUsuario = createAsyncThunk(
       const newUser = await UsersService.registroUsuario(newUserData);
       return newUser;
     } catch (error) {
-      throw rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -27,7 +27,7 @@ export const loginUsuario = createAsyncThunk(
       const user = await UsersService.loginUsuarioActions(userData);
       return user;
     } catch (error) {
-      throw rejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -36,11 +36,10 @@ export const obtenerDatosUsuario = createAsyncThunk(
   'getUserData / get',
   async (userId, { rejectWithValue }) => {
     try {
-      
       const user = await UsersService.obtenerDatosUsuario(userId);
       return user;
     } catch (error) {
-      throw rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -52,7 +51,7 @@ export const editarDatosUsuario = createAsyncThunk(
       const user = await UsersService.editarUsuario(data);
       return user;
     } catch (error) {
-      throw rejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -64,7 +63,7 @@ export const logOutUsuario = createAsyncThunk(
       const isLogOut = await UsersService.logoutUsuario(nombreUser);
       return isLogOut;
     } catch (error) {
-      throw rejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -76,7 +75,7 @@ export const eliminarUsuario = createAsyncThunk(
       const user = await UsersService.eliminarUsuario(id);
       return user;
     } catch (error) {
-      throw rejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -88,7 +87,7 @@ export const addFavoriteProduct = createAsyncThunk(
       const addFavoriteProduct = await UsersService.addFavoriteProduct(favoriteProductData);
       return addFavoriteProduct;
     } catch (error) {
-      throw rejectedWithValue(error.message);
+      return rejectedWithValue(error.message);
     }
   }
 );
@@ -100,7 +99,7 @@ export const removeFavoriteProduct = createAsyncThunk(
       const removeFavoriteProduct = await UsersService.removeFavorite(productId);
       return removeFavoriteProduct;
     } catch (error) {
-      throw rejectedWithValue(error.message);
+      return rejectedWithValue(error.message);
     }
   }
 );
@@ -112,7 +111,7 @@ export const sendMailToUser = createAsyncThunk(
       const sendMailToUser = await UsersService.sendMailToUser(dataToSend);
       return sendMailToUser;
     } catch (error) {
-      throw rejectedWithValue(error.message);
+      return rejectedWithValue(error.message);
     }
   }
 );
@@ -120,7 +119,12 @@ export const sendMailToUser = createAsyncThunk(
 const usersSlices = createSlice({
   name: 'users',
   initialState,
-  reducers: {},
+  reducers: {
+    clearUser: (state) => {
+      state.user = null;
+      state.token = null;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(nuevoUsuario.fulfilled, (state, action) => {
       if (action.payload.status === 200) {
@@ -128,7 +132,6 @@ const usersSlices = createSlice({
           navigateTo('/login');
         });
       }
-      return action.payload;
     });
     builder.addCase(nuevoUsuario.rejected, (state, action) => {
       if (action.payload.response.status === 403) {
@@ -136,38 +139,32 @@ const usersSlices = createSlice({
           navigateTo('/login');
         });
       }
-      return action.payload;
     });
     builder.addCase(loginUsuario.fulfilled, (state, action) => {
-      if (action.payload.status === 200) {
-        sessionStorage.setItem('userName', action.payload.data.nombre);
-        sessionStorage.setItem('userToken', action.payload.data.accessToken);
-        sessionStorage.setItem('userId', action.payload.data.id);
-        state.user = { ...action.payload.data, _id: action.payload.data.id };
-      }
+      const userData = action.payload.data;
+
+      // guardamos usuario y token en Redux
+      state.user = { ...userData, _id: userData.id };
+      state.token = userData.accessToken;
     });
+
     builder.addCase(loginUsuario.rejected, (state, action) => {
       if (action.payload.status !== 200) {
         Swal.fire('Error', 'Usuario o Contraseña Incorrectos', 'error').then(function () {
           navigateTo('/login');
         });
       }
-      return action.payload;
     });
     builder.addCase(obtenerDatosUsuario.fulfilled, (state, action) => {
-      return {
-        user: action.payload.data,
-      };
+      state.user = action.payload.data;
     });
     builder.addCase(obtenerDatosUsuario.rejected, (state, action) => {
       if (action.payload.response.status === 401) {
-        return {
-          user: null,
-        };
+        state.user = null;
       }
     });
     builder.addCase(editarDatosUsuario.fulfilled, (state, action) => {
-      sessionStorage.setItem('userName', action.payload.data.user.nombre);
+      state.user = action.payload.data.user;
       if (action.payload.status === 200) {
         Swal.fire('Correcto', 'El Usuario se ha editado Correctamente', 'success').then(
           function () {
@@ -175,23 +172,18 @@ const usersSlices = createSlice({
           }
         );
       }
-      return action.payload.data;
     });
     builder.addCase(logOutUsuario.fulfilled, (state, action) => {
-      sessionStorage.removeItem('userName');
-      sessionStorage.removeItem('userId');
-      sessionStorage.removeItem('userToken');
-      navigateTo('/productos?busqueda=ultimos_productos&page=0');
+      state.user = null;
+      state.token = null;
+      navigateTo('/');
     });
     builder.addCase(eliminarUsuario.fulfilled, (state, action) => {
-      Swal.fire('Correct', 'Usuario Eliminado Correctamente', 'success')
-        .then(function () {
-          sessionStorage.removeItem('userName');
-          sessionStorage.removeItem('userId');
-          sessionStorage.removeItem('userToken');
-          navigateTo('/productos?busqueda=ultimos_productos&page=0');
-        }
-        );
+      state.user = null;
+      state.token = null;
+      Swal.fire('Correct', 'Usuario Eliminado Correctamente', 'success').then(function () {
+        navigateTo('/');
+      });
     });
     builder.addCase(addFavoriteProduct.fulfilled, (state, action) => {
       state.user = action.payload.data.user;
@@ -214,6 +206,6 @@ const usersSlices = createSlice({
   },
 });
 
-/* export const {   } = usersSlices.actions; */
+export const { clearUser } = usersSlices.actions;
 const { reducer } = usersSlices;
 export default reducer;

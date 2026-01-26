@@ -12,7 +12,7 @@ export const resetPassword = createAsyncThunk(
       const res = await AuthServices.resetPassword(email);
       return res;
     } catch (e) {
-      throw rejectedWithValue(e.message);
+      return rejectedWithValue(e.message);
     }
   }
 );
