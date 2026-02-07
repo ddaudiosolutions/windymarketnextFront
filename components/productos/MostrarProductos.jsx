@@ -39,12 +39,12 @@ const MostrarProductos = () => {
   return (
     <Fragment>
       <div className='main-container'>
-        <div className='mx-auto'>
+        <div className='mx-auto px-2 md:px-4'>
           <SearchByWords setSearchWords={setSearchWords} />
         </div>
-        <div className='mb-3 mx-auto mt-4'>
+        <div className='mb-3 mx-auto mt-3 md:mt-4 px-2 md:px-4'>
           <div>
-            <h2 className='text-center mb-5 font-saira'> Compra y vende material para Navegar </h2>
+            <h2 className='text-center mb-3 md:mb-5 font-saira text-lg md:text-xl lg:text-2xl'> Compra y vende material para Navegar </h2>
           </div>
           <div>
             <NavbarCategories />
@@ -54,7 +54,7 @@ const MostrarProductos = () => {
         <div className='mt-2'>
           {productosPorPalabras !== undefined && productosPorPalabras.length === 0 ? (
             <>
-              <h2 className='text-center font-saira'>
+              <h2 className='text-center font-saira text-base md:text-lg lg:text-xl mb-3 md:mb-4'>
                 {busquedaquery !== 'ultimos_productos'
                   ? busquedaquery.toUpperCase()
                   : 'Últimas novedades'}
@@ -66,7 +66,7 @@ const MostrarProductos = () => {
           )}
         </div>
 
-        <div className='flex justify-center mt-4'>
+        <div className='flex flex-wrap justify-center mt-3 md:mt-4 gap-2 px-2'>
           {busquedaquery !== 'ultimos_productos' &&
             paginas.map((pagina) => {
               return (
@@ -77,7 +77,7 @@ const MostrarProductos = () => {
                   className='rounded'
                 >
                   <h2
-                    className='mr-4 font-saira'
+                    className='font-saira text-sm md:text-base lg:text-lg px-2 py-1'
                     style={{
                       color:
                         Number(pagequery) === Number(pagina) ? '#201e2f' : 'rgb(56, 217, 223)',
@@ -91,9 +91,9 @@ const MostrarProductos = () => {
         </div>
 
         {mostrarProductoMasVistos && productosMasVistos !== undefined ? (
-          <div className='mt-3'>
-            <h2 className='text-center font-saira'> Productos Más Vistos </h2>
-            <div className='flex justify-center mt-4'>
+          <div className='mt-3 md:mt-4 px-2 md:px-4'>
+            <h2 className='text-center font-saira text-base md:text-lg lg:text-xl mb-3'> Productos Más Vistos </h2>
+            <div className='flex justify-center'>
               <ProductoMasVistos productosMasvistos={productosMasVistos} />
             </div>
           </div>

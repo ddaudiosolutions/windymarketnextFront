@@ -1,33 +1,37 @@
 function IconoBusqueda({ typeProduct, handleIconClick }) {
-  let icono;
+  let label;
+
   switch (typeProduct) {
     case 'tablas':
-      icono = '/iconosCategorias/table_windsurf.png';
+      label = 'Tablas';
       break;
     case 'velas':
-      icono = '/iconosCategorias/windsurf_sail.jpg';
+      label = 'Velas';
       break;
     case 'mastiles':
-      icono = '/iconosCategorias/mast_sail.jpg';
+      label = 'Mástiles';
       break;
     case 'botavaras':
-      icono = '/iconosCategorias/boom_sail.jpg';
+      label = 'Botavaras';
       break;
     case 'accesorios':
-      icono = '/iconosCategorias/Accesorios_Windsurf.png';
+      label = 'Accesorios';
       break;
     case 'ultimos_productos':
-      icono = './iconosCategorias/windsurf_pack.jpg';
+      label = 'Últimos';
       break;
     default:
-      icono = '/iconosCategorias/Avatar_Default.png';
+      label = typeProduct;
       break;
   }
+
   return (
-    <div className='flex flex-col items-center cursor-pointer' onClick={() => handleIconClick(typeProduct)}>
-      <img className='w-[60px] h-[60px] object-contain' src={icono} alt={typeProduct} />
-      <h6 className='text-sm mt-1 font-saira'>{typeProduct}</h6>
-    </div>
+    <button
+      onClick={() => handleIconClick(typeProduct)}
+      className='px-3 py-2 md:px-5 md:py-2.5 rounded-full border border-gray-300 bg-white hover:bg-cyan-50 hover:border-cyan-400 transition-all duration-200 font-saira text-xs md:text-sm font-medium text-gray-700 hover:text-cyan-600 shadow-sm hover:shadow-md'
+    >
+      {label}
+    </button>
   );
 }
 

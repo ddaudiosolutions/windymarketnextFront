@@ -1,23 +1,20 @@
+/* Fuentes críticas - cargar primero para evitar FOUT */
 body {
-  /* background-image: url("https://res.cloudinary.com/dhe1gcno9/image/upload/o_30/v1631097345/ProductosMarketV2/FondoPantalla/wallpaperflare.com_wallpaper_ra2ao1.jpg"); */
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
   background-color: #f9f9f9;
+  font-family: 'Saira', sans-serif;
 }
 
-h2,
-h4,
-h5,
-h6,
-h7,
-h8 {
-  font-family: Saira Stencil One;
+/* Clase para headers con estilo windy (usa esta clase donde necesites el color turquesa) */
+.windy-header {
+  font-family: 'Saira Stencil One', sans-serif;
   color: rgb(56, 217, 223);
 }
 
 .h2Author {
-  font-family: Saira Stencil One;
+  font-family: 'Saira Stencil One', sans-serif;
   color: rgb(56, 217, 223);
 }
 
@@ -26,11 +23,11 @@ h8 {
 }
 
 .loginLabel {
-  font-family: Saira;
+  font-family: 'Saira', sans-serif;
 }
 
 .loginH3 {
-  font-family: Saira;
+  font-family: 'Saira', sans-serif;
   color: rgb(124, 124, 124);
   border: 1px solid;
   border-radius: 3px;
@@ -49,11 +46,11 @@ h8 {
 
 .form-select {
   font-size: 1.3rem;
-  font-family: Saira;
+  font-family: 'Saira', sans-serif;
 }
 
 .prodPreDescription {
-  font-family: Saira;
+  font-family: 'Saira', sans-serif;
   font-weight: 200;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -69,7 +66,7 @@ h8 {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  font-family: Saira;
+  font-family: 'Saira', sans-serif;
 }
 
 .card-img-top {
@@ -111,138 +108,89 @@ h8 {
 .btn-outline-warning {
   color: #e02b20;
   background: transparent;
-  border: 1px solid;
+  border: 1px solid currentColor;
   text-decoration: none;
   outline: 0;
   font-size: 0.7rem;
-  font-family: Saira;
+  font-family: 'Saira', sans-serif;
   font-weight: 400;
   letter-spacing: 0.03rem;
+  transition: all 0.2s ease-in-out;
 }
 
 .btn-outline-warning:hover {
   color: rgb(255, 255, 255);
   background: #e02b20;
-  border: 1px solid;
-  text-decoration: none;
-  outline: 0;
-  font-size: 0.7rem;
-  font-family: Saira;
-  font-weight: 400;
-  letter-spacing: 0.03rem;
 }
 
 .btn-outline-info {
   color: rgb(4, 93, 226);
   background: transparent;
-  border: 1px solid;
+  border: 1px solid currentColor;
   text-decoration: none;
   outline: 0;
   font-size: 0.7rem;
-  font-family: Saira;
+  font-family: 'Saira', sans-serif;
   font-weight: 400;
   letter-spacing: 0.03rem;
+  transition: all 0.2s ease-in-out;
 }
 
 .btn-outline-info:hover {
   background-color: rgb(4, 93, 226);
   color: white;
-  /* background: transparent; */
-  border: 1px solid;
-  text-decoration: none;
-  outline: 0;
-  font-size: 0.7rem;
-  font-family: Saira;
-  font-weight: 400;
-  letter-spacing: 0.03rem;
 }
 
 .btn-outline-success {
   background-color: transparent;
   color: rgb(56, 217, 223);
-  border: 1px solid;
+  border: 1px solid currentColor;
   text-decoration: none;
   outline: 0;
   font-size: 0.7rem;
-  font-family: Saira;
+  font-family: 'Saira', sans-serif;
   font-weight: 400;
   letter-spacing: 0.03rem;
+  transition: all 0.2s ease-in-out;
 }
 
 .btn-outline-success:hover {
   background-color: rgb(56, 217, 223);
   color: rgb(255, 255, 255);
-  border: 1px solid;
-  text-decoration: none;
-  outline: 0;
-  font-size: 0.7rem;
-  font-family: Saira;
-  font-weight: 400;
-  letter-spacing: 0.03rem;
 }
 
 .btn-outline-primary {
   background-color: transparent;
   color: #e02b20;
-  /* fill: #ffffff; */
-  border: 1px solid;
+  border: 1px solid currentColor;
   text-decoration: none;
   outline: 0;
   font-size: 0.7rem;
-  font-family: Saira;
+  font-family: 'Saira', sans-serif;
   font-weight: 400;
   letter-spacing: 0.03rem;
+  transition: all 0.2s ease-in-out;
 }
 
-.btn-outline-primary:hover {
-  background-color: #e02b20;
-  color: #ffffff;
-  /* transition: 1000ms;   */
-  border: 1px solid;
-  outline: 0;
-  font-size: 0.7rem;
-  font-family: Saira;
-  font-weight: 400;
-  letter-spacing: 0.03rem;
-}
-
+.btn-outline-primary:hover,
 .btn-outline-primary:link {
   background-color: #e02b20;
   color: #ffffff;
-  /* transition: 1000ms;   */
-  border: 1px solid;
-  outline: 0;
-  font-size: 0.7rem;
-  font-family: Saira;
-  font-weight: 400;
-  letter-spacing: 0.03rem;
-}
-
-.btn-outline-info {
-  background-color: transparent;
-  /* color: #0058ca;   */
-  border: 1px solid;
-  text-decoration: none;
-  outline: 0;
-  font-size: 0.7rem;
-  font-family: Saira;
-  font-weight: 400;
-  letter-spacing: 0.03rem;
 }
 
 .product-price {
-  font-family: Saira;
+  font-family: 'Saira', sans-serif;
   color: black;
   font-size: 1rem;
 }
 
 .btn-select {
-  font-family: Saira Stencil One;
+  font-family: 'Saira Stencil One', sans-serif;
 }
 
 .btn-select h2:hover {
   color: rgb(27, 28, 48);
-  font-family: Saira Stencil One; 
+  font-family: 'Saira Stencil One', sans-serif;
 }
 
 .box {
@@ -263,17 +211,18 @@ h8 {
 
 .btn-info {
   text-align: center;
-  font-family: Saira Stencil One;
+  font-family: 'Saira Stencil One', sans-serif;
   color: rgb(248, 248, 248);
   background-color: rgb(112, 112, 112);
+  transition: all 0.2s ease-in-out;
 }
 
 .btn-success {
-  font-family: Saira Stencil one;
-  background-color: rgb(56, 217, 223)
+  font-family: 'Saira Stencil One', sans-serif;
+  background-color: rgb(56, 217, 223);
+  transition: all 0.2s ease-in-out;
 }
 
 .btn-success:hover {
-  font-family: Saira Stencil one;
-  background-color: rgb(124, 124, 124)
+  background-color: rgb(124, 124, 124);
 }

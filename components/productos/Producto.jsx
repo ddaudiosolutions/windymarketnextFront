@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { setProductId } from '../../reduxLib/slices/productSlices';
@@ -44,33 +43,33 @@ const Producto = ({ producto }) => {
   const firstFilename = (images.length === 0 || images[0].filename) ?? 'WindyMarket';
 
   return (
-    <Card className='product-card'>
-      <div className='relative' onClick={() => verProductoId(producto)}>
-        <img src={firstImage} className='w-full' alt={firstFilename} />
+    <Card className='product-card w-full p-0 overflow-hidden transition-shadow duration-200 hover:shadow-[0_10px_20px_rgba(0,0,0,0.12),0_4px_8px_rgba(0,0,0,0.06)]'>
+      <div className='relative cursor-pointer' onClick={() => verProductoId(producto)}>
+        <img src={firstImage} className='w-full aspect-square object-cover' alt={firstFilename} />
         {producto.reservado && (
-          <div className='absolute bottom-0 left-0 right-0 bg-black/70 py-2'>
-            <span className='text-white font-saira-stencil text-sm block text-center'>
+          <div className='absolute bottom-0 left-0 right-0 bg-black/70 py-1.5 md:py-2'>
+            <span className='text-white font-saira-stencil text-xs md:text-sm block text-center'>
               Reservado
             </span>
           </div>
         )}
         {producto.vendido && (
-          <div className='absolute bottom-0 left-0 right-0 bg-black/70 py-2'>
-            <span className='text-white font-saira-stencil text-sm block text-center'>Vendido</span>
+          <div className='absolute bottom-0 left-0 right-0 bg-black/70 py-1.5 md:py-2'>
+            <span className='text-white font-saira-stencil text-xs md:text-sm block text-center'>Vendido</span>
           </div>
         )}
       </div>
-      <CardContent className='space-y-1 p-2'>
+      <CardContent className='space-y-1 px-2 md:px-3 pt-1.5 md:pt-2 pb-2'>
         {/* Precio + acciones */}
         <div className='flex items-center justify-between'>
-          <span className='text-base font-semibold text-slate-900'>{price}€</span>
+          <span className='text-sm md:text-base font-semibold text-slate-900'>{price}€</span>
 
-          <div className='flex items-center gap-2'>
+          <div className='flex items-center gap-1.5 md:gap-2'>
             {delivery && (
               <img
                 src='/images/wm_delivery.jpg'
                 alt='DeliveryWindymarket_icon'
-                className='h-4 w-4 opacity-80'
+                className='h-3.5 w-3.5 md:h-4 md:w-4 opacity-80'
                 title='Envío disponible'
               />
             )}
@@ -78,12 +77,12 @@ const Producto = ({ producto }) => {
             {user &&
               (esFavorito ? (
                 <BsHeartFill
-                  className='text-red-500 text-lg cursor-pointer'
+                  className='text-red-500 text-base md:text-lg cursor-pointer'
                   onClick={handleFavorite}
                 />
               ) : (
                 <BsHeart
-                  className='text-slate-700 text-lg cursor-pointer'
+                  className='text-slate-700 text-base md:text-lg cursor-pointer'
                   onClick={handleFavorite}
                 />
               ))}
@@ -91,7 +90,7 @@ const Producto = ({ producto }) => {
         </div>
 
         {/* Título */}
-        <p className='truncate text-sm text-slate-500'>{title}</p>
+        <p className='truncate text-xs md:text-sm text-slate-600'>{title}</p>
       </CardContent>
     </Card>
   );

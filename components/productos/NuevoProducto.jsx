@@ -114,10 +114,10 @@ const NuevoProducto = () => {
             }}
             render={({ handleSubmit, values, form }) => (
               <form onSubmit={handleSubmit}>
-                <div className='mb-3'>
+                <div className='space-y-4'>
                   <Field name='categoria' validate={required}>
                     {({ input, meta }) => (
-                      <div className='mb-3'>
+                      <div>
                         <Label className='mb-2'>Selecciona el tipo de producto</Label>
                         <Select onValueChange={input.onChange} value={input.value}>
                           <SelectTrigger className='mt-1'>
@@ -137,7 +137,7 @@ const NuevoProducto = () => {
                       </div>
                     )}
                   </Field>
-                  <div className='mb-3'>
+                  <div>
                     <Field name='subCategoria' validate={required}>
                       {({ input, meta }) => (
                         <div>
@@ -172,7 +172,7 @@ const NuevoProducto = () => {
                   </div>
                   <Field name='title' validate={required}>
                     {({ input, meta }) => (
-                      <div className='mb-3'>
+                      <div>
                         <Label className='mb-2'>Título</Label>
                         <Input {...input} type='text' className='mt-1' />
                         {meta.error && meta.touched && (
@@ -181,7 +181,7 @@ const NuevoProducto = () => {
                       </div>
                     )}
                   </Field>
-                  <div className='mb-3'>
+                  <div>
                     <Field name='price' validate={required}>
                       {({ input, meta }) => (
                         <div>
@@ -194,7 +194,7 @@ const NuevoProducto = () => {
                       )}
                     </Field>
                   </div>
-                  <div className='mb-3'>
+                  <div>
                     <Field name='description' validate={required}>
                       {({ input, meta }) => (
                         <div>
@@ -247,7 +247,7 @@ const NuevoProducto = () => {
                     />
                   )}
 
-                  <div className='mb-3'>
+                  <div>
                     <Label className='mb-2'>Sube Tus Fotos:</Label>
                     <p className='text-red-500 text-sm mb-2'>
                       Las Imagenes no pueden pesar más de 1MB cada Una
@@ -277,7 +277,7 @@ const NuevoProducto = () => {
                     />
                   </div>
                 </div>
-                <div className='mb-3 mt-3 text-center'>
+                <div className='mt-4 text-center'>
                   <Button
                     variant='outline'
                     type='submit'

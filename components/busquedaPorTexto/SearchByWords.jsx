@@ -9,8 +9,8 @@ const SearchByWords = ({ setSearchWords }) => {
   };
 
   return (
-    <div className='flex justify-center gap-2'>
-      <div className='flex-1 max-w-2xl mt-4'>
+    <div className='flex justify-center gap-2 px-2 md:px-0'>
+      <div className='flex-1 max-w-2xl mt-3 md:mt-4'>
         <Form
           onSubmit={onSubmit}
           render={({ handleSubmit }) => (
@@ -22,6 +22,7 @@ const SearchByWords = ({ setSearchWords }) => {
                     {...input}
                     type='text'
                     placeholder='Escribe tu búsqueda aquí'
+                    className='text-sm md:text-base'
                   />
                 )}
               </Field>
@@ -30,8 +31,8 @@ const SearchByWords = ({ setSearchWords }) => {
           )}
         />
       </div>
-      <div className='mt-4'>
-        <Button type='submit' form='searchForm' variant='success'>
+      <div className='mt-3 md:mt-4'>
+        <Button type='submit' form='searchForm' variant='success' className='text-xs md:text-sm px-3 md:px-4'>
           Buscar
         </Button>
       </div>
