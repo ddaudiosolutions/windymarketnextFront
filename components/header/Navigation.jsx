@@ -25,33 +25,33 @@ const Navigation = () => {
   };
 
   return (
-    <nav className='flex items-center justify-between bg-white px-4 py-2 border-b'>
+    <nav className='flex items-center justify-between bg-white px-2 md:px-4 py-2 border-b'>
       <Image
         src='/LOGO_CIRCULAR_SIN_FONDO.png'
         alt='WindyMarket logo'
         width={128}
         height={72}
-        className='cursor-pointer'
+        className='cursor-pointer w-20 h-auto md:w-32'
         onClick={() => router.push('/')}
       />
 
-      <div className='ml-auto flex items-center gap-4'>
+      <div className='ml-auto flex items-center gap-2 md:gap-4'>
         {!user ? (
           <>
-            <Link href='/login' className='text-sm no-underline'>
+            <Link href='/login' className='text-xs md:text-sm no-underline'>
               Login
             </Link>
-            <Link href='/nuevousuario' className='text-sm no-underline'>
+            <Link href='/nuevousuario' className='text-xs md:text-sm no-underline'>
               Registrarse
             </Link>
           </>
         ) : (
           <>
-            <h5 className='text-sm'>Bienvenid@ {user.nombre}</h5>
+            <h5 className='text-xs md:text-sm hidden sm:block'>Bienvenid@ {user.nombre}</h5>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant='outline'>Mi Cuenta</Button>
+                <Button variant='outline' className='text-xs md:text-sm px-2 md:px-4'>Mi Cuenta</Button>
               </DropdownMenuTrigger>
 
               <DropdownMenuContent>
@@ -59,9 +59,9 @@ const Navigation = () => {
                   <Link href='/productos/nuevo'>Subir Producto</Link>
                 </DropdownMenuItem>
 
-                <DropdownMenuItem asChild>
+                {/* <DropdownMenuItem asChild>
                   <Link href='/buscoposts/nuevo'>Publicar Búsqueda</Link>
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
 
                 <DropdownMenuItem asChild>
                   <Link

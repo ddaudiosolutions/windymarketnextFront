@@ -10,7 +10,7 @@ const NavbarCategories = () => {
   };
 
   return (
-    <nav className='w-full flex flex-row justify-around items-start gap-4 py-2 mb-4'>
+    <nav className='w-full flex flex-wrap justify-center items-center gap-3 py-4 px-4 mb-4'>
       <IconoBusqueda typeProduct='tablas' handleIconClick={handleIconClick} />
       <IconoBusqueda typeProduct='velas' handleIconClick={handleIconClick} />
       <IconoBusqueda typeProduct='mastiles' handleIconClick={handleIconClick} />

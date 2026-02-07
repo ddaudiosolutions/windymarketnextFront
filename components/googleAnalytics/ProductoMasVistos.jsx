@@ -33,10 +33,7 @@ export const ProductoMasVistos = ({ productosMasvistos }) => {
   }, [productosIdsString, dispatch]);
 
   return (
-    <div
-      className='row row-cols-2 row-cols-xs-4 row-cols-sm-3 row-cols-md-3 
-    row-cols-lg-4 row-cols-xl-4 row-cols-xxl-4 g-2 justify-content-center mx-4'
-    >
+    <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-3 md:gap-4 px-4 md:px-6 max-w-7xl w-full'>
       {mostViewed.map(
         (producto, index) =>
           // si producto no es null

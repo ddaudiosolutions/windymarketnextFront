@@ -93,7 +93,8 @@ nav.nav-flex {
   align-items: center;
 }
 
-/* Product Grid Container */
+/* Product Grid Container - Now controlled by Tailwind classes */
+/* Commented out to allow Tailwind responsive utilities to work
 .product-grid-container {
   display: flex;
   justify-content: center;
@@ -120,8 +121,10 @@ nav.nav-flex {
     grid-template-columns: repeat(5, 212px);
   }
 }
+*/
 
-/* Product Cards */
+/* Product Cards - Now controlled by Tailwind classes */
+/* Commented out to allow Tailwind utilities to work
 .product-card {
   width: 212px;
   height: 325px;
@@ -150,13 +153,6 @@ nav.nav-flex {
   display: block;
 }
 
-/* Excepción para el icono de delivery - debe mantener su tamaño */
-.product-card img[alt='DeliveryWindymarket_icon'] {
-  width: 20px;
-  height: 20px;
-  border-radius: 0;
-}
-
 .product-card > div:last-child {
   padding: 0.2rem;
 }
@@ -168,4 +164,13 @@ nav.nav-flex {
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 100%;
+}
+*/
+
+/* Keep delivery icon exception */
+.product-card img[alt='DeliveryWindymarket_icon'] {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 0 !important;
+  object-fit: contain !important;
 }

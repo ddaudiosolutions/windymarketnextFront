@@ -48,35 +48,35 @@ const BuscoPostUser = ({ postUser }) => {
   };
   return (
     <Fragment>
-      <div className='col'>
+      <div>
         <div
-          className='shadow-sm me-1 ms-1 '
+          className='shadow-sm mx-1 cursor-pointer'
           type='button'
           onClick={() => verBuscoPostId(postUser)}
         >
-          <div className='card shadow-sm me-1 ms-1 mt-4'>
+          <div className='rounded-lg shadow-sm mx-1 mt-3 md:mt-4 bg-white border border-gray-200 overflow-hidden'>
             <img
               src='/SE_BUSCA_LOGO.png'
-              className='card-img-top-post'
+              className='w-full h-40 md:h-48 object-cover'
               alt='SE_BUSCA_IMG windsuf windymarket segunda mano'
             ></img>
 
-            <div className='card-body'>
-              <h5 className='titleH5-post card-title text-center'>{title}</h5>
+            <div className='p-3 md:p-4'>
+              <h5 className='titleH5-post text-center text-sm md:text-base'>{title}</h5>
             </div>
           </div>
         </div>
         {postUser.author._id === sessionStorage.getItem('userId') && (
-          <div className='container-fluid text-center mt-3 mb-3 gap-2'>
+          <div className='w-full text-center mt-2 md:mt-3 mb-2 md:mb-3 flex justify-center gap-2'>
             <button
-              className='btn btn-outline-success me-2'
+              className='px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm border border-green-500 text-green-500 rounded-md hover:bg-green-50 transition-colors'
               onClick={() => sendtoEdicion(postUser)}
             >
               Editar Post
             </button>
 
             <button
-              className='btn btn-outline-warning '
+              className='px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm border border-yellow-500 text-yellow-500 rounded-md hover:bg-yellow-50 transition-colors'
               onClick={() => confirmarBorrarBuscoPosts(_id)}
             >
               Eliminar Post

@@ -44,125 +44,125 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
         }}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
           <form onSubmit={handleSubmit}>
-            <div className='d-flex justify-content-between'>
-              <div className='me-4'>
-                <div className='mb-3'>
-                  <h5 className='form-label'>Remitente</h5>
+            <div className='flex flex-col lg:flex-row justify-between gap-4 lg:gap-6'>
+              <div className='flex-1'>
+                <div className='mb-2 md:mb-3'>
+                  <h5 className='block text-sm md:text-base font-semibold mb-2'>Remitente</h5>
                 </div>
-                <div className='mb-3'>
-                  <label className='form-label'>Nombre y Apellidos:</label>
+                <div className='mb-2 md:mb-3'>
+                  <label className='block text-xs md:text-sm font-medium mb-1'>Nombre y Apellidos:</label>
                   <Field
                     name='nombreRemi'
                     component='input'
                     placeholder='Nombre'
-                    className='form-control'
+                    className='flex w-full rounded-md border border-gray-300 bg-white px-2 md:px-3 py-1.5 md:py-2 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500'
                     required
                   />
                 </div>
                 <div className='mb-3'>
-                  <label className='form-label'>Direccion:</label>
+                  <label className='block text-sm font-medium mb-1'>Direccion:</label>
                   <Field
                     name='direccionRemi'
                     component='input'
                     placeholder='Direccion Completa'
-                    className='form-control'
+                    className='flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500'
                     required
                   />
                 </div>
                 <div className='mb-3'>
-                  <label className='form-label'>Poblacion y CP:</label>
+                  <label className='block text-sm font-medium mb-1'>Poblacion y CP:</label>
                   <Field
                     name='poblacion_CPRemi'
                     component='input'
                     placeholder='Poblacion y CP'
-                    className='form-control'
+                    className='flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500'
                     required
                   />
                 </div>
                 <div className='mb-3'>
-                  <label className='form-label'>Telefono Móvil:</label>
+                  <label className='block text-sm font-medium mb-1'>Telefono Móvil:</label>
                   <Field
                     name='telefonoRemi'
                     component='input'
                     placeholder='Teléfono'
-                    className='form-control'
+                    className='flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500'
                     required
                   />
                 </div>
                 <div className='mb-3'>
-                  <label className='form-label'>Email:</label>
+                  <label className='block text-sm font-medium mb-1'>Email:</label>
                   <Field
                     name='emailRemi'
                     component='input'
                     placeholder='Email'
-                    className='form-control'
+                    className='flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500'
                     required
                   />
                 </div>
               </div>
-              <div>
+              <div className='flex-1'>
                 <div className='mb-3'>
-                  <h5 className='form-label'>Destinatario</h5>
+                  <h5 className='block text-sm font-semibold mb-2'>Destinatario</h5>
                 </div>
                 <div className='mb-3'>
-                  <label className='form-label'>Nombre y Apellidos:</label>
+                  <label className='block text-sm font-medium mb-1'>Nombre y Apellidos:</label>
                   <Field
                     name='nombreDesti'
                     component='input'
                     placeholder='Nombre'
-                    className='form-control'
+                    className='flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500'
                     required
                   />
                 </div>
                 <div className='mb-3'>
-                  <label className='form-label'>Direccion:</label>
+                  <label className='block text-sm font-medium mb-1'>Direccion:</label>
                   <Field
                     name='direccionDesti'
                     component='input'
                     placeholder='Direccion Completa'
-                    className='form-control'
+                    className='flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500'
                     required
                   />
                 </div>
                 <div className='mb-3'>
-                  <label className='form-label'>Poblacion y CP:</label>
+                  <label className='block text-sm font-medium mb-1'>Poblacion y CP:</label>
                   <Field
                     name='poblacion_CPDesti'
                     component='input'
                     placeholder='Poblacion y CP'
-                    className='form-control'
+                    className='flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500'
                     required
                   />
                 </div>
                 <div className='mb-3'>
-                  <label className='form-label'>Telefono Móvil:</label>
+                  <label className='block text-sm font-medium mb-1'>Telefono Móvil:</label>
                   <Field
                     name='telefonoDesti'
                     component='input'
                     placeholder='Teléfono'
-                    className='form-control'
+                    className='flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500'
                     required
                   />
                 </div>
                 <div className='mb-3'>
-                  <label className='form-label'>Email:</label>
+                  <label className='block text-sm font-medium mb-1'>Email:</label>
                   <Field
                     name='emailDesti'
                     component='input'
                     placeholder='Email'
-                    className='form-control'
+                    className='flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500'
                     required
                   />
                 </div>
               </div>
-              <div>
+              <div className='flex-1'>
                 <div className='mb-3'>
-                  <h5 className='form-label'>Paquete</h5>
+                  <h5 className='block text-sm font-semibold mb-2'>Paquete</h5>
                 </div>
                 <div className='mb-3'>
-                  <label className='form-label'>Alto</label>
+                  <label className='block text-sm font-medium mb-1'>Alto</label>
                   <Field
-                    className='form-control'
+                    className='flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500'
                     name='alto'
                     component='input'
                     type='number'
@@ -170,9 +170,9 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
                   />
                 </div>
                 <div className='mb-3'>
-                  <label className='form-label'>Ancho</label>
+                  <label className='block text-sm font-medium mb-1'>Ancho</label>
                   <Field
-                    className='form-control'
+                    className='flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500'
                     name='ancho'
                     component='input'
                     type='number'
@@ -180,9 +180,9 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
                   />
                 </div>
                 <div className='mb-3'>
-                  <label className='form-label'>Largo</label>
+                  <label className='block text-sm font-medium mb-1'>Largo</label>
                   <Field
-                    className='form-control'
+                    className='flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500'
                     name='largo'
                     component='input'
                     type='number'
@@ -193,9 +193,9 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
                 {/* Campo Peso (actualizado automáticamente) */}
                 {datosRemitente.pesoVolumetrico >= 0 && (
                   <div className='mb-3'>
-                    <label className='form-label'>Peso Volumétrico</label>
+                    <label className='block text-sm font-medium mb-1'>Peso Volumétrico</label>
                     <Field
-                      className='form-control'
+                      className='flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500'
                       name='pesoVolumetrico'
                       component='input'
                       type='number'
@@ -207,9 +207,9 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
                 {/* Campo Peso en Kgs si medidas no superan 120cm */}
                 {datosRemitente.pesoVolumetrico <= -1 && (
                   <div className='mb-3'>
-                    <label className='form-label'>Peso en Kilos</label>
+                    <label className='block text-sm font-medium mb-1'>Peso en Kilos</label>
                     <Field
-                      className='form-control'
+                      className='flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500'
                       name='pesoKgs'
                       component='input'
                       type='number'
@@ -220,9 +220,9 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
 
                 {/* Campo Precio (actualizado automáticamente) */}
                 <div>
-                  <label className='mb-2'>Precio Estimado (€)</label>
+                  <label className='block text-sm font-medium mb-2'>Precio Estimado (€)</label>
                   <Field
-                    className='form-control'
+                    className='flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500'
                     name='precioEstimado'
                     component='input'
                     type='number'
@@ -235,7 +235,7 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
 
             <button
               type='submit'
-              className='btn btn-outline-success'
+              className='w-full md:w-auto px-3 md:px-4 py-2 md:py-2.5 text-sm md:text-base border border-green-500 text-green-500 rounded-md hover:bg-green-50 transition-colors mt-2'
               /* onClick={() => handleClose(false)} */ disabled={submitting}
             >
               Enviar

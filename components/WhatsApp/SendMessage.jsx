@@ -39,15 +39,20 @@ const SendMessage = ({ phoneNumber }) => {
                 {phoneNumber !== undefined && (
                   <>
                     <div>
-                      <label>Introduce el mensaje de whatsapp que quieres enviar:</label>
+                      <label className='block font-saira text-gray-700 text-xs md:text-sm mb-2'>
+                        Introduce el mensaje de whatsapp que quieres enviar:
+                      </label>
                       <Field
-                        className='form-control'
+                        className='w-full rounded-md border border-gray-300 bg-white px-2 md:px-3 py-1.5 md:py-2 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent'
                         name='message'
                         component='textarea'
                         maxLength={100}
                       />
                     </div>
-                    <button className='btn btn-outline-success mt-2' type='submit'>
+                    <button
+                      className='mt-2 md:mt-3 px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors font-saira w-full md:w-auto'
+                      type='submit'
+                    >
                       Enviar WhatsApp
                     </button>
                   </>
