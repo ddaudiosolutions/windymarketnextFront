@@ -171,6 +171,9 @@ const productsSlices = createSlice({
     setProductToEdit: (state, action) => {
       state.productToEdit = action.payload;
     },
+    clearProductsByWords: (state) => {
+      state.productsByWords = [];
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(obtenerProductos.fulfilled, (state, action) => {
@@ -259,6 +262,6 @@ const productsSlices = createSlice({
   },
 });
 
-export const { setProductId, setProductToEdit } = productsSlices.actions;
+export const { setProductId, setProductToEdit, clearProductsByWords } = productsSlices.actions;
 const { reducer } = productsSlices;
 export default reducer;

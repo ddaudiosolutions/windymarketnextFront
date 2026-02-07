@@ -28,7 +28,7 @@ function IconoBusqueda({ typeProduct, handleIconClick }) {
   return (
     <button
       onClick={() => handleIconClick(typeProduct)}
-      className='px-3 py-2 md:px-5 md:py-2.5 rounded-full border border-gray-300 bg-white hover:bg-cyan-50 hover:border-cyan-400 transition-all duration-200 font-saira text-xs md:text-sm font-medium text-gray-700 hover:text-cyan-600 shadow-sm hover:shadow-md'
+      className='px-4 py-2 md:px-6 md:py-2.5 rounded-lg border-2 border-windy-cyan/30 bg-windy-cyan/1 hover:bg-windy-cyan/10 hover:border-windy-cyan/20 transition-all duration-200 font-saira text-xs md:text-sm font-normal text-slate-800 hover:text-slate-900 shadow-md hover:shadow-lg'
     >
       {label}
     </button>
