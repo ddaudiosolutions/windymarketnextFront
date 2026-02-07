@@ -47,11 +47,15 @@ const Navigation = () => {
           </>
         ) : (
           <>
-            <h5 className='text-xs md:text-sm hidden sm:block'>Bienvenid@ {user.nombre}</h5>
+            <h5 className='font-saira-stencil font-light text-xs md:text-sm hidden sm:block'>
+              Bienvenid@ {user.nombre}
+            </h5>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant='outline' className='text-xs md:text-sm px-2 md:px-4'>Mi Cuenta</Button>
+                <Button variant='outline' className='text-xs md:text-sm px-2 md:px-4'>
+                  Mi Cuenta
+                </Button>
               </DropdownMenuTrigger>
 
               <DropdownMenuContent>

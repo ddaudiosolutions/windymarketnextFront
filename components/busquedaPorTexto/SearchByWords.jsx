@@ -9,8 +9,8 @@ const SearchByWords = ({ setSearchWords }) => {
   };
 
   return (
-    <div className='flex justify-center gap-2 px-2 md:px-0'>
-      <div className='flex-1 max-w-2xl mt-3 md:mt-4'>
+    <div className='flex justify-center items-center gap-2 md:gap-3'>
+      <div className='flex-1 max-w-3xl'>
         <Form
           onSubmit={onSubmit}
           render={({ handleSubmit }) => (
@@ -22,7 +22,7 @@ const SearchByWords = ({ setSearchWords }) => {
                     {...input}
                     type='text'
                     placeholder='Escribe tu búsqueda aquí'
-                    className='text-sm md:text-base'
+                    className='text-sm md:text-base h-10 md:h-11'
                   />
                 )}
               </Field>
@@ -31,12 +31,12 @@ const SearchByWords = ({ setSearchWords }) => {
           )}
         />
       </div>
-      <div className='mt-3 md:mt-4'>
-        <Button type='submit' form='searchForm' variant='success' className='text-xs md:text-sm px-3 md:px-4'>
+      <div className='flex-shrink-0'>
+        <Button type='submit' form='searchForm' variant='success' className='text-xs md:text-sm px-4 md:px-6 h-10 md:h-11'>
           Buscar
         </Button>
       </div>
-      </div>
+    </div>
   );
 };
 

@@ -43,7 +43,7 @@ const Producto = ({ producto }) => {
   const firstFilename = (images.length === 0 || images[0].filename) ?? 'WindyMarket';
 
   return (
-    <Card className='product-card w-full p-0 overflow-hidden transition-shadow duration-200 hover:shadow-[0_10px_20px_rgba(0,0,0,0.12),0_4px_8px_rgba(0,0,0,0.06)]'>
+    <Card className='product-card w-[calc(50%-0.375rem)] sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(20%-0.8rem)] p-0 overflow-hidden transition-shadow duration-200 hover:shadow-[0_10px_20px_rgba(0,0,0,0.12),0_4px_8px_rgba(0,0,0,0.06)]'>
       <div className='relative cursor-pointer' onClick={() => verProductoId(producto)}>
         <img src={firstImage} className='w-full aspect-square object-cover' alt={firstFilename} />
         {producto.reservado && (
@@ -53,11 +53,11 @@ const Producto = ({ producto }) => {
             </span>
           </div>
         )}
-        {producto.vendido && (
+        {/* {producto.vendido && (
           <div className='absolute bottom-0 left-0 right-0 bg-black/70 py-1.5 md:py-2'>
             <span className='text-white font-saira-stencil text-xs md:text-sm block text-center'>Vendido</span>
           </div>
-        )}
+        )} */}
       </div>
       <CardContent className='space-y-1 px-2 md:px-3 pt-1.5 md:pt-2 pb-2'>
         {/* Precio + acciones */}
