@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { toDate, format } from 'date-fns';
 import { cargarProductoIdApi, cargarProductosAuthor, extraerIdDeURL } from '../../helpers/utils';
+import { trackProductView } from '../../helpers/analyticsCalls';
 import Footer from '../WhatsApp/layout/Footer';
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { addFavoriteProduct, removeFavoriteProduct } from '../../reduxLib/slices/usersSlice';
@@ -69,6 +70,13 @@ const VerProducto = ({ producto: productoProp }) => {
       setClonedDateFormat(clonedDate !== 'Invalid Date' ? format(clonedDate, 'dd-MM-yyyy') : null);
     }
   }, [fechaCreado]);
+
+  // Trackear vista del producto en Google Analytics
+  useEffect(() => {
+    if (producto && producto._id) {
+      trackProductView(producto._id, producto.title);
+    }
+  }, [producto]);
 
   const [reservado, setReservado] = useState(producto ? producto.reservado : false);
   const handleReservado = () => {

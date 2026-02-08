@@ -15,7 +15,7 @@ const MostrarProductos = () => {
   const productosPorPalabras = useSelector((state) => state.products.productsByWords);
   const paginasTotales = useSelector((state) => state.products.productos.totalPages);
   const productosMasVistos = useSelector(
-    (state) => state.products.productosMasVistos.productosVistas
+    (state) => state.products.productosMasVistos
   );
   // TRAEMOS LAS SOLICITUDES DE BUSQUEDA
   const paginas = new Array(paginasTotales).fill(null).map((v, i) => i);
@@ -124,7 +124,7 @@ const MostrarProductos = () => {
         </div>
 
         {/* Productos Más Vistos */}
-        {mostrarProductoMasVistos && productosMasVistos !== undefined ? (
+        {mostrarProductoMasVistos && productosMasVistos && Array.isArray(productosMasVistos) && productosMasVistos.length > 0 ? (
           <div className='mt-8 md:mt-12 px-2 md:px-4'>
             <div className='flex items-center justify-center gap-3 md:gap-4 mb-6 md:mb-8'>
               <div className='h-px bg-gradient-to-r from-transparent via-windy-cyan/40 to-windy-cyan/40 flex-1 max-w-md'></div>
@@ -135,6 +135,14 @@ const MostrarProductos = () => {
             </div>
             <div className='flex justify-center'>
               <ProductoMasVistos productosMasvistos={productosMasVistos} />
+            </div>
+          </div>
+        ) : mostrarProductoMasVistos ? (
+          <div className='mt-8 md:mt-12 px-2 md:px-4'>
+            <div className='flex justify-center'>
+              <p className='text-slate-500 text-sm md:text-base font-saira'>
+                No hay suficientes datos de productos más vistos aún
+              </p>
             </div>
           </div>
         ) : null}

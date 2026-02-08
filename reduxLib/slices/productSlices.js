@@ -15,28 +15,29 @@ const initialState = {
 
 export const obtenerProductos = createAsyncThunk(
   'getProducts / GET',
-  async (pageAndData, { rejectedWithValue }) => {
+  async (pageAndData, { rejectWithValue }) => {
     try {
-      const products = await ProductService.obtenerCategoriaActions(pageAndData);
-      return products;
+      const response = await ProductService.obtenerCategoriaActions(pageAndData);
+      // Solo devolver los datos, no toda la respuesta de Axios
+      return response.data;
     } catch (error) {
-      return rejectedWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
 
 export const obtenerProductosMasVistos = createAsyncThunk(
   'getMostViewedProducts / GET',
-  async (data, { rejectedWithValue }) => {
-    /* console.log('entrando en productos mas vistos', data); */
+  async (_, { rejectWithValue }) => {
     try {
-      const mostviewedProductos = await ProductService.obtenerProductosMasVistos(); /* 
-      console.log('mostviewedProductosMasVistos', mostviewedProductos); */
-      return mostviewedProductos;
+      const response = await ProductService.obtenerProductosMasVistos();
+      console.log('Productos más vistos recibidos:', response.data);
+      // Solo devolver los datos, no toda la respuesta de Axios
+      return response.data;
     } catch (error) {
-      /* console.log('entrando en productos mas vistos');
-      console.log('error mostviewedProductosMasVistos', error); */
-      return rejectedWithValue(error.message);
+      console.error('Error obteniendo productos más vistos:', error);
+      console.error('Error response:', error.response?.data);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -178,7 +179,7 @@ const productsSlices = createSlice({
   extraReducers: (builder) => {
     builder.addCase(obtenerProductos.fulfilled, (state, action) => {
       console.log(action.payload);
-      state.productos = action.payload.data;
+      state.productos = action.payload;
     });
     builder.addCase(obtenerProductos.rejected, (state, action) => {
       Swal.fire({
@@ -191,11 +192,12 @@ const productsSlices = createSlice({
       });
     });
     builder.addCase(obtenerProductosMasVistos.fulfilled, (state, action) => {
-      console.log(action.payload);
-      state.productosMasVistos = action.payload.data;
+      console.log('✅ Productos más vistos:', action.payload);
+      state.productosMasVistos = action.payload?.productosVistas || [];
     });
     builder.addCase(obtenerProductosMasVistos.rejected, (state, action) => {
-      console.log(action);
+      console.warn('⚠️ No se pudieron cargar productos más vistos:', action.payload || action.error);
+      state.productosMasVistos = [];
     });
     builder.addCase(crearNuevoProducto.pending, (state, action) => {
       Swal.fire('Subiendo Producto');
