@@ -30,12 +30,12 @@ export const trackSendMail = () => {
 };
 
 export const trackProductView = (productId, productTitle) => {
-  trackEvent('Ver_Producto_nextjs', {
-    category: 'Product',
-    action: 'View Product',
-    label: productTitle || productId,
-    product_id: productId,
-    page_path: window.location.pathname,  // Incluir la URL actual
-    page_location: window.location.href,   // URL completa
-  });
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'product_view', {
+      product_id: productId,
+      product_title: productTitle,
+      page_path: window.location.pathname
+    });
+    console.log('📊 Vista de producto registrada:', { product_id: productId, product_title: productTitle });
+  }
 };

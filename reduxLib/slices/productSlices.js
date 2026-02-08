@@ -26,6 +26,18 @@ export const obtenerProductos = createAsyncThunk(
   }
 );
 
+export const obtenerNumeroVistasProducto = createAsyncThunk(
+  'getViewsProduct / GET',
+  async (data, { rejectedWithValue }) => {
+    try {
+      const productViews = await ProductService.obtenerNumeroVistasProducto(data);
+      return productViews.data;
+    } catch (error) {
+      throw rejectedWithValue(error.message);
+    }
+  }
+);
+
 export const obtenerProductosMasVistos = createAsyncThunk(
   'getMostViewedProducts / GET',
   async (_, { rejectWithValue }) => {
@@ -196,7 +208,10 @@ const productsSlices = createSlice({
       state.productosMasVistos = action.payload?.productosVistas || [];
     });
     builder.addCase(obtenerProductosMasVistos.rejected, (state, action) => {
-      console.warn('⚠️ No se pudieron cargar productos más vistos:', action.payload || action.error);
+      console.warn(
+        '⚠️ No se pudieron cargar productos más vistos:',
+        action.payload || action.error
+      );
       state.productosMasVistos = [];
     });
     builder.addCase(crearNuevoProducto.pending, (state, action) => {
@@ -260,6 +275,13 @@ const productsSlices = createSlice({
     });
     builder.addCase(changeVendidoProductState.fulfilled, (state, action) => {
       state.changeVendidoProductState = action.payload.status;
+    });
+    builder.addCase(obtenerNumeroVistasProducto.fulfilled, (state, action) => {
+      state.productViews = action.payload.eventos;
+    });
+    builder.addCase(obtenerNumeroVistasProducto.rejected, (state, action) => {
+      // Si no hay datos de vistas (404 u otro error), establecer en 0
+      state.productViews = 0;
     });
   },
 });

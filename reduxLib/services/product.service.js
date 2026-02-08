@@ -13,6 +13,10 @@ const obtenerCategoriaActions = (pageAndData) => {
 
 // DESCARGAR PRODUCTOS USUARIO
 
+const obtenerNumeroVistasProducto = (productoId) => {
+  return apiClient.post(`productos/getViewsProduct`, { productoId });
+};
+
 const obtenerProductosMasVistos = () => {
   /*  console.log('entrando en mostviewed FRONT'); */
   return apiClient.get(`productos/mostviewedProducts`);
@@ -73,6 +77,7 @@ const ProducServices = {
   sendMailPegatinas,
   editReservedState,
   editVendidoState,
+  obtenerNumeroVistasProducto,
 };
 
 export default ProducServices;

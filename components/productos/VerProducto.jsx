@@ -15,6 +15,7 @@ import { getFavoriteProducts } from '../../reduxLib/slices/favoriteProductsSlice
 import {
   changeReservedProductState,
   changeVendidoProductState,
+  obtenerNumeroVistasProducto,
 } from '../../reduxLib/slices/productSlices';
 import ContactoentreUsers from '../envioMensajes/ContactoentreUsers';
 import BotonGestionEnvio from '../gestionEnvios/BotonGestionEnvio';
@@ -35,6 +36,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
+import VistasProducto from './VistasProducto';
 
 const VerProducto = ({ producto: productoProp }) => {
   const productoRedux = useSelector((state) => state.products.productoId);
@@ -77,6 +79,13 @@ const VerProducto = ({ producto: productoProp }) => {
       trackProductView(producto._id, producto.title);
     }
   }, [producto]);
+
+  // Obtener número de vistas del producto
+  useEffect(() => {
+    if (producto && producto._id) {
+      dispatch(obtenerNumeroVistasProducto(producto._id));
+    }
+  }, [producto, dispatch]);
 
   const [reservado, setReservado] = useState(producto ? producto.reservado : false);
   const handleReservado = () => {
@@ -211,7 +220,9 @@ const VerProducto = ({ producto: productoProp }) => {
                   {authorName?.charAt(0)?.toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <h5 className='font-saira-stencil text-gray-800 ml-2 md:ml-3 text-base md:text-lg'>{authorName}</h5>
+              <h5 className='font-saira-stencil text-gray-800 ml-2 md:ml-3 text-base md:text-lg'>
+                {authorName}
+              </h5>
             </div>
             <div className='w-full sm:w-auto'>
               {userId === producto.author._id && (
@@ -286,7 +297,9 @@ const VerProducto = ({ producto: productoProp }) => {
 
             {/* Precio e iconos de acción */}
             <div className='flex items-center justify-between mb-3 md:mb-4 pb-3 md:pb-4 border-b border-gray-200'>
-              <h2 className='font-saira text-gray-900 text-xl md:text-2xl font-medium'>{producto.price}€</h2>
+              <h2 className='font-saira text-gray-900 text-xl md:text-2xl font-medium'>
+                {producto.price}€
+              </h2>
 
               <div className='flex items-center gap-2 md:gap-4'>
                 <WhatsappShareButton url={url}>
@@ -294,7 +307,7 @@ const VerProducto = ({ producto: productoProp }) => {
                     <WhatsappIconShare size={20} className='md:w-6 md:h-6' />
                   </div>
                 </WhatsappShareButton>
-
+                <VistasProducto />
                 {isLogged &&
                   (favorite ? (
                     <BsHeartFill
@@ -320,7 +333,9 @@ const VerProducto = ({ producto: productoProp }) => {
             </div>
 
             <div className='bg-gray-50 rounded-lg p-3 md:p-4 mb-3 md:mb-4'>
-              <p className='font-saira text-gray-700 text-sm md:text-base whitespace-pre-wrap'>{producto.description}</p>
+              <p className='font-saira text-gray-700 text-sm md:text-base whitespace-pre-wrap'>
+                {producto.description}
+              </p>
             </div>
 
             <div className='bg-gray-50 rounded-lg p-3 md:p-4'>
