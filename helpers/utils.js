@@ -8,10 +8,10 @@ export const cargarProductosAuthor = (dispatch, router, post) => {
 };
 
 export const cargarProductoIdApi = (dispatch, productId) => {
-  if(productId) {
-    dispatch(obtenerProductoIdApi(productId))
+  if (productId) {
+    dispatch(obtenerProductoIdApi(productId));
   }
-}
+};
 
 export const extraerIdDeURL = (url) => {
   const ultimaBarraIndex = url.lastIndexOf('/');
@@ -30,7 +30,7 @@ export const verificarPesoImagenes = (images) => {
   return isPesado;
 };
 
-export const swalFirePesoImagenes =  (producto) => {
+export const swalFirePesoImagenes = (producto) => {
   return Swal.fire({
     icon: 'info',
     html: 'Peso mayor de 1Mb! Se reducirá el peso de la imagen, puede perder algo de calidad!!',
@@ -42,16 +42,16 @@ export const swalFirePesoImagenes =  (producto) => {
   });
 };
 
-export const swalFireFaltaTelefono = ( ) => {  
-   return Swal.fire({
-      icon: 'info',
-      html: 'No podrás recibir mensajes por Whatsapp <br> añade el telefono a tu perfil',
-      showCancelButton: true,
-      cancelButtonColor: '#d33',
-      confirmButtonColor: '#3085d6',
-      confirmButtonText: 'Guardar y Continuar',
-      reverseButtons: true,
-    });
+export const swalFireFaltaTelefono = () => {
+  return Swal.fire({
+    icon: 'info',
+    html: 'No podrás recibir mensajes por Whatsapp <br> añade el telefono a tu perfil',
+    showCancelButton: true,
+    cancelButtonColor: '#d33',
+    confirmButtonColor: '#3085d6',
+    confirmButtonText: 'Guardar y Continuar',
+    reverseButtons: true,
+  });
 };
 
 export const swalPesoKgsAlert = () => {
@@ -69,7 +69,7 @@ export const getAuthHeaders = () => {
   if (typeof window === 'undefined') {
     return {};
   }
-  
+
   const token = sessionStorage.getItem('userToken');
   return {
     headers: {
@@ -78,3 +78,7 @@ export const getAuthHeaders = () => {
   };
 };
 
+// utils/cloudinary.js
+export const getOptimizedImageUrl = (url) => {
+  return `${url.replace('/upload/', '/upload/q_auto,f_auto,c_limit,w_800/')}`;
+};

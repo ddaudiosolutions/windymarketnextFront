@@ -35,8 +35,9 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 
-const VerProducto = () => {
-  const producto = useSelector((state) => state.products.productoId);
+const VerProducto = ({ producto: productoProp }) => {
+  const productoRedux = useSelector((state) => state.products.productoId);
+  const producto = productoProp || productoRedux;
   let paginaActual = useSelector((state) => state.products.paginaActual);
   const user = useSelector((state) => state.users.user);
 
