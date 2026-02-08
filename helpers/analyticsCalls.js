@@ -1,7 +1,14 @@
-import ReactGA from 'react-ga4';
+// Helper para enviar eventos a Google Analytics
+// Usa gtag directamente para mejor compatibilidad con Next.js
+
+export const trackEvent = (eventName, eventParams = {}) => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', eventName, eventParams);
+  }
+};
 
 export const trackLoginButton = () => {
-  ReactGA.event('login_button',{
+  trackEvent('login_button', {
     category: 'User',
     action: 'Click on Login button',
     label: 'Login_Button'
@@ -9,8 +16,8 @@ export const trackLoginButton = () => {
 };
 
 export const trackSendMail = () => {
-  ReactGA.event('sendMail_button',{
+  trackEvent('sendMail_button', {
     category: 'User',
-    action: 'Send mail between users',    
+    action: 'Send mail between users',
   });
 };
