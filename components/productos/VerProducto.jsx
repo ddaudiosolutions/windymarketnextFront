@@ -53,7 +53,7 @@ const VerProducto = ({ producto: productoProp }) => {
   }
 
   const [url, setUrl] = useState('');
-  const productoId = extraerIdDeURL(url);
+  const productoId = producto?._id || extraerIdDeURL(url);
   const dispatch = useDispatch();
   const router = useRouter();
   const fechaCreado = producto !== undefined ? producto.creado : null;

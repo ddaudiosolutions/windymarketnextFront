@@ -1,5 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
-import Swal from 'sweetalert2';
+import { useState, useMemo } from 'react';
 
 /**
  * Custom hook para manejar la lógica de imágenes de productos
@@ -86,15 +85,15 @@ const useProductImages = ({ existingImages = [], maxImages = 8, mode = 'create' 
     setImagesToDelete([]);
   };
 
-  // Efecto para mostrar alertas cuando se intenta borrar todas las imágenes
-  useEffect(() => {
-    if (mode === 'edit' && errors.noImages) {
-      Swal.fire({
-        icon: 'error',
-        text: errors.noImages,
-      });
-    }
-  }, [mode, errors.noImages]);
+  // No mostrar alertas automáticas - se manejan en el submit del formulario
+  // useEffect(() => {
+  //   if (mode === 'edit' && errors.noImages) {
+  //     Swal.fire({
+  //       icon: 'error',
+  //       text: errors.noImages,
+  //     });
+  //   }
+  // }, [mode, errors.noImages]);
 
   return {
     // Estados

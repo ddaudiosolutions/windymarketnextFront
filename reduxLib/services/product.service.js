@@ -14,7 +14,7 @@ const obtenerCategoriaActions = (pageAndData) => {
 // DESCARGAR PRODUCTOS USUARIO
 
 const obtenerNumeroVistasProducto = (productoId) => {
-  return apiClient.post(`productos/getViewsProduct`, { productoId });
+  return apiClient.post(`productos/getViewsProduct`, { productId: productoId });
 };
 
 const obtenerProductosMasVistos = () => {
@@ -64,6 +64,10 @@ const editVendidoState = (stateData) => {
   return apiClient.post('productos/editVendidoState', stateData);
 };
 
+const reactivarProducto = (productoId) => {
+  return apiClient.post('productos/reactivarProducto', { productId: productoId });
+};
+
 const ProducServices = {
   obtenerCategoriaActions,
   obtenerProductoIdApi,
@@ -78,6 +82,7 @@ const ProducServices = {
   editReservedState,
   editVendidoState,
   obtenerNumeroVistasProducto,
+  reactivarProducto,
 };
 
 export default ProducServices;

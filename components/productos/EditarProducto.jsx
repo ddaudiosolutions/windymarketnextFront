@@ -3,7 +3,7 @@
 import { useState, useEffect, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FormData from 'form-data';
-import { editarProducto } from '@/reduxLib/slices/productSlices';
+import { editarProducto, obtenerProductoIdApi, setProductToEdit } from '@/reduxLib/slices/productSlices';
 import VerImagesEdit from '@/components/productos/VerImagesEdit';
 import Swal from 'sweetalert2';
 import {
@@ -30,10 +30,35 @@ import {
 
 // FUNCION PARA EDITAR PRODUCTO
 
-const EditarProducto = () => {
+const EditarProducto = ({ productId }) => {
   const dispatch = useDispatch();
   const productoEditar = useSelector((state) => state.products.productToEdit);
   const [id, setId] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  // Cargar producto fresco cada vez que se monta el componente
+  useEffect(() => {
+    if (productId) {
+      setLoading(true);
+      dispatch(obtenerProductoIdApi(productId)).then((res) => {
+        if (res.payload?.data) {
+          dispatch(setProductToEdit(res.payload.data));
+        }
+        setLoading(false);
+      });
+    }
+
+    // Limpiar al desmontar el componente
+    return () => {
+      dispatch(setProductToEdit(null));
+    };
+  }, [productId, dispatch]);
+
+  useEffect(() => {
+    if (productoEditar?._id) {
+      setId(productoEditar._id);
+    }
+  }, [productoEditar?._id]);
 
   // Custom hook para manejar lógica de imágenes
   const {
@@ -44,7 +69,7 @@ const EditarProducto = () => {
     handleFileChange,
     handleToggleDelete,
   } = useProductImages({
-    existingImages: productoEditar.images || [],
+    existingImages: productoEditar?.images || [],
     maxImages: 8,
     mode: 'edit',
   });
@@ -53,9 +78,10 @@ const EditarProducto = () => {
     handleToggleDelete(filename, !status.checked);
   };
 
-  useEffect(() => {
-    setId(productoEditar._id);
-  }, [productoEditar._id]);
+  // Verificar si el producto está disponible DESPUÉS de todos los hooks
+  if (!productoEditar || loading) {
+    return <div className='flex justify-center items-center min-h-screen'>Cargando producto...</div>;
+  }
 
   const sendDataEditProduct = (producto, id) => {
     dispatch(editarProducto(producto, id));
@@ -116,22 +142,22 @@ const EditarProducto = () => {
         <Form
           onSubmit={submitEditarProducto}
           initialValues={{
-            categoria: productoEditar.categoria,
-            subCategoria: productoEditar.subCategoria,
-            title: productoEditar.title,
-            price: productoEditar.price,
-            description: productoEditar.description,
-            contacto: productoEditar.author.nombre,
-            delivery: productoEditar.delivery,
-            alto: productoEditar.alto,
-            ancho: productoEditar.ancho,
-            largo: productoEditar.largo,
-            pesoVolumetrico: parseFloat(productoEditar.pesoVolumetrico),
-            pesoKgs: productoEditar.pesoKgs,
-            precioEstimado: parseFloat(productoEditar.precioEstimado),
-            balearicDelivery: productoEditar.balearicDelivery,
-            reservado: productoEditar.reservado,
-            vendido: productoEditar.vendido,
+            categoria: productoEditar.categoria || '',
+            subCategoria: productoEditar.subCategoria || '',
+            title: productoEditar.title || '',
+            price: productoEditar.price || 0,
+            description: productoEditar.description || '',
+            contacto: productoEditar.author?.nombre || '',
+            delivery: productoEditar.delivery || false,
+            alto: productoEditar.alto || 0,
+            ancho: productoEditar.ancho || 0,
+            largo: productoEditar.largo || 0,
+            pesoVolumetrico: parseFloat(productoEditar.pesoVolumetrico) || 0,
+            pesoKgs: productoEditar.pesoKgs || 0,
+            precioEstimado: parseFloat(productoEditar.precioEstimado) || 0,
+            balearicDelivery: productoEditar.balearicDelivery || false,
+            reservado: productoEditar.reservado || false,
+            vendido: productoEditar.vendido || false,
           }}
           render={({ handleSubmit, values, form }) => (
             <form onSubmit={handleSubmit} className='space-y-6'>

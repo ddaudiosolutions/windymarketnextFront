@@ -174,6 +174,18 @@ export const changeVendidoProductState = createAsyncThunk(
   }
 );
 
+export const reactivarProducto = createAsyncThunk(
+  'reactivarProducto / POST',
+  async (productoId, { rejectedWithValue }) => {
+    try {
+      const response = await ProductService.reactivarProducto(productoId);
+      return response;
+    } catch (error) {
+      return rejectedWithValue(error.message);
+    }
+  }
+);
+
 const productsSlices = createSlice({
   name: 'products',
   initialState,
@@ -247,6 +259,10 @@ const productsSlices = createSlice({
     });
     builder.addCase(editarProducto.fulfilled, (state, action) => {
       if (action.payload.status === 200) {
+        // Actualizar el producto editado en el estado
+        if (action.payload.data) {
+          state.productToEdit = action.payload.data;
+        }
         Swal.fire('Correcto', 'Producto Editado con Exito', 'success').then(function () {
           navigateTo(`/`);
         });
@@ -282,6 +298,12 @@ const productsSlices = createSlice({
     builder.addCase(obtenerNumeroVistasProducto.rejected, (state, action) => {
       // Si no hay datos de vistas (404 u otro error), establecer en 0
       state.productViews = 0;
+    });
+    builder.addCase(reactivarProducto.fulfilled, (state, action) => {
+      Swal.fire('Correcto', 'Producto reactivado con éxito', 'success');
+    });
+    builder.addCase(reactivarProducto.rejected, (state, action) => {
+      Swal.fire('Error', 'No se pudo reactivar el producto', 'error');
     });
   },
 });

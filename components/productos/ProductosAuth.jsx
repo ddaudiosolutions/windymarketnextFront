@@ -21,11 +21,13 @@ const ProductosAuth = () => {
 
   return (
     <Fragment>
-      <div className='max-w-7xl mx-auto mt-3 md:mt-4 px-2 md:px-4'>
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 justify-items-center'>
+      <div className='main-container'>
+        <div className='product-grid-container flex justify-center mt-3 md:mt-4'>
+          <div className='product-grid flex flex-wrap justify-center gap-3 md:gap-4 max-w-full w-full'>
           {productos?.map((producto) => (
             <ProductoUser key={producto._id} producto={producto} />
           ))}
+          </div>
         </div>
       </div>
     </Fragment>
