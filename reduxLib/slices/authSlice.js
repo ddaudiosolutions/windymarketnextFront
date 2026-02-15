@@ -8,6 +8,7 @@ const initialState = [];
 export const resetPassword = createAsyncThunk(
   'user/reset-password',
   async (email, { rejectedWithValue }) => {
+    console.log('reset password', email);
     try {
       const res = await AuthServices.resetPassword(email);
       return res;

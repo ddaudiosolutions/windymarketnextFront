@@ -4,6 +4,7 @@ import storage from '../lib/storage';
 import productsReducer from './slices/productSlices';
 import usersReducer from './slices/usersSlice';
 import favoriteProductsReducer from './slices/favoriteProductsSlice';
+import authReducer from './slices/authSlice';
 
 const persistConfig = {
   key: 'root',
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   products: productsReducer,
   users: usersReducer,
   favoriteProducts: favoriteProductsReducer,
+  auth: authReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

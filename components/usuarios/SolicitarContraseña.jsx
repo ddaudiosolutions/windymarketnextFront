@@ -11,11 +11,10 @@ import { Button } from '@/components/ui/button';
 function SolicitarContraseña() {
   const dispatch = useDispatch();
   const handleRegister = (values) => {
-    dispatch(
-      resetPassword({
-        email: values.email,
-      })
-    );
+    console.log('🔵 handleRegister ejecutado');
+    console.log('📧 Email recibido:', values.email);
+    console.log('📦 Despachando resetPassword...');
+    dispatch(resetPassword(values.email));
   };
   // eslint-disable-next-line
   const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -23,14 +22,14 @@ function SolicitarContraseña() {
   return (
     <div className=' '>
       <div className='flex justify-center mt-12'>
-      <div className='w-full max-w-md lg:max-w-lg'>
-        <img
-          src='/LOGO_CIRCULAR_SIN_FONDO.png'
-          alt='WindyMarket_Logo windymarket windsurf segunda mano'
-          className='w-80 object-contain mx-auto block'
-        />
-      </div>
-      <div className='w-full max-w-md lg:max-w-lg ml-4'>
+        <div className='w-full max-w-md lg:max-w-lg'>
+          <img
+            src='/LOGO_CIRCULAR_SIN_FONDO.png'
+            alt='WindyMarket_Logo windymarket windsurf segunda mano'
+            className='w-80 object-contain mx-auto block'
+          />
+        </div>
+        <div className='w-full max-w-md lg:max-w-lg ml-4'>
           <div className='rounded  p-3 bg-transparent'>
             <div className='text-center'>
               <h3 className='font-saira text-2xl mb-4'>Recupera tu Acceso</h3>
@@ -50,7 +49,7 @@ function SolicitarContraseña() {
                       </div>
                     )}
                   </Field>
-                  
+
                   <div className='text-center'>
                     <Button type='submit' variant='outline' className='w-full mt-3'>
                       Solicitar Cambio

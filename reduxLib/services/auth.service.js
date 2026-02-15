@@ -5,7 +5,7 @@ const checkAuth = (data) => {
 };
 
 const resetPassword = (email) => {
-  return apiClient.post('auth/resetPassword', email);
+  return apiClient.post('auth/resetPassword', { email });
 };
 
 const changePasswordUser = (data) => {
