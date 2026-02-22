@@ -34,7 +34,7 @@ export default function Home() {
 
           {/* Subtítulo */}
           <p className='text-slate-600 text-xs md:text-sm lg:text-base font-saira max-w-3xl mx-auto mb-4 md:mb-5'>
-            Compra y vende material <span className='font-semibold text-windy-cyan'>sin comisiones</span> y con envío seguro para tablas y mástiles en toda España.
+            Compra y vende material <span className='font-semibold text-windy-cyan'>sin comisiones</span> y con envío seguro en toda España.
           </p>
 
           {/* Botón principal */}
@@ -60,6 +60,12 @@ export default function Home() {
             >
               Ver productos
             </Link>
+            <Link
+              href='/envios'
+              className='inline-flex items-center gap-2 px-5 py-2.5 bg-windy-cyan hover:bg-slate-50 text-slate-700 font-saira text-sm md:text-base font-medium rounded-lg border-2 border-slate-200 hover:border-windy-cyan/50 transition-all duration-300'
+            >
+              Gestiona un envio
+            </Link>
           </div>
 
           {/* Beneficios */}
@@ -81,7 +87,7 @@ export default function Home() {
                 </svg>
               </div>
               <h3 className='font-saira font-semibold text-slate-800 text-sm'>Envío disponible</h3>
-              <p className='text-xs text-slate-600'>Para tablas y mástiles</p>
+              <p className='text-xs text-slate-600'>Para todo tipo de material</p>
             </div>
 
             <div className='flex flex-col items-center gap-1'>
@@ -91,7 +97,7 @@ export default function Home() {
                 </svg>
               </div>
               <h3 className='font-saira font-semibold text-slate-800 text-sm'>Solo comunidad wind</h3>
-              <p className='text-xs text-slate-600'>Especializado en windsurf</p>
+              <p className='text-xs text-slate-600'>Windsurf - Foil - Wing</p>
             </div>
           </div>
         </div>

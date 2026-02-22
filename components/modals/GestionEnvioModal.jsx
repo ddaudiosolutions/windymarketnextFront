@@ -11,7 +11,7 @@ import FormularioDatosEnvio from '../gestionEnvios/FormularioDatosEnvio';
 function GestionEnvioModal({ show, handleClose, datosRemitente }) {
   return (
     <Dialog open={show} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent className="max-w-4xl bg-white border border-gray-200 rounded-lg">
+      <DialogContent className="max-w-xl bg-white border border-gray-200 rounded-lg">
         <DialogHeader>
           <DialogTitle className="text-center w-full">
             <h5 className="font-saira-stencil text-lg"> Formulario de contacto </h5>

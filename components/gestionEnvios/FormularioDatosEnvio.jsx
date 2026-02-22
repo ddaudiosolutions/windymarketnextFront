@@ -23,24 +23,24 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
       <Form
         onSubmit={onSubmit}
         initialValues={{
-          nombreRemi: datosRemitente.author.nombre,
-          telefonoRemi: datosRemitente.author.telefono,
-          emailRemi: datosRemitente.author.email,
+          nombreRemi: datosRemitente?.author.nombre,
+          telefonoRemi: datosRemitente?.author.telefono,
+          emailRemi: datosRemitente?.author.email,
           direccionRemi:
-            datosRemitente.author.direccion === 'undefined' ? '' : datosRemitente.author.direccion,
-          poblacion_CPRemi: datosRemitente.author.poblacion_CP,
-          nombreDesti: datosDestinatario.nombre,
-          telefonoDesti: datosDestinatario.telefono,
-          emailDesti: datosDestinatario.email,
+            datosRemitente?.author.direccion === 'undefined' ? '' : datosRemitente?.author.direccion,
+          poblacion_CPRemi: datosRemitente?.author.poblacion_CP,
+          nombreDesti: datosDestinatario?.nombre,
+          telefonoDesti: datosDestinatario?.telefono,
+          emailDesti: datosDestinatario?.email,
           direccionDesti:
-            datosDestinatario.direccion === 'undefined' ? '' : datosDestinatario.direccion,
-          poblacion_CPDesti: datosDestinatario.poblacion_CP,
-          alto: datosRemitente.alto,
-          ancho: datosRemitente.ancho,
-          largo: datosRemitente.largo,
-          pesoVolumetrico: datosRemitente.pesoVolumetrico,
-          pesoKgs: datosRemitente.pesoKgs,
-          precioEstimado: datosRemitente.precioEstimado,
+            datosDestinatario?.direccion === 'undefined' ? '' : datosDestinatario?.direccion,
+          poblacion_CPDesti: datosDestinatario?.poblacion_CP,
+          alto: datosRemitente?.alto,
+          ancho: datosRemitente?.ancho,
+          largo: datosRemitente?.largo,
+          pesoVolumetrico: datosRemitente?.pesoVolumetrico,
+          pesoKgs: datosRemitente?.pesoKgs,
+          precioEstimado: datosRemitente?.precioEstimado,
         }}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
           <form onSubmit={handleSubmit}>
@@ -191,7 +191,7 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
                 </div>
 
                 {/* Campo Peso (actualizado automáticamente) */}
-                {datosRemitente.pesoVolumetrico >= 0 && (
+                {datosRemitente?.pesoVolumetrico >= 0 && (
                   <div className='mb-3'>
                     <label className='block text-sm font-medium mb-1'>Peso Volumétrico</label>
                     <Field
@@ -205,7 +205,7 @@ function FormularioDatosEnvio({ handleClose, datosRemitente }) {
                   </div>
                 )}
                 {/* Campo Peso en Kgs si medidas no superan 120cm */}
-                {datosRemitente.pesoVolumetrico <= -1 && (
+                {datosRemitente?.pesoVolumetrico <= -1 && (
                   <div className='mb-3'>
                     <label className='block text-sm font-medium mb-1'>Peso en Kilos</label>
                     <Field
