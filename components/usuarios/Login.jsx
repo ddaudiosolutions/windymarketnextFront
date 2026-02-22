@@ -11,6 +11,7 @@ import { trackLoginButton } from '../../helpers/analyticsCalls';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import Swal from 'sweetalert2';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -23,7 +24,44 @@ const Login = () => {
     dispatch(loginUsuario({ email: values.email, password: values.password }))
       .unwrap()
       .then(() => {
-        router.push('/');
+        // Verificar si hay una publicación pendiente
+        const pendingData = localStorage.getItem('pendingProductData');
+
+        if (pendingData) {
+          // Mostrar modal de confirmación
+          Swal.fire({
+            title: '¡Bienvenido! 👋',
+            html: `
+              <div style="text-align: center; padding: 1rem;">
+                <p style="margin-bottom: 1rem; font-size: 1.1rem;">
+                  Tienes una <strong>publicación pendiente</strong>
+                </p>
+                <p style="color: #666; font-size: 0.95rem;">
+                  ¿Quieres continuar ahora con tu producto?
+                </p>
+              </div>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Continuar publicación',
+            cancelButtonText: 'Más tarde',
+            confirmButtonColor: '#38d9df',
+            customClass: {
+              popup: 'swal-wide',
+            },
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Ir a publicar producto
+              router.push('/productos/nuevo');
+            } else {
+              // Ir al home (los datos siguen guardados)
+              router.push('/');
+            }
+          });
+        } else {
+          // No hay datos pendientes, ir al home normalmente
+          router.push('/');
+        }
       })
       .catch((error) => {
         console.error('Error en login:', error);

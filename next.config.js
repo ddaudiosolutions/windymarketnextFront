@@ -6,13 +6,4 @@ module.exports = {
   images: {
     domains: ['res.cloudinary.com'],
   },
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/productos?busqueda=ultimos_productos&page=0',
-        permanent: true,
-      },
-    ]
-  },
 }

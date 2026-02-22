@@ -4,7 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import ListaProductos from './ListaProductos';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { obtenerProductosPorPalabras, clearProductsByWords } from '../../reduxLib/slices/productSlices';
+import {
+  obtenerProductosPorPalabras,
+  clearProductsByWords,
+} from '../../reduxLib/slices/productSlices';
 import SearchByWords from '../busquedaPorTexto/SearchByWords';
 import NavbarCategories from '../categorias/NavbarCategories';
 import HappyBanner from '../banners/HappyBanner';
@@ -14,9 +17,7 @@ const MostrarProductos = () => {
   const productos = useSelector((state) => state.products.productos.prodAll);
   const productosPorPalabras = useSelector((state) => state.products.productsByWords);
   const paginasTotales = useSelector((state) => state.products.productos.totalPages);
-  const productosMasVistos = useSelector(
-    (state) => state.products.productosMasVistos
-  );
+  const productosMasVistos = useSelector((state) => state.products.productosMasVistos);
   // TRAEMOS LAS SOLICITUDES DE BUSQUEDA
   const paginas = new Array(paginasTotales).fill(null).map((v, i) => i);
 
@@ -50,20 +51,6 @@ const MostrarProductos = () => {
   return (
     <Fragment>
       <div className='main-container'>
-        {/* Hero Section - Título Principal */}
-        <div className='relative py-6 md:py-8 lg:py-10 px-4 mb-5 md:mb-6 bg-gradient-to-br from-windy-cyan/5 via-white to-windy-cyan/5 overflow-hidden'>
-          <div className='absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(56,217,223,0.1),transparent_50%)]'></div>
-          <div className='absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(56,217,223,0.08),transparent_50%)]'></div>
-          <div className='relative z-10 max-w-5xl mx-auto'>
-            <h1 className='text-center font-saira-stencil text-xl md:text-3xl lg:text-4xl xl:text-5xl text-slate-800 font-light mb-2 md:mb-3'>
-              Compra y vende material para Navegar
-            </h1>
-            <p className='text-center text-slate-600 text-xs md:text-sm lg:text-base font-saira max-w-2xl mx-auto'>
-              El marketplace de windsurf más completo
-            </p>
-          </div>
-        </div>
-
         {/* Toolbar de Búsqueda y Categorías */}
         <div className='mx-auto px-2 md:px-4 mb-6 md:mb-8'>
           <div className='max-w-6xl mx-auto bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6'>
@@ -80,14 +67,17 @@ const MostrarProductos = () => {
 
         {/* Sección de Productos */}
         <div className='px-2 md:px-4'>
-          {searchWords && searchWords.searchWord && searchWords.searchWord.length > 0 && !busquedaquery ? (
+          {searchWords &&
+          searchWords.searchWord &&
+          searchWords.searchWord.length > 0 &&
+          !busquedaquery ? (
             <ListaProductos productos={productosPorPalabras} />
           ) : (
             <>
               <div className='flex items-center justify-center gap-3 md:gap-4 mb-6 md:mb-8'>
                 <div className='h-px bg-gradient-to-r from-transparent via-windy-cyan/40 to-windy-cyan/40 flex-1 max-w-md'></div>
                 <h2 className='font-saira-stencil text-base md:text-lg lg:text-xl font-light text-slate-800 border-2 border-windy-cyan/40 px-4 md:px-6 py-2 md:py-2.5 rounded-lg shadow-sm bg-white/80 whitespace-nowrap'>
-                  {busquedaquery !== 'ultimos_productos'
+                  {busquedaquery && busquedaquery !== 'ultimos_productos'
                     ? busquedaquery.charAt(0).toUpperCase() + busquedaquery.slice(1).toLowerCase()
                     : 'Últimas novedades'}
                 </h2>
@@ -124,7 +114,10 @@ const MostrarProductos = () => {
         </div>
 
         {/* Productos Más Vistos */}
-        {mostrarProductoMasVistos && productosMasVistos && Array.isArray(productosMasVistos) && productosMasVistos.length > 0 ? (
+        {mostrarProductoMasVistos &&
+        productosMasVistos &&
+        Array.isArray(productosMasVistos) &&
+        productosMasVistos.length > 0 ? (
           <div className='mt-8 md:mt-12 px-2 md:px-4'>
             <div className='flex items-center justify-center gap-3 md:gap-4 mb-6 md:mb-8'>
               <div className='h-px bg-gradient-to-r from-transparent via-windy-cyan/40 to-windy-cyan/40 flex-1 max-w-md'></div>

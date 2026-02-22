@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/navigation';
 import { nuevoUsuario } from '@/reduxLib/slices/usersSlice';
 import { Field, Form } from 'react-final-form';
 import Swal from 'sweetalert2';
@@ -12,13 +13,63 @@ import { Button } from '@/components/ui/button';
 // REGISTRO DE USUARIO EN LA BASE DE DATOS DE MONGO
 const CrearUsuario = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const handleRegister = (values) => {
     if (values.doublePassword === values.password) {
       if (values.password.length >= 6) {
         dispatch(
           nuevoUsuario({ nombre: values.nombre, email: values.email, password: values.password })
-        );
+        )
+          .unwrap()
+          .then(() => {
+            // Verificar si hay una publicación pendiente
+            const pendingData = localStorage.getItem('pendingProductData');
+
+            if (pendingData) {
+              // Mostrar modal de confirmación
+              Swal.fire({
+                title: '¡Bienvenido a WindyMarket! 👋',
+                html: `
+                  <div style="text-align: center; padding: 1rem;">
+                    <p style="margin-bottom: 1rem; font-size: 1.1rem;">
+                      Tu cuenta ha sido creada exitosamente.
+                    </p>
+                    <p style="margin-bottom: 1rem; font-size: 1rem;">
+                      Tienes una <strong>publicación pendiente</strong>
+                    </p>
+                    <p style="color: #666; font-size: 0.95rem;">
+                      ¿Quieres continuar ahora con tu producto?
+                    </p>
+                  </div>
+                `,
+                icon: 'success',
+                showCancelButton: true,
+                confirmButtonText: 'Continuar publicación',
+                cancelButtonText: 'Más tarde',
+                confirmButtonColor: '#38d9df',
+                customClass: {
+                  popup: 'swal-wide',
+                },
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  // Ir a publicar producto
+                  router.push('/productos/nuevo');
+                } else {
+                  // Ir al home (los datos siguen guardados)
+                  router.push('/');
+                }
+              });
+            } else {
+              // No hay datos pendientes, mostrar mensaje de éxito normal
+              // El registro ya muestra su propio mensaje, solo necesitamos redirigir
+              // (El slice probablemente ya muestra un mensaje de éxito)
+            }
+          })
+          .catch((error) => {
+            console.error('Error en registro:', error);
+            // El error ya se maneja en el slice
+          });
       } else {
         Swal.fire({
           icon: 'error',

@@ -3,6 +3,8 @@ import './globals.css';
 import Navigation from '@/components/header/Navigation';
 import Providers from '@/reduxLib/provider';
 import GoogleAnalytics from '@/components/googleAnalytics/GoogleAnalytics';
+import CookieBanner from '@/components/CookieBanner/CookieBanner';
+import Footer from '@/components/WhatsApp/layout/Footer';
 
 const sairaStencil = Saira_Stencil_One({
   weight: ['400'],
@@ -28,7 +30,9 @@ export default function RootLayout({ children }) {
           <header>
             <Navigation />
           </header>
-          {children}
+          <main>{children}</main>
+          <Footer />
+          <CookieBanner />
         </Providers>
       </body>
     </html>

@@ -27,9 +27,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import useProductImages from '@/hooks/useProductImages';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const NuevoProducto = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const usuario = useSelector((state) => state.users.user);
 
   // Custom hook para manejar lógica de imágenes
@@ -38,14 +41,22 @@ const NuevoProducto = () => {
     mode: 'create',
   });
 
-  // Mostrar loading mientras carga el usuario
-  if (!usuario) {
-    return (
-      <div className='main-container text-center mt-12'>
-        <p>Cargando datos del usuario...</p>
-      </div>
-    );
-  }
+  // Restaurar datos del formulario si vienen de un intento anterior
+  useEffect(() => {
+    const savedData = localStorage.getItem('pendingProductData');
+    if (savedData && usuario) {
+      // Si hay datos guardados y ahora hay usuario, limpiar
+      localStorage.removeItem('pendingProductData');
+
+      Swal.fire({
+        icon: 'success',
+        title: '¡Bienvenido!',
+        text: 'Ahora puedes completar la publicación de tu producto',
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    }
+  }, [usuario]);
 
   const agregarProducto = (producto) => dispatch(crearNuevoProducto(producto));
 
@@ -69,6 +80,68 @@ const NuevoProducto = () => {
       return;
     }
 
+    // ⚠️ VERIFICAR SI HAY USUARIO ANTES DE PUBLICAR
+    if (!usuario) {
+      // Guardar datos del formulario en localStorage
+      const productData = {
+        ...values,
+        savedAt: new Date().toISOString(),
+      };
+      localStorage.setItem('pendingProductData', JSON.stringify(productData));
+
+      // También guardar las imágenes (convertir a base64 para poder guardarlas)
+      if (imagesToUpload.length > 0) {
+        const imagePromises = Array.from(imagesToUpload).map(file => {
+          return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.readAsDataURL(file);
+          });
+        });
+
+        Promise.all(imagePromises).then(base64Images => {
+          localStorage.setItem('pendingProductImages', JSON.stringify(base64Images));
+        });
+      }
+
+      // Mostrar modal amigable pidiendo registro
+      Swal.fire({
+        title: '¡Casi listo! 🎉',
+        html: `
+          <div style="text-align: left; padding: 1rem;">
+            <p style="margin-bottom: 1rem; font-size: 1rem;">
+              Tu producto está listo para publicarse. Solo necesitas <strong>registrarte</strong>
+              para que otros usuarios puedan contactarte.
+            </p>
+            <p style="margin-bottom: 0.5rem; color: #666; font-size: 0.9rem;">
+              ✅ Es <strong>gratis</strong> y solo toma 1 minuto<br>
+              ✅ Tus datos están guardados<br>
+              ✅ Después del registro se publicará automáticamente
+            </p>
+          </div>
+        `,
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Crear cuenta gratis',
+        cancelButtonText: 'Ya tengo cuenta',
+        confirmButtonColor: '#38d9df',
+        customClass: {
+          popup: 'swal-wide',
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Ir a registro
+          router.push('/nuevousuario');
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          // Ir a login
+          router.push('/login');
+        }
+      });
+
+      return; // No continuar con la publicación
+    }
+
+    // Si hay usuario, continuar con el flujo normal
     if (verificarPesoImagenes(imagesToUpload)) {
       swalFirePesoImagenes().then((result) => {
         if (result.isConfirmed) {
@@ -97,21 +170,51 @@ const NuevoProducto = () => {
   };
   const required = (value) => value === (undefined || '') && 'Debes Rellenar este campo';
 
+  // Obtener datos guardados si existen
+  const getInitialValues = () => {
+    const savedData = localStorage.getItem('pendingProductData');
+    if (savedData) {
+      try {
+        const parsed = JSON.parse(savedData);
+        return {
+          ...parsed,
+          contacto: usuario?.email || parsed.contacto || '',
+        };
+      } catch (e) {
+        console.error('Error parsing saved data:', e);
+      }
+    }
+
+    return {
+      categoria: '',
+      subCategoria: '',
+      title: '',
+      price: '',
+      description: '',
+      contacto: usuario?.email || '',
+    };
+  };
+
   return (
     <div className='main-container rounded my-4 p-2'>
       <div className='flex justify-center'>
         <div className='rounded w-full shadow-lg p-3 bg-transparent'>
           <h2 className='text-center mx-auto font-bold mb-5 font-saira'>Agregar Nuevo Producto</h2>
+          {!usuario && (
+            <div className='bg-blue-50 border-l-4 border-blue-400 p-4 mb-4 rounded'>
+              <div className='flex items-center'>
+                <svg className='w-5 h-5 text-blue-400 mr-2' fill='currentColor' viewBox='0 0 20 20'>
+                  <path fillRule='evenodd' d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z' clipRule='evenodd' />
+                </svg>
+                <p className='text-sm text-blue-700'>
+                  <strong>Tip:</strong> Puedes rellenar el formulario. Al publicar te pediremos que te registres (1 minuto) y se publicará automáticamente.
+                </p>
+              </div>
+            </div>
+          )}
           <Form
             onSubmit={submitNuevoProducto}
-            initialValues={{
-              categoria: '',
-              subCategoria: '',
-              title: '',
-              price: '',
-              description: '',
-              contacto: usuario.email,
-            }}
+            initialValues={getInitialValues()}
             render={({ handleSubmit, values, form }) => (
               <form onSubmit={handleSubmit}>
                 <div className='space-y-4'>

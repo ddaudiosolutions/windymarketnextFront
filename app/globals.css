@@ -174,3 +174,9 @@ nav.nav-flex {
   border-radius: 0 !important;
   object-fit: contain !important;
 }
+
+/* SweetAlert2 custom styles */
+.swal-wide {
+  width: 600px !important;
+  max-width: 90vw !important;
+}
