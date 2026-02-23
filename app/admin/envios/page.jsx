@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   obtenerSolicitudesEnvio,
   confirmarSolicitudEnvio,
+  marcarPagadoSolicitudEnvio,
   completarSolicitudEnvio,
 } from '@/reduxLib/slices/envioSolicitudesSlice';
 import { Button } from '@/components/ui/button';
@@ -33,10 +34,11 @@ function EstadoBadge({ estado }) {
   );
 }
 
-function SolicitudRow({ solicitud, onConfirmar, onCompletar }) {
+function SolicitudRow({ solicitud, onConfirmar, onMarcarPagado, onCompletar }) {
   const [open, setOpen] = useState(false);
   const [precioReal, setPrecioReal] = useState('');
   const [notas, setNotas] = useState('');
+  const [etiquetas, setEtiquetas] = useState(null);
 
   const fecha = new Date(solicitud.createdAt).toLocaleDateString('es-ES', {
     day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit',
@@ -57,6 +59,11 @@ function SolicitudRow({ solicitud, onConfirmar, onCompletar }) {
           <span className='text-gray-400 text-xs hidden sm:block'>{fecha}</span>
         </div>
         <div className='flex items-center gap-3 flex-shrink-0'>
+          {solicitud.estado === 'confirmada' && (
+            solicitud.pagado
+              ? <span className='text-xs font-semibold text-green-600'>✅ Pagado</span>
+              : <span className='text-xs font-semibold text-orange-500'>⏳ Pdte. pago</span>
+          )}
           <span className='text-sm font-semibold text-gray-600'>
             ~{solicitud.precioEstimado}€
             {solicitud.precioReal && (
@@ -157,18 +164,60 @@ function SolicitudRow({ solicitud, onConfirmar, onCompletar }) {
             </div>
           )}
 
-          {solicitud.estado === 'confirmada' && (
+          {solicitud.estado === 'confirmada' && !solicitud.pagado && (
             <div className='border-t pt-4 flex items-center gap-4'>
               <p className='text-sm text-gray-600'>
                 Precio confirmado: <strong className='text-green-600'>{solicitud.precioReal}€</strong>
               </p>
               <Button
                 variant='outline'
-                className='border-blue-500 text-blue-600 hover:bg-blue-50'
-                onClick={() => onCompletar(solicitud._id)}
+                className='border-orange-400 text-orange-500 hover:bg-orange-50'
+                onClick={() => onMarcarPagado(solicitud._id)}
               >
-                Marcar como completada (pegatinas enviadas)
+                Marcar pago Bizum recibido
               </Button>
+            </div>
+          )}
+
+          {solicitud.estado === 'confirmada' && solicitud.pagado && (
+            <div className='border-t pt-4'>
+              <p className='text-sm text-gray-600 mb-3'>
+                Precio confirmado: <strong className='text-green-600'>{solicitud.precioReal}€</strong>
+                <span className='ml-3 text-green-600 font-semibold'>✅ Pago recibido</span>
+              </p>
+              <div className='flex flex-wrap gap-3 items-center'>
+                {/* Input oculto — se dispara con el botón */}
+                <input
+                  id={`etiquetas-${solicitud._id}`}
+                  type='file'
+                  multiple
+                  accept='.pdf,image/*'
+                  className='hidden'
+                  onChange={(e) => setEtiquetas(e.target.files)}
+                />
+                <Button
+                  type='button'
+                  variant='outline'
+                  className='border-gray-400 text-gray-600 hover:bg-gray-50'
+                  onClick={() => document.getElementById(`etiquetas-${solicitud._id}`).click()}
+                >
+                  Seleccionar etiquetas
+                </Button>
+                <span className='text-sm text-gray-500'>
+                  {etiquetas && etiquetas.length > 0
+                    ? `${etiquetas.length} archivo(s) seleccionado(s)`
+                    : 'Ningún archivo seleccionado'}
+                </span>
+                <Button
+                  type='button'
+                  variant='outline'
+                  disabled={!etiquetas || etiquetas.length === 0}
+                  className='border-blue-500 text-blue-600 hover:bg-blue-50 disabled:opacity-40'
+                  onClick={() => onCompletar(solicitud._id, etiquetas)}
+                >
+                  Enviar etiquetas al cliente
+                </Button>
+              </div>
             </div>
           )}
 
@@ -212,8 +261,12 @@ export default function AdminEnviosPage() {
     dispatch(confirmarSolicitudEnvio({ id, precioReal: parseFloat(precioReal), notas }));
   };
 
-  const handleCompletar = (id) => {
-    dispatch(completarSolicitudEnvio(id));
+  const handleMarcarPagado = (id) => {
+    dispatch(marcarPagadoSolicitudEnvio(id));
+  };
+
+  const handleCompletar = (id, files) => {
+    dispatch(completarSolicitudEnvio({ id, files }));
   };
 
   if (!usuario?.isAdmin) return null;
@@ -262,6 +315,7 @@ export default function AdminEnviosPage() {
             key={s._id}
             solicitud={s}
             onConfirmar={handleConfirmar}
+            onMarcarPagado={handleMarcarPagado}
             onCompletar={handleCompletar}
           />
         ))

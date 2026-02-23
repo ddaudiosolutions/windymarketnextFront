@@ -90,7 +90,7 @@ const MostrarProductos = () => {
 
         {/* Paginación */}
         <div className='flex flex-wrap justify-center mt-6 md:mt-8 gap-2 px-2 md:px-4'>
-          {busquedaquery !== 'ultimos_productos' &&
+          {busquedaquery && busquedaquery !== 'ultimos_productos' &&
             paginas.map((pagina) => {
               return (
                 <Link

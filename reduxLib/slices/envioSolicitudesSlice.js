@@ -40,11 +40,27 @@ export const confirmarSolicitudEnvio = createAsyncThunk(
   }
 );
 
-export const completarSolicitudEnvio = createAsyncThunk(
-  'envioSolicitudes/completar',
+export const marcarPagadoSolicitudEnvio = createAsyncThunk(
+  'envioSolicitudes/marcarPagado',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await EnvioSolicitudesService.completarSolicitud(id);
+      const response = await EnvioSolicitudesService.marcarPagado(id);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const completarSolicitudEnvio = createAsyncThunk(
+  'envioSolicitudes/completar',
+  async ({ id, files }, { rejectWithValue }) => {
+    try {
+      const formData = new FormData();
+      if (files) {
+        Array.from(files).forEach((file) => formData.append('etiquetas', file));
+      }
+      const response = await EnvioSolicitudesService.completarSolicitud(id, formData);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -68,12 +84,7 @@ const envioSolicitudesSlice = createSlice({
       Swal.fire({ title: 'Enviando solicitud...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
     });
     builder.addCase(crearSolicitudEnvio.fulfilled, () => {
-      Swal.fire({
-        icon: 'success',
-        title: '¡Solicitud enviada!',
-        html: 'Recibirás un email con el <strong>precio definitivo</strong> en breve.',
-        confirmButtonColor: '#38d9df',
-      });
+      Swal.close();
     });
     builder.addCase(crearSolicitudEnvio.rejected, (state, action) => {
       state.error = action.payload;
@@ -110,10 +121,41 @@ const envioSolicitudesSlice = createSlice({
       Swal.fire({ icon: 'error', title: 'Error al confirmar', text: action.payload });
     });
 
-    // Completar solicitud
+    // Marcar pago recibido (admin)
+    builder.addCase(marcarPagadoSolicitudEnvio.fulfilled, (state, action) => {
+      const idx = state.solicitudes.findIndex((s) => s._id === action.payload._id);
+      if (idx !== -1) state.solicitudes[idx] = action.payload;
+      Swal.fire({
+        icon: 'success',
+        title: '¡Pago registrado!',
+        text: 'Ahora puedes enviar las etiquetas.',
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    });
+    builder.addCase(marcarPagadoSolicitudEnvio.rejected, (state, action) => {
+      state.error = action.payload;
+      Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo registrar el pago.' });
+    });
+
+    // Completar solicitud (etiquetas enviadas al cliente)
+    builder.addCase(completarSolicitudEnvio.pending, () => {
+      Swal.fire({ title: 'Enviando etiquetas...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+    });
     builder.addCase(completarSolicitudEnvio.fulfilled, (state, action) => {
       const idx = state.solicitudes.findIndex((s) => s._id === action.payload._id);
       if (idx !== -1) state.solicitudes[idx] = action.payload;
+      Swal.fire({
+        icon: 'success',
+        title: '¡Etiquetas enviadas!',
+        text: 'El cliente ha recibido las etiquetas por email.',
+        timer: 2500,
+        showConfirmButton: false,
+      });
+    });
+    builder.addCase(completarSolicitudEnvio.rejected, (state, action) => {
+      state.error = action.payload;
+      Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo completar. ¿Está marcado el pago?' });
     });
   },
 });

@@ -188,14 +188,32 @@ export default function HandleDelivery() {
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           // Continúa sin registro — limpiamos el storage y enviamos
           localStorage.removeItem(STORAGE_KEY);
-          dispatch(crearSolicitudEnvio(values));
+          dispatch(crearSolicitudEnvio(values))
+            .unwrap()
+            .then(() => {
+              Swal.fire({
+                icon: 'success',
+                title: '¡Solicitud enviada!',
+                html: 'Recibirás un email con el <strong>precio definitivo</strong> en breve.',
+                confirmButtonColor: '#38d9df',
+              }).then(() => router.push('/'));
+            });
         }
       });
       return;
     }
 
     // Usuario con sesión → enviar directamente
-    dispatch(crearSolicitudEnvio(values));
+    dispatch(crearSolicitudEnvio(values))
+      .unwrap()
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Solicitud enviada!',
+          html: 'Recibirás un email con el <strong>precio definitivo</strong> en breve.',
+          confirmButtonColor: '#38d9df',
+        }).then(() => router.push('/'));
+      });
   };
 
   return (

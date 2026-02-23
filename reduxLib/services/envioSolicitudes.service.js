@@ -12,14 +12,21 @@ const obtenerSolicitudes = () =>
 const confirmarSolicitud = ({ id, precioReal, notas }) =>
   apiClient.put(`envios/solicitudes/${id}/confirmar`, { precioReal, notas });
 
-// Marcar como completada (pegatinas enviadas)
-const completarSolicitud = (id) =>
-  apiClient.put(`envios/solicitudes/${id}/completar`);
+// Marcar pago Bizum recibido (admin)
+const marcarPagado = (id) =>
+  apiClient.put(`envios/solicitudes/${id}/pago`);
+
+// Marcar como completada y enviar etiquetas adjuntas por email (requiere pagado:true)
+const completarSolicitud = (id, formData) =>
+  apiClient.put(`envios/solicitudes/${id}/completar`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
 
 const EnvioSolicitudesService = {
   crearSolicitud,
   obtenerSolicitudes,
   confirmarSolicitud,
+  marcarPagado,
   completarSolicitud,
 };
 
