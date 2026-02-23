@@ -49,6 +49,14 @@ const getFavoriteProducts = (favoriteProductsId) => {
   return apiClient.post('favoriteProducts/getFavorite', favoriteProductsId);
 };
 
+// Impersonar usuario (solo admin)
+const impersonarUsuario = (userId) =>
+  apiClient.post(`auth/impersonate/${userId}`);
+
+// Obtener todos los usuarios (solo admin)
+const getAllUsers = () =>
+  apiClient.get('usuarios');
+
 // Enviar email interes por producto entre users
 const sendMailToUser = (emailData) => {
   return apiClient.post('usuarios/correoentreusuarios', emailData);
@@ -65,6 +73,8 @@ const UsersService = {
   addFavoriteProduct,
   removeFavorite,
   getFavoriteProducts,
+  impersonarUsuario,
+  getAllUsers,
 };
 
 export default UsersService;

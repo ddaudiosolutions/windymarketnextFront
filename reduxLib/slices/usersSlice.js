@@ -80,6 +80,48 @@ export const eliminarUsuario = createAsyncThunk(
   }
 );
 
+export const impersonarUsuario = createAsyncThunk(
+  'impersonarUsuario / post',
+  async (userId, { getState, rejectWithValue }) => {
+    try {
+      const adminToken = getState().users.token;
+      const adminUserId = getState().users.user?._id || getState().users.user?.id;
+      const result = await UsersService.impersonarUsuario(userId);
+      return { result, adminToken, adminUserId };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const volverACuentaAdmin = createAsyncThunk(
+  'volverACuentaAdmin / post',
+  async (_, { rejectWithValue }) => {
+    try {
+      const adminToken = localStorage.getItem('adminToken');
+      const adminUserId = localStorage.getItem('adminUserId');
+      if (!adminToken || !adminUserId) throw new Error('No hay sesión admin guardada');
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminUserId');
+      return { adminToken, adminUserId };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getAllUsers = createAsyncThunk(
+  'getAllUsers / get',
+  async (_, { rejectWithValue }) => {
+    try {
+      const result = await UsersService.getAllUsers();
+      return result;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const addFavoriteProduct = createAsyncThunk(
   'addFavoriteProduct / POST',
   async (favoriteProductData, { rejectedWithValue }) => {
@@ -184,6 +226,22 @@ const usersSlices = createSlice({
       Swal.fire('Correct', 'Usuario Eliminado Correctamente', 'success').then(function () {
         navigateTo('/');
       });
+    });
+    builder.addCase(impersonarUsuario.fulfilled, (state, action) => {
+      const { result, adminToken, adminUserId } = action.payload;
+      const userData = result.data;
+      localStorage.setItem('adminToken', adminToken);
+      localStorage.setItem('adminUserId', adminUserId);
+      state.user = { ...userData, _id: userData.id };
+      state.token = userData.accessToken;
+    });
+    builder.addCase(impersonarUsuario.rejected, (state, action) => {
+      Swal.fire('Error', 'No se pudo acceder como ese usuario', 'error');
+    });
+    builder.addCase(volverACuentaAdmin.fulfilled, (state, action) => {
+      const { adminToken } = action.payload;
+      state.token = adminToken;
+      // state.user se actualizará con obtenerDatosUsuario despachado desde el componente
     });
     builder.addCase(addFavoriteProduct.fulfilled, (state, action) => {
       state.user = action.payload.data.user;

@@ -11,20 +11,49 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { clearUser } from '../../reduxLib/slices/usersSlice';
+import { clearUser, volverACuentaAdmin, obtenerDatosUsuario } from '../../reduxLib/slices/usersSlice';
 import { cargarProductosAuthor } from '../../helpers/utils';
+import { useEffect, useState } from 'react';
 
 const Navigation = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.users.user);
+  const [isImpersonating, setIsImpersonating] = useState(false);
+
+  useEffect(() => {
+    setIsImpersonating(!!localStorage.getItem('adminToken'));
+  }, [user]);
 
   const logOut = () => {
     dispatch(clearUser());
     router.replace('/');
   };
 
+  const handleVolverAdmin = () => {
+    const adminUserId = localStorage.getItem('adminUserId');
+    dispatch(volverACuentaAdmin())
+      .unwrap()
+      .then(() => {
+        if (adminUserId) dispatch(obtenerDatosUsuario(adminUserId));
+        setIsImpersonating(false);
+        router.push('/admin/usuarios');
+      });
+  };
+
   return (
+    <>
+    {isImpersonating && (
+      <div className='w-full bg-orange-500 text-white text-xs text-center py-1.5 px-4 flex items-center justify-center gap-4'>
+        <span>Estás viendo la plataforma como <strong>{user?.nombre}</strong></span>
+        <button
+          onClick={handleVolverAdmin}
+          className='underline font-semibold hover:text-orange-100'
+        >
+          Volver a mi cuenta admin →
+        </button>
+      </div>
+    )}
     <nav className='flex items-center justify-between bg-white px-2 md:px-4 py-2 border-b'>
       <Image
         src='/LOGO_CIRCULAR_SIN_FONDO.png'
@@ -88,6 +117,17 @@ const Navigation = () => {
                   <Link href={`/usuarios/${user._id}`}>Mi perfil</Link>
                 </DropdownMenuItem>
 
+                {user.isAdmin && (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <Link href='/admin/usuarios'>Panel Usuarios (Admin)</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href='/admin/envios'>Panel Envíos (Admin)</Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
+
                 <DropdownMenuItem onSelect={logOut}>LogOut</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -95,6 +135,7 @@ const Navigation = () => {
         )}
       </div>
     </nav>
+    </>
   );
 };
 

@@ -5,6 +5,7 @@ import productsReducer from './slices/productSlices';
 import usersReducer from './slices/usersSlice';
 import favoriteProductsReducer from './slices/favoriteProductsSlice';
 import authReducer from './slices/authSlice';
+import envioSolicitudesReducer from './slices/envioSolicitudesSlice';
 
 const persistConfig = {
   key: 'root',
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   users: usersReducer,
   favoriteProducts: favoriteProductsReducer,
   auth: authReducer,
+  envioSolicitudes: envioSolicitudesReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

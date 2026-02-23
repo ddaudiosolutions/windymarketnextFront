@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Field, Form } from 'react-final-form';
 import './Usuarios.nodemodule.css';
-import { loginUsuario } from '@/reduxLib/slices/usersSlice';
+import { loginUsuario, obtenerDatosUsuario } from '@/reduxLib/slices/usersSlice';
 import { trackLoginButton } from '../../helpers/analyticsCalls';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -23,6 +23,11 @@ const Login = () => {
 
     dispatch(loginUsuario({ email: values.email, password: values.password }))
       .unwrap()
+      .then((response) => {
+        // Refrescar datos del usuario desde la BD (el JWT puede tener datos viejos)
+        const userId = response?.data?.id || response?.data?._id;
+        if (userId) dispatch(obtenerDatosUsuario(userId));
+      })
       .then(() => {
         // Verificar si hay una publicación pendiente
         const pendingData = localStorage.getItem('pendingProductData');

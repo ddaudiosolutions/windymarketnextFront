@@ -346,6 +346,7 @@ const NuevoProducto = () => {
                       pesoVolumetrico={values.pesoVolumetrico}
                       pesoKgs={values.pesoKgs}
                       balearicDelivery={values.balearicDelivery}
+                      opcionVelocidad={values.opcionVelocidad}
                       form={form}
                     />
                   )}
