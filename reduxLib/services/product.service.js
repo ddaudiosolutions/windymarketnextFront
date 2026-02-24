@@ -68,6 +68,10 @@ const reactivarProducto = (productoId) => {
   return apiClient.post('productos/reactivarProducto', { productId: productoId });
 };
 
+const desactivarProducto = (productoId) => {
+  return apiClient.post('productos/desactivarProducto', { productId: productoId });
+};
+
 const ProducServices = {
   obtenerCategoriaActions,
   obtenerProductoIdApi,
@@ -83,6 +87,7 @@ const ProducServices = {
   editVendidoState,
   obtenerNumeroVistasProducto,
   reactivarProducto,
+  desactivarProducto,
 };
 
 export default ProducServices;

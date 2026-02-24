@@ -125,6 +125,9 @@ const Navigation = () => {
                     <DropdownMenuItem asChild>
                       <Link href='/admin/envios'>Panel Envíos (Admin)</Link>
                     </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href='/admin/emailmasivo'>Email Masivo (Admin)</Link>
+                    </DropdownMenuItem>
                   </>
                 )}
 

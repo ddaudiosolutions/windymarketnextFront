@@ -7,6 +7,7 @@ import {
   setProductToEdit,
   obtenerProductosAuthor,
   reactivarProducto,
+  desactivarProducto,
 } from '../../reduxLib/slices/productSlices';
 import Producto from './Producto';
 
@@ -38,6 +39,25 @@ const ProductoUser = ({ producto }) => {
   const sendtoEdicion = () => {
     dispatch(setProductToEdit(producto));
     router.push(`/productos/user/editar/${producto._id}`);
+  };
+
+  const handleDesactivar = (_id) => {
+    Swal.fire({
+      title: '¿Deshabilitar producto?',
+      text: 'El producto dejará de ser visible en el catálogo público. Podrás reactivarlo cuando quieras.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#f97316',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Sí, deshabilitar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(desactivarProducto(_id)).then(() => {
+          dispatch(obtenerProductosAuthor(producto.author._id));
+        });
+      }
+    });
   };
 
   const handleReactivar = (_id) => {
@@ -79,6 +99,13 @@ const ProductoUser = ({ producto }) => {
                 onClick={sendtoEdicion}
               >
                 Editar
+              </Button>
+              <Button
+                variant='outline'
+                className='flex-1 border-orange-500 text-orange-600 hover:bg-orange-50 text-xs px-1'
+                onClick={() => handleDesactivar(_id)}
+              >
+                Deshabilitar
               </Button>
               <Button
                 variant='outline'

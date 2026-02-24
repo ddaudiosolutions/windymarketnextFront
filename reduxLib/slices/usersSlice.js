@@ -158,6 +158,18 @@ export const sendMailToUser = createAsyncThunk(
   }
 );
 
+export const enviarEmailMasivo = createAsyncThunk(
+  'enviarEmailMasivo / POST',
+  async (data, { rejectWithValue }) => {
+    try {
+      const result = await UsersService.enviarEmailMasivo(data);
+      return result;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.msg || error.message);
+    }
+  }
+);
+
 const usersSlices = createSlice({
   name: 'users',
   initialState,

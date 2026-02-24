@@ -62,8 +62,14 @@ const sendMailToUser = (emailData) => {
   return apiClient.post('usuarios/correoentreusuarios', emailData);
 };
 
+// Email masivo a todos los usuarios (solo admin)
+const enviarEmailMasivo = (data) => {
+  return apiClient.post('admin/emailMasivo', data);
+};
+
 const UsersService = {
   sendMailToUser,
+  enviarEmailMasivo,
   obtenerDatosUsuario,
   editarUsuario,
   eliminarUsuario,

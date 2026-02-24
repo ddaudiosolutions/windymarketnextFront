@@ -186,6 +186,18 @@ export const reactivarProducto = createAsyncThunk(
   }
 );
 
+export const desactivarProducto = createAsyncThunk(
+  'desactivarProducto / POST',
+  async (productoId, { rejectWithValue }) => {
+    try {
+      const response = await ProductService.desactivarProducto(productoId);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const productsSlices = createSlice({
   name: 'products',
   initialState,
@@ -304,6 +316,12 @@ const productsSlices = createSlice({
     });
     builder.addCase(reactivarProducto.rejected, (state, action) => {
       Swal.fire('Error', 'No se pudo reactivar el producto', 'error');
+    });
+    builder.addCase(desactivarProducto.fulfilled, () => {
+      Swal.fire('Correcto', 'Producto deshabilitado. Ya no es visible en el catálogo.', 'success');
+    });
+    builder.addCase(desactivarProducto.rejected, () => {
+      Swal.fire('Error', 'No se pudo deshabilitar el producto', 'error');
     });
   },
 });
