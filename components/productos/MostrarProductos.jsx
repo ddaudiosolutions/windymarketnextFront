@@ -30,7 +30,7 @@ const MostrarProductos = () => {
   const [searchWords, setSearchWords] = useState([]);
 
   const dispatch = useDispatch();
-  const mostrarProductoMasVistos = busquedaquery === 'ultimos_productos';
+  const mostrarProductoMasVistos = !busquedaquery || busquedaquery === 'ultimos_productos';
   const userData = useSelector((state) => state.users.user);
 
   useEffect(() => {
