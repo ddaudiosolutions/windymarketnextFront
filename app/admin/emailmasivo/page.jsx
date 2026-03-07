@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import Swal from 'sweetalert2';
 import { enviarEmailMasivo } from '@/reduxLib/slices/usersSlice';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -27,19 +28,21 @@ export default function AdminEmailMasivoPage() {
 
   if (!usuario?.isAdmin) return null;
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, mode) => {
     e.preventDefault();
     if (!subject.trim() || !html.trim()) return;
 
-    setStatus('loading');
+    setStatus(mode === 'sendPreview' ? 'loading-preview' : 'loading-pro');
     setErrorMsg('');
 
-    const result = await dispatch(enviarEmailMasivo({ subject, html }));
+    const result = await dispatch(enviarEmailMasivo({ subject, html, mode }));
 
     if (enviarEmailMasivo.fulfilled.match(result)) {
-      setStatus('ok');
-      setSubject('');
-      setHtml('');
+      setStatus(mode === 'sendPreview' ? 'ok-preview' : 'ok-pro');
+      if (mode === 'sendPro') {
+        setSubject('');
+        setHtml('');
+      }
     } else {
       setStatus('error');
       setErrorMsg(result.payload || 'Error al enviar el email masivo.');
@@ -55,7 +58,7 @@ export default function AdminEmailMasivoPage() {
         HTML y Resend lo sustituirá por el nombre real de cada contacto.
       </p>
 
-      <form onSubmit={handleSubmit} className='space-y-5'>
+      <form onSubmit={(e) => e.preventDefault()} className='space-y-5'>
         {/* Asunto */}
         <div>
           <Label htmlFor='subject' className='mb-1'>
@@ -103,23 +106,50 @@ export default function AdminEmailMasivoPage() {
         )}
 
         {/* Feedback */}
-        {status === 'ok' && (
+        {status === 'ok-preview' && (
           <p className='text-green-600 font-medium text-sm'>
-            ✅ Broadcast enviado correctamente.
+            ✅ Preview enviado a los usuarios demo.
+          </p>
+        )}
+        {status === 'ok-pro' && (
+          <p className='text-green-600 font-medium text-sm'>
+            ✅ Broadcast enviado a todos los usuarios.
           </p>
         )}
         {status === 'error' && (
           <p className='text-red-600 font-medium text-sm'>❌ {errorMsg}</p>
         )}
 
-        {/* Botón */}
-        <Button
-          type='submit'
-          disabled={status === 'loading' || !subject.trim() || !html.trim()}
-          className='bg-windy-cyan hover:bg-windy-cyan/90 text-white disabled:opacity-50'
-        >
-          {status === 'loading' ? 'Enviando...' : 'Enviar a todos los usuarios'}
-        </Button>
+        {/* Botones */}
+        <div className='flex gap-3'>
+          <Button
+            type='button'
+            onClick={(e) => handleSubmit(e, 'sendPreview')}
+            disabled={['loading-preview', 'loading-pro'].includes(status) || !subject.trim() || !html.trim()}
+            className='bg-gray-500 hover:bg-gray-600 text-white disabled:opacity-50'
+          >
+            {status === 'loading-preview' ? 'Enviando preview...' : 'Enviar preview (demo)'}
+          </Button>
+          <Button
+            type='button'
+            onClick={(e) => {
+              Swal.fire({
+                title: '¿Enviar a todos los usuarios?',
+                text: 'Se enviará el email a toda la lista de contactos registrados.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, enviar',
+                cancelButtonText: 'Cancelar',
+              }).then((result) => {
+                if (result.isConfirmed) handleSubmit(e, 'sendPro');
+              });
+            }}
+            disabled={['loading-preview', 'loading-pro'].includes(status) || !subject.trim() || !html.trim()}
+            className='bg-windy-cyan hover:bg-windy-cyan/90 text-white disabled:opacity-50'
+          >
+            {status === 'loading-pro' ? 'Enviando...' : 'Enviar a todos los usuarios'}
+          </Button>
+        </div>
       </form>
     </div>
   );

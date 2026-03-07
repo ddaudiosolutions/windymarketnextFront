@@ -1,13 +1,12 @@
 
-// Sobrecoste por bulto con lado largo > 2.20m (opción rápida, antes de IVA)
-export const SOBRECOSTE_LARGO = 10;
-// Mínimo de tarifa para la opción lenta (antes de IVA)
-export const PRECIO_MINIMO_LENTA = 52;
+// Sobrecoste por bulto con lado largo > 2.10m (antes de IVA)
+export const SOBRECOSTE_LARGO_PENINSULA = 10;
+export const SOBRECOSTE_LARGO_BALEARES = 20;
 
 // Acepta tanto punto como coma como separador decimal (ej: "2,50" → 2.5)
 const parseNum = (value) => parseFloat(String(value || 0).replace(',', '.')) || 0;
 
-export const tieneSobrecoste = (largo) => parseNum(largo) > 2.20;
+export const tieneSobrecoste = (largo) => parseNum(largo) > 2.10;
 
 // Girth = largo + 2×ancho + 2×alto (en metros)
 // Si girth ≤ 2.90m → bulto delgado tipo mástil/vela → servicio económico
@@ -107,10 +106,9 @@ const getTarifaBase = (pesoVolumetrico, balearicDelivery) => {
   }
 };
 
-// largo:      opcional, aplica sobrecoste si largo > 2.20m (solo opción rápida)
-// opcionLenta: false → rápida (~48h, con sobrecoste si largo > 2.20m)
-//              true  → lenta  (~96h, sin sobrecoste, mínimo 52€ antes de IVA)
-export const calculoPrecioEnvio = (pesoVolumetrico, balearicDelivery, pesoKgs, largo = 0, opcionLenta = false) => {
+// largo: aplica sobrecoste si largo > 2.10m
+//        +10€ Península / +20€ Baleares (antes de IVA)
+export const calculoPrecioEnvio = (pesoVolumetrico, balearicDelivery, pesoKgs, largo = 0) => {
   const comision = 4;
   const iva = 0.21;
 
@@ -137,16 +135,10 @@ export const calculoPrecioEnvio = (pesoVolumetrico, balearicDelivery, pesoKgs, l
     }
   }
 
-  // Precio volumétrico
+  // Precio volumétrico con sobrecoste si largo > 2.10m
   const tarifaBase = getTarifaBase(pesoVolumetrico, balearicDelivery);
-
-  if (opcionLenta) {
-    // Sin sobrecoste, pero con mínimo de 52€ antes de IVA
-    const tarifaFinal = Math.max(tarifaBase, PRECIO_MINIMO_LENTA);
-    return parseFloat(((tarifaFinal * (1 + iva)) + comision).toFixed(2));
-  }
-
-  // Opción rápida: sobrecoste si largo > 2.20m
-  const sobrecoste = parseNum(largo) > 2.20 ? SOBRECOSTE_LARGO : 0;
+  const sobrecoste = parseNum(largo) > 2.10
+    ? (balearicDelivery ? SOBRECOSTE_LARGO_BALEARES : SOBRECOSTE_LARGO_PENINSULA)
+    : 0;
   return parseFloat((((tarifaBase + sobrecoste) * (1 + iva)) + comision).toFixed(2));
 };

@@ -7,6 +7,8 @@ import {
   calculoPrecioEnvio,
   calculoGirth,
   tieneSobrecoste,
+  SOBRECOSTE_LARGO_PENINSULA,
+  SOBRECOSTE_LARGO_BALEARES,
 } from './formulasEnvio';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -19,7 +21,6 @@ const FormPaqueteEnvio = ({
   pesoVolumetrico: pvProp,
   balearicDelivery,
   pesoKgs,
-  opcionVelocidad,
   form,
 }) => {
 
@@ -28,48 +29,24 @@ const FormPaqueteEnvio = ({
     const pv = calculoPesoVolumetrico(alto || 0, ancho || 0, largo || 0);
     form.change('pesoVolumetrico', pv);
     if (pv >= 0) form.change('pesoKgs', 0);
-
-    // Gestión de opcionVelocidad según si hay sobrecoste
-    const hayLargo = parseFloat(String(largo || 0).replace(',', '.')) > 2.20;
-    if (hayLargo && pv > 0) {
-      // Auto-seleccionar rápida la primera vez que aparece el sobrecoste
-      if (!form.getState().values.opcionVelocidad) {
-        form.change('opcionVelocidad', 'rapida');
-      }
-    } else {
-      // Limpiar la selección si ya no hay sobrecoste
-      form.change('opcionVelocidad', undefined);
-    }
   }, [alto, ancho, largo, form]);
 
   // Recalcular precioEstimado cuando cambia cualquier variable relevante
   useEffect(() => {
     const pv = pvProp ?? 0;
     if (pv === 0) return;
-    const esLenta = opcionVelocidad === 'lenta';
     const precio = calculoPrecioEnvio(
       pv,
       balearicDelivery,
       pv <= -1 ? (pesoKgs || 0) : 0,
-      largo || 0,
-      esLenta
+      largo || 0
     );
     form.change('precioEstimado', parseFloat(precio.toFixed(2)));
-  }, [pvProp, balearicDelivery, pesoKgs, largo, opcionVelocidad, form]);
+  }, [pvProp, balearicDelivery, pesoKgs, largo, form]);
 
   const pv = pvProp ?? 0;
   const sobrecoste = tieneSobrecoste(largo) && pv > 0;
   const girth = calculoGirth(largo || 0, ancho || 0, alto || 0);
-
-  // Precios de ambas opciones para mostrar en el selector
-  const precioRapida = sobrecoste
-    ? calculoPrecioEnvio(pv, balearicDelivery, 0, largo || 0, false)
-    : null;
-  const precioLenta = sobrecoste
-    ? calculoPrecioEnvio(pv, balearicDelivery, 0, largo || 0, true)
-    : null;
-
-  const esLenta = opcionVelocidad === 'lenta';
 
   return (
     <div className='mb-3'>
@@ -130,8 +107,8 @@ const FormPaqueteEnvio = ({
           </div>
         )}
 
-        {/* Precio estimado: solo cuando NO hay selector de velocidad */}
-        {pv !== 0 && !sobrecoste && (
+        {/* Precio estimado */}
+        {pv !== 0 && (
           <div className='flex-1 min-w-[100px]'>
             <Label className='mb-2'>Precio est. (€)</Label>
             <Field name='precioEstimado'>
@@ -152,44 +129,10 @@ const FormPaqueteEnvio = ({
         </div>
       )}
 
-      {/* Selector de velocidad: solo cuando largo > 2.20m y hay precio volumétrico */}
+      {/* Nota sobrecoste por bulto largo */}
       {sobrecoste && (
-        <div className='mt-4'>
-          <p className='text-sm font-semibold text-gray-700 mb-3'>
-            Bulto largo (&gt;2.20m) — Elige opción de envío:
-          </p>
-          <div className='flex flex-col sm:flex-row gap-3'>
-
-            {/* Opción rápida */}
-            <button
-              type='button'
-              onClick={() => form.change('opcionVelocidad', 'rapida')}
-              className={`flex-1 p-4 rounded-lg border-2 text-left transition-colors ${
-                !esLenta
-                  ? 'border-windy-cyan bg-cyan-50'
-                  : 'border-gray-200 hover:border-gray-300 bg-white'
-              }`}
-            >
-              <p className='font-semibold text-sm text-gray-700'>Opción rápida</p>
-              <p className='text-xs text-gray-400 mb-2'>~48h de tránsito</p>
-              <p className='text-2xl font-bold text-gray-900'>{precioRapida}€</p>
-            </button>
-
-            {/* Opción lenta */}
-            <button
-              type='button'
-              onClick={() => form.change('opcionVelocidad', 'lenta')}
-              className={`flex-1 p-4 rounded-lg border-2 text-left transition-colors ${
-                esLenta
-                  ? 'border-green-400 bg-green-50'
-                  : 'border-gray-200 hover:border-gray-300 bg-white'
-              }`}
-            >
-              <p className='font-semibold text-sm text-gray-700'>Opción lenta</p>
-              <p className='text-xs text-gray-400 mb-2'>~96h de tránsito</p>
-              <p className='text-2xl font-bold text-gray-900'>{precioLenta}€</p>
-            </button>
-          </div>
+        <div className='mt-3 p-3 bg-amber-50 border border-amber-200 rounded text-sm text-amber-800'>
+          <strong>Sobrecoste por bulto largo (&gt;2.10m) incluido</strong> — +{balearicDelivery ? SOBRECOSTE_LARGO_BALEARES : SOBRECOSTE_LARGO_PENINSULA}€ (antes de IVA)
         </div>
       )}
 
