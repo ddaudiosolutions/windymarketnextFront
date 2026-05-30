@@ -16,12 +16,19 @@ export async function generateMetadata({ params }) {
     }
 
     const { title, description, images } = productoId;
+    const pageUrl = `https://windymarket.es/productos/${params.id}`;
 
     // Validar que existan imágenes antes de intentar acceder
     if (!images || images.length === 0) {
       return {
         title: title || 'Producto',
         description: description || 'Producto disponible',
+        openGraph: {
+          type: 'website',
+          url: pageUrl,
+          title: title || 'Producto',
+          description: description || 'Producto disponible',
+        },
       };
     }
 
@@ -31,12 +38,16 @@ export async function generateMetadata({ params }) {
       title: title,
       description: description,
       openGraph: {
+        type: 'website',
+        url: pageUrl,
         title: title,
         description: description,
         images: [
           {
             url: optimizedImageUrl,
-            alt: images[0].filename || title,
+            width: 800,
+            height: 600,
+            alt: title,
           },
         ],
       },

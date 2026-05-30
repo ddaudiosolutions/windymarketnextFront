@@ -17,6 +17,7 @@ const sairaFont = Saira({
 });
 
 export const metadata = {
+  metadataBase: new URL('https://windymarket.es'),
   title: 'WindyMarket',
   description: ' Marketplace de productos',
 };
