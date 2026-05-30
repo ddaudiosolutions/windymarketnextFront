@@ -27,6 +27,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import useProductImages from '@/hooks/useProductImages';
+import { CATEGORIAS, SUBCATEGORIAS } from '@/constants/categorias';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -227,11 +228,9 @@ const NuevoProducto = () => {
                             <SelectValue placeholder='Selecciona...' />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value='tablas'>Tabla</SelectItem>
-                            <SelectItem value='velas'>Vela</SelectItem>
-                            <SelectItem value='botavaras'>Botavara</SelectItem>
-                            <SelectItem value='mastiles'>Mastil</SelectItem>
-                            <SelectItem value='accesorios'>Accesorio</SelectItem>
+                            {CATEGORIAS.map((cat) => (
+                              <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                         {meta.error && meta.touched && (
@@ -250,20 +249,9 @@ const NuevoProducto = () => {
                               <SelectValue placeholder='Selecciona...' />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value='slalom'>Slalom</SelectItem>
-                              <SelectItem value='freeride'>Free-Ride</SelectItem>
-                              <SelectItem value='freerace'>Free-Race</SelectItem>
-                              <SelectItem value='freestyle'>Free-Style</SelectItem>
-                              <SelectItem value='foil'>Foil</SelectItem>
-                              <SelectItem value='waves'>Waves</SelectItem>
-                              <SelectItem value='carbono'>Carbono</SelectItem>
-                              <SelectItem value='aluminio'>Aluminio</SelectItem>
-                              <SelectItem value='mixta'>Mixta</SelectItem>
-                              <SelectItem value='rdm'>RDM</SelectItem>
-                              <SelectItem value='sdm'>SDM</SelectItem>
-                              <SelectItem value='aleta'>ALETA</SelectItem>
-                              <SelectItem value='arnes'>ARNES</SelectItem>
-                              <SelectItem value='alargador'>ALARGADOR</SelectItem>
+                              {SUBCATEGORIAS.map((sub) => (
+                                <SelectItem key={sub.value} value={sub.value}>{sub.label}</SelectItem>
+                              ))}
                             </SelectContent>
                           </Select>
                           {meta.error && meta.touched && (

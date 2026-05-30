@@ -20,6 +20,7 @@ const NavbarCategories = () => {
         <IconoBusqueda typeProduct='mastiles' handleIconClick={handleIconClick} />
         <IconoBusqueda typeProduct='botavaras' handleIconClick={handleIconClick} />
         <IconoBusqueda typeProduct='accesorios' handleIconClick={handleIconClick} />
+        <IconoBusqueda typeProduct='wingfoil' handleIconClick={handleIconClick} />
         <IconoBusqueda typeProduct='ultimos_productos' handleIconClick={handleIconClick} />
       </nav>
     </div>

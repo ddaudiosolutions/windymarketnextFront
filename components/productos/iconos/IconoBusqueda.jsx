@@ -17,6 +17,9 @@ function IconoBusqueda({ typeProduct, handleIconClick }) {
     case 'accesorios':
       label = 'Accesorios';
       break;
+    case 'wingfoil':
+      label = 'Wingfoil';
+      break;
     case 'ultimos_productos':
       label = 'Últimos';
       break;

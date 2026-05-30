@@ -15,6 +15,7 @@ import {
 import { Field, Form } from 'react-final-form';
 import FormPaqueteEnvio from '@/components/gestionEnvios/FormPaqueteEnvio';
 import useProductImages from '@/hooks/useProductImages';
+import { CATEGORIAS, SUBCATEGORIAS } from '@/constants/categorias';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -171,11 +172,9 @@ const EditarProducto = ({ productId }) => {
                         <SelectValue placeholder='Selecciona...' />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value='tablas'>Tabla</SelectItem>
-                        <SelectItem value='velas'>Vela</SelectItem>
-                        <SelectItem value='botavaras'>Botavara</SelectItem>
-                        <SelectItem value='mastiles'>Mástil</SelectItem>
-                        <SelectItem value='accesorios'>Accesorio</SelectItem>
+                        {CATEGORIAS.map((cat) => (
+                          <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     {meta.touched && meta.error && (
@@ -195,20 +194,9 @@ const EditarProducto = ({ productId }) => {
                         <SelectValue placeholder='Selecciona...' />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value='slalom'>Slalom</SelectItem>
-                        <SelectItem value='freeride'>Free-Ride</SelectItem>
-                        <SelectItem value='freerace'>Free-Race</SelectItem>
-                        <SelectItem value='freestyle'>Free-Style</SelectItem>
-                        <SelectItem value='foil'>Foil</SelectItem>
-                        <SelectItem value='waves'>Waves</SelectItem>
-                        <SelectItem value='carbono'>Carbono</SelectItem>
-                        <SelectItem value='aluminio'>Aluminio</SelectItem>
-                        <SelectItem value='mixta'>Mixta</SelectItem>
-                        <SelectItem value='rdm'>RDM</SelectItem>
-                        <SelectItem value='sdm'>SDM</SelectItem>
-                        <SelectItem value='aleta'>Aleta</SelectItem>
-                        <SelectItem value='arnes'>Arnés</SelectItem>
-                        <SelectItem value='alargador'>Alargador</SelectItem>
+                        {SUBCATEGORIAS.map((sub) => (
+                          <SelectItem key={sub.value} value={sub.value}>{sub.label}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     {meta.touched && meta.error && (

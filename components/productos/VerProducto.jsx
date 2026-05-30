@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { toDate, format } from 'date-fns';
 import { cargarProductoIdApi, cargarProductosAuthor, extraerIdDeURL } from '../../helpers/utils';
 import { trackProductView } from '../../helpers/analyticsCalls';
-import Footer from '../WhatsApp/layout/Footer';
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { addFavoriteProduct, removeFavoriteProduct } from '../../reduxLib/slices/usersSlice';
 import _ from 'lodash';
@@ -355,7 +354,6 @@ const VerProducto = ({ producto: productoProp }) => {
                   />
                 </>
               )}
-              <Footer />
             </div>
 
             <div className='text-center my-4 md:my-6'>
